@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Motorent.Api\Motorent.Api.csproj"/>
+        <ProjectReference Include="..\..\src\Motorent.Presentation\Motorent.Presentation.csproj" />
+        <ProjectReference Include="..\Motorent.TestUtils\Motorent.TestUtils.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.4" />
+      <PackageReference Include="Respawn" Version="6.2.1" />
+      <PackageReference Include="Testcontainers.PostgreSql" Version="3.8.0" />
+    </ItemGroup>
+</Project>

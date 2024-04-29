@@ -1,0 +1,17 @@
+POST {{url}}/api/v1/auth/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "john@doe.com",
+  "password": "JohnDoe123",
+  "given_name": "John",
+  "family_name": "Doe",
+  "birthdate": "2000-09-05"
+}
+
+> {% 
+if (response.status === 201) {
+  client.global.set('access_token', response.body.access_token);
+}
+%}

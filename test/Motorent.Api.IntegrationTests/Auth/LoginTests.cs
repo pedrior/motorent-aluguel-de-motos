@@ -1,0 +1,74 @@
+using System.Text.Json;
+using Microsoft.Extensions.Configuration;
+using Motorent.Contracts.Auth.Responses;
+using Motorent.Infrastructure.Common.Security;
+using Motorent.Presentation.Auth;
+
+namespace Motorent.Api.IntegrationTests.Auth;
+
+[TestSubject(typeof(Login))]
+public sealed class LoginTests(WebApplicationFactory api) : WebApplicationFixture(api)
+{
+    [Fact]
+    public async Task Login_WhenCommandIsValid_ShouldReturnOk()
+    {
+        // Arrange
+        await CreateUserAsync(TestUser.Renter with
+        {
+            Email = Requests.Auth.LoginRequest.Email,
+            Password = Requests.Auth.LoginRequest.Password
+        });
+
+        var request = Requests.Auth.Login();
+
+        // Act
+        var response = await Client.SendAsync(request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(
+            content, SerializationOptions.Options);
+
+        var expiryInSeconds = GetRequiredService<IConfiguration>()
+            .GetValue<int>($"{SecurityTokenOptions.SectionName}:" +
+                           $"{nameof(SecurityTokenOptions.ExpiryInSeconds)}");
+
+        tokenResponse.Should().NotBeNull();
+        tokenResponse!.AccessToken.Should().NotBeNullOrWhiteSpace();
+        tokenResponse.ExpiresIn.Should().Be(expiryInSeconds);
+    }
+
+    [Fact]
+    public async Task Login_WhenUserDoesNotExist_ShouldReturnUnauthorized()
+    {
+        // Arrange
+        var request = Requests.Auth.Login();
+
+        // Act
+        var response = await Client.SendAsync(request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
+    public async Task Login_WhenPasswordIsIncorrect_ShouldReturnUnauthorized()
+    {
+        // Arrange
+        await CreateUserAsync(TestUser.Renter with
+        {
+            Email = Requests.Auth.LoginRequest.Email,
+            Password = "password"
+        });
+
+        var request = Requests.Auth.Login();
+
+        // Act
+        var response = await Client.SendAsync(request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+}

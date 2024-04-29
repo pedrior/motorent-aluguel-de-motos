@@ -1,6 +1,6 @@
 # Projeto Motorent
 
-Uma API REST para gerenciar aluguel de motos e entregadores. Este projeto é desenvolvido com ASP.NET Core, Entity Framework Core,
+Uma API REST para gerenciar aluguel de motos. Este projeto é desenvolvido com ASP.NET Core, Entity Framework Core,
 PostgreSQL, Docker/Docker Compose, Arquitetura Limpa, DDD, Testes de Unidade, Testes de Integração, boas práticas de programação
 e muito mais.
 

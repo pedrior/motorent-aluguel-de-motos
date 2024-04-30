@@ -8,11 +8,15 @@ using Microsoft.IdentityModel.Tokens;
 using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Common.Abstractions.Persistence;
 using Motorent.Application.Common.Abstractions.Security;
+using Motorent.Domain.Motorcycles.Repository;
+using Motorent.Domain.Motorcycles.Services;
 using Motorent.Infrastructure.Common.Identity;
 using Motorent.Infrastructure.Common.Jobs;
 using Motorent.Infrastructure.Common.Persistence;
 using Motorent.Infrastructure.Common.Persistence.Interceptors;
 using Motorent.Infrastructure.Common.Security;
+using Motorent.Infrastructure.Motorcycles;
+using Motorent.Infrastructure.Motorcycles.Persistence;
 using Npgsql;
 using Quartz;
 using Serilog;
@@ -42,6 +46,8 @@ public static class ServiceExtensions
         services.AddScoped<IUserContext, UserContext>();
         services.AddScoped<IUserService, UserService>();
 
+        services.AddScoped<ILicensePlateService, LicensePlateService>();
+        
         return services;
     }
 
@@ -50,6 +56,8 @@ public static class ServiceExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<AuditEntitiesOnSaveChangesInterceptor>();
         services.AddScoped<PersistOutboxDomainEventsOnSaveChangesInterceptor>();
+
+        services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
 
         services.AddNpgsqlDataSource(configuration.GetConnectionString("DefaultConnection")!,
             builder => builder.EnableDynamicJson());

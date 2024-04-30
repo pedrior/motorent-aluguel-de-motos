@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Motorent.Domain.Motorcycles;
 using Motorent.Infrastructure.Common.Identity;
 using Motorent.Infrastructure.Common.Outbox;
 
@@ -15,6 +16,8 @@ internal class DataContext : DbContext
     public DataContext(DbContextOptions options) : base(options)
     {
     }
+    
+    public DbSet<Motorcycle> Motorcycles => Set<Motorcycle>();
 
     public DbSet<User> Users => Set<User>();
 

@@ -3,8 +3,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "john@doe.com",
-  "password": "JohnDoe123"
+  "email": "john@admin.com",
+  "password": "John@123"
 }
 
 > {% 

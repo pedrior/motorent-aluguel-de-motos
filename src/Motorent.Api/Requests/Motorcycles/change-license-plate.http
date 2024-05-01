@@ -1,0 +1,8 @@
+POST {{url}}/api/v1/motorcycles/{{motorcycle_id}}/change-license-plate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "license_plate": "kOA-2A91"
+}

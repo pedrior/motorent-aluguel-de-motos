@@ -54,7 +54,7 @@ public sealed class Motorcycle : Entity<MotorcycleId>, IAggregateRoot, IAuditabl
     
     public void UpdateDailyPrice(Money dailyPrice) => DailyPrice = dailyPrice;
 
-    public async Task<Result<Success>> UpdateLicensePlateAsync(
+    public async Task<Result<Success>> ChangeLicensePlateAsync(
         LicensePlate licensePlate,
         ILicensePlateService licensePlateService,
         CancellationToken cancellationToken = default)

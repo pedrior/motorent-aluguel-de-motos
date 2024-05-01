@@ -52,7 +52,7 @@ public sealed class MotorcycleTests
     }
 
     [Fact]
-    public async Task UpdateLicensePlateAsync_WhenLicensePlateIsUnique_ShouldUpdateLicensePlate()
+    public async Task ChangeLicensePlateAsync_WhenLicensePlateIsUnique_ShouldUpdateLicensePlate()
     {
         // Arrange
         var motorcycle = (await Factories.Motorcycle.CreateAsync()).Value;
@@ -63,7 +63,7 @@ public sealed class MotorcycleTests
             .Returns(true);
 
         // Act
-        var result = await motorcycle.UpdateLicensePlateAsync(
+        var result = await motorcycle.ChangeLicensePlateAsync(
             licensePlate: licensePlate,
             licensePlateService: licensePlateService);
 
@@ -73,7 +73,7 @@ public sealed class MotorcycleTests
     }
 
     [Fact]
-    public async Task UpdateLicensePlateAsync_WhenLicensePlateIsNotUnique_ShouldReturnLicensePlateNotUnique()
+    public async Task ChangeLicensePlateAsync_WhenLicensePlateIsNotUnique_ShouldReturnLicensePlateNotUnique()
     {
         // Arrange
         var motorcycle = (await Factories.Motorcycle.CreateAsync()).Value;
@@ -84,7 +84,7 @@ public sealed class MotorcycleTests
             .Returns(false);
 
         // Act
-        var result = await motorcycle.UpdateLicensePlateAsync(
+        var result = await motorcycle.ChangeLicensePlateAsync(
             licensePlate: licensePlate,
             licensePlateService: licensePlateService);
 

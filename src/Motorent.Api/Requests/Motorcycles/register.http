@@ -12,7 +12,7 @@ Authorization: Bearer {{access_token}}
 }
 
 > {% 
-if (response.status === 200) {
+if (response.status === 201) {
   client.global.set('motorcycle_id', response.body.id);
 }
 %}

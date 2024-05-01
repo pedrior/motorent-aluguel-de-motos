@@ -16,6 +16,6 @@ internal sealed class Register : IEndpoint
                 .ToResponseAsync(response => Results.Created(
                     uri: null as Uri,
                     value: response)))
-            .AllowAnonymous();
+            .RequireAuthorization();
     }
 }

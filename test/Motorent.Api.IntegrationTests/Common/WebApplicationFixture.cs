@@ -51,6 +51,7 @@ public abstract class WebApplicationFixture(WebApplicationFactory api)
         var securityTokenProvider = GetRequiredService<ISecurityTokenProvider>();
         var securityToken = await securityTokenProvider.GenerateSecurityTokenAsync(userId);
 
-        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(securityToken.AccessToken);
+        Client.DefaultRequestHeaders.Authorization = 
+            new AuthenticationHeaderValue("Bearer", securityToken.AccessToken);
     }
 }

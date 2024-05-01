@@ -9,36 +9,3 @@ e muito mais.
 
 Dê uma ⭐ se você gostou deste projeto. Tem alguma pergunta, recomendação ou qualquer outra questão, abra uma issue ou entre em contato.
 Este é um projeto no qual estou praticando meus conhecimentos. Se houver algo em que eu possa melhorar, ficaria muito grato em saber 😄.
-
-
-## Tecnologias utilizadas
-
-- ASP.NET Core 8
-- Minimal API
-- Entity Framework Core 8
-- PostgreSQL
-- Docker
-- Docker Compose
-- Arquitetura Limpa
-- DDD
-- Testes de Unidade
-- Testes de Integração
-- JWT
-- Transações
-- Autenticação
-- Autorização
-- Versionamento
-- Rate Limiting
-- Padrão Outbox
-- Quartz
-- MediatR
-- Mapster
-- FluentValidation
-- Ulid
-- Ardalis.SmartENum
-- ResultExtensions
-- Serilog
-- xUnit
-- FluentAssertions
-- TestContainers
-- Respawn

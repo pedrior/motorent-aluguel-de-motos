@@ -13,8 +13,9 @@ internal sealed class Register : IEndpoint
                 CancellationToken cancellationToken) => sender.Send(
                     request.Adapt<RegisterMotorcycleCommand>(),
                     cancellationToken)
-                .ToResponseAsync(response => Results.Created(
-                    uri: null as Uri,
+                .ToResponseAsync(response => Results.CreatedAtRoute(
+                    routeName: "get-motorcycle",
+                    routeValues: new { idOrLicensePlate = response.Id },
                     value: response)))
             .RequireAuthorization();
     }

@@ -17,5 +17,8 @@ internal static partial class Requests
 
         public static HttpRequestMessage RegisterMotorcycle(RegisterMotorcycleRequest? request = null) =>
             Post("v1/motorcycles", request ?? RegisterMotorcycleRequest);
+
+        public static HttpRequestMessage GetMotorcycle(string idOrLicensePlate) =>
+            Get($"v1/motorcycles/{idOrLicensePlate}");
     }
 }

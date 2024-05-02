@@ -32,5 +32,7 @@ internal static partial class Requests
             return Post($"v1/motorcycles/{idOrLicensePlate}/update-license-plate",
                 request ?? UpdateLicensePlateRequest);
         }
+
+        public static HttpRequestMessage RemoveMotorcycle(Ulid id) => Delete($"v1/motorcycles/{id}");
     }
 }

@@ -6,8 +6,8 @@ using Motorent.Presentation.Auth;
 
 namespace Motorent.Api.IntegrationTests.Auth;
 
-[TestSubject(typeof(Register))]
-public sealed class RegisterTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(RegisterMotorcycle))]
+public sealed class RegisterMotorcycleTests(WebApplicationFactory api) : WebApplicationFixture(api)
 {
     [Fact]
     public async Task Register_WhenCommandIsValid_ShouldReturnCreated()

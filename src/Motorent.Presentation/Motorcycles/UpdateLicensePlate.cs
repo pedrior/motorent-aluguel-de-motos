@@ -3,16 +3,16 @@ using Motorent.Contracts.Motorcycles.Requests;
 
 namespace Motorent.Presentation.Motorcycles;
 
-internal sealed class ChangeLicensePlate : IEndpoint
+internal sealed class UpdateLicensePlate : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapPost("motorcycles/{id}/change-license-plate", (
+        app.MapPost("motorcycles/{id}/update-license-plate", (
                 Ulid id,
-                ChangeLicensePlateRequest request,
+                UpdateLicensePlateRequest request,
                 ISender sender,
                 CancellationToken cancellationToken) => sender.Send(
-                    request.Adapt<ChangeLicensePlateCommand>() with
+                    request.Adapt<UpdateLicensePlateCommand>() with
                     {
                         Id = id
                     },

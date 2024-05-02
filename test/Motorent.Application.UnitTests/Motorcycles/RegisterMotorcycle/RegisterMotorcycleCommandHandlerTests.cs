@@ -1,6 +1,6 @@
 using Motorent.Application.Common.Mappings;
 using Motorent.Application.Motorcycles.Common.Mappings;
-using Motorent.Application.Motorcycles.Register;
+using Motorent.Application.Motorcycles.RegisterMotorcycle;
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Repository;
@@ -8,7 +8,7 @@ using Motorent.Domain.Motorcycles.Services;
 using Motorent.Domain.Motorcycles.ValueObjects;
 using Motorent.TestUtils.Constants;
 
-namespace Motorent.Application.UnitTests.Motorcycles.Register;
+namespace Motorent.Application.UnitTests.Motorcycles.RegisterMotorcycle;
 
 [TestSubject(typeof(RegisterMotorcycleCommandHandler))]
 public sealed class RegisterMotorcycleCommandHandlerTests

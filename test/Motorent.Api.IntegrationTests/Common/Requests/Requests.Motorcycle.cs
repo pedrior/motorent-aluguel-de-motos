@@ -15,7 +15,7 @@ internal static partial class Requests
             LicensePlate = "PIA-2A91"
         };
 
-        public static readonly ChangeLicensePlateRequest ChangeLicensePlateRequest = new()
+        public static readonly UpdateLicensePlateRequest UpdateLicensePlateRequest = new()
         {
             LicensePlate = "KIL-2H17"
         };
@@ -27,10 +27,10 @@ internal static partial class Requests
             Get($"v1/motorcycles/{idOrLicensePlate}");
 
         public static HttpRequestMessage ChangeLicensePlate(string idOrLicensePlate,
-            ChangeLicensePlateRequest? request = null)
+            UpdateLicensePlateRequest? request = null)
         {
-            return Post($"v1/motorcycles/{idOrLicensePlate}/change-license-plate",
-                request ?? ChangeLicensePlateRequest);
+            return Post($"v1/motorcycles/{idOrLicensePlate}/update-license-plate",
+                request ?? UpdateLicensePlateRequest);
         }
     }
 }

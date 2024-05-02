@@ -7,7 +7,7 @@ using Motorent.Domain.Motorcycles.Repository;
 using Motorent.Domain.Motorcycles.Services;
 using Motorent.Domain.Motorcycles.ValueObjects;
 
-namespace Motorent.Application.Motorcycles.Register;
+namespace Motorent.Application.Motorcycles.RegisterMotorcycle;
 
 internal sealed class RegisterMotorcycleCommandHandler(
     IMotorcycleRepository motorcycleRepository,

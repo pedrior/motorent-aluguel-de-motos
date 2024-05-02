@@ -1,4 +1,4 @@
-using Motorent.Application.Motorcycles.Get;
+using Motorent.Application.Motorcycles.GetMotorcycle;
 
 namespace Motorent.Presentation.Motorcycles;
 

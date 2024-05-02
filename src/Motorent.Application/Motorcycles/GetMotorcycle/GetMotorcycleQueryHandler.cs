@@ -5,7 +5,7 @@ using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Repository;
 using Motorent.Domain.Motorcycles.ValueObjects;
 
-namespace Motorent.Application.Motorcycles.Get;
+namespace Motorent.Application.Motorcycles.GetMotorcycle;
 
 internal sealed class GetMotorcycleQueryHandler(IMotorcycleRepository motorcycleRepository)
     : IQueryHandler<GetMotorcycleQuery, MotorcycleResponse>

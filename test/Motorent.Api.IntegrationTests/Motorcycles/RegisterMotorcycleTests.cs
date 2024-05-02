@@ -4,8 +4,8 @@ using Motorent.Presentation.Motorcycles;
 
 namespace Motorent.Api.IntegrationTests.Motorcycles;
 
-[TestSubject(typeof(Register))]
-public sealed class RegisterTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(RegisterMotorcycle))]
+public sealed class RegisterMotorcycleTests(WebApplicationFactory api) : WebApplicationFixture(api)
 {
     [Fact]
     public async Task RegisterMotorcycle_WhenRequestIsValid_ShouldCreateMotorcycle()

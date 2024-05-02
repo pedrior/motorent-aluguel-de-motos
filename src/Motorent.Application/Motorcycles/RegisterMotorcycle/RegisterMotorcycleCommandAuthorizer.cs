@@ -2,7 +2,7 @@ using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Common.Abstractions.Security;
 using Motorent.Application.Common.Security;
 
-namespace Motorent.Application.Motorcycles.Register;
+namespace Motorent.Application.Motorcycles.RegisterMotorcycle;
 
 internal sealed class RegisterMotorcycleCommandAuthorizer : IAuthorizer<RegisterMotorcycleCommand>
 {

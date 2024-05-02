@@ -1,7 +1,7 @@
 using Motorent.Application.Common.Abstractions.Requests;
 using Motorent.Contracts.Motorcycles.Responses;
 
-namespace Motorent.Application.Motorcycles.Register;
+namespace Motorent.Application.Motorcycles.RegisterMotorcycle;
 
 public sealed record RegisterMotorcycleCommand : ICommand<MotorcycleResponse>, ITransactional
 {

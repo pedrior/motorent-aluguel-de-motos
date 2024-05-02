@@ -6,25 +6,25 @@ using Motorent.Domain.Motorcycles.Services;
 using Motorent.Domain.Motorcycles.ValueObjects;
 using Motorent.TestUtils.Factories;
 
-namespace Motorent.Application.UnitTests.Motorcycles.ChangeLicensePlate;
+namespace Motorent.Application.UnitTests.Motorcycles.UpdateLicensePlate;
 
-[TestSubject(typeof(ChangeLicensePlateCommandHandler))]
-public sealed class ChangeLicensePlateCommandHandlerTests
+[TestSubject(typeof(UpdateLicensePlateCommandHandler))]
+public sealed class UpdateLicensePlateCommandHandlerTests
 {
     private readonly IMotorcycleRepository motorcycleRepository = A.Fake<IMotorcycleRepository>();
     private readonly ILicensePlateService licensePlateService = A.Fake<ILicensePlateService>();
 
-    private readonly ChangeLicensePlateCommandHandler sut;
+    private readonly UpdateLicensePlateCommandHandler sut;
 
-    private readonly ChangeLicensePlateCommand command = new()
+    private readonly UpdateLicensePlateCommand command = new()
     {
         Id = Ulid.NewUlid(),
         LicensePlate = "HAC-8Y96"
     };
 
-    public ChangeLicensePlateCommandHandlerTests()
+    public UpdateLicensePlateCommandHandlerTests()
     {
-        sut = new ChangeLicensePlateCommandHandler(motorcycleRepository, licensePlateService);
+        sut = new UpdateLicensePlateCommandHandler(motorcycleRepository, licensePlateService);
     }
 
     [Fact]

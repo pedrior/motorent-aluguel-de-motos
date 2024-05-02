@@ -6,12 +6,12 @@ using Motorent.Domain.Motorcycles.ValueObjects;
 
 namespace Motorent.Application.Motorcycles.UpdateLicensePlate;
 
-internal sealed class ChangeLicensePlateCommandHandler(
+internal sealed class UpdateLicensePlateCommandHandler(
     IMotorcycleRepository motorcycleRepository,
     ILicensePlateService licensePlateService)
-    : ICommandHandler<ChangeLicensePlateCommand>
+    : ICommandHandler<UpdateLicensePlateCommand>
 {
-    public async Task<Result<Success>> Handle(ChangeLicensePlateCommand command,
+    public async Task<Result<Success>> Handle(UpdateLicensePlateCommand command,
         CancellationToken cancellationToken)
     {
         var motorcycle = await motorcycleRepository.FindAsync(new MotorcycleId(command.Id), cancellationToken);

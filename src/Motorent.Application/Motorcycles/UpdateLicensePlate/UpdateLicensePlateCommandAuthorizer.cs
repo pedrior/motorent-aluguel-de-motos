@@ -4,9 +4,9 @@ using Motorent.Application.Common.Security;
 
 namespace Motorent.Application.Motorcycles.UpdateLicensePlate;
 
-internal sealed class ChangeLicensePlateCommandAuthorizer : IAuthorizer<ChangeLicensePlateCommand>
+internal sealed class UpdateLicensePlateCommandAuthorizer : IAuthorizer<UpdateLicensePlateCommand>
 {
-    public IEnumerable<IRequirement> GetRequirements(ChangeLicensePlateCommand _)
+    public IEnumerable<IRequirement> GetRequirements(UpdateLicensePlateCommand _)
     {
         yield return new RoleRequirement(UserRoles.Admin);
     }

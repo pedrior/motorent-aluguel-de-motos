@@ -4,8 +4,8 @@ using Motorent.TestUtils.Factories;
 
 namespace Motorent.Api.IntegrationTests.Motorcycles;
 
-[TestSubject(typeof(ChangeLicensePlate))]
-public sealed class ChangeLicensePlateTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(UpdateLicensePlate))]
+public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebApplicationFixture(api)
 {
     [Fact]
     public async Task ChangeLicensePlate_WhenMotorcycleExists_ShouldReturnNoContent()

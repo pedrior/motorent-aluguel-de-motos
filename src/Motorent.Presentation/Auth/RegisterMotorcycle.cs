@@ -3,7 +3,7 @@ using Motorent.Contracts.Auth.Requests;
 
 namespace Motorent.Presentation.Auth;
 
-internal sealed class Register : IEndpoint
+internal sealed class RegisterMotorcycle : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {

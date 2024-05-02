@@ -1,4 +1,4 @@
-POST {{url}}/api/v1/motorcycles/{{motorcycle_id}}/change-license-plate
+POST {{url}}/api/v1/motorcycles/{{motorcycle_id}}/update-license-plate
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{access_token}}

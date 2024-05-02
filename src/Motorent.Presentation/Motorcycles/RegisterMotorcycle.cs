@@ -1,9 +1,9 @@
-using Motorent.Application.Motorcycles.Register;
+using Motorent.Application.Motorcycles.RegisterMotorcycle;
 using Motorent.Contracts.Motorcycles.Requests;
 
 namespace Motorent.Presentation.Motorcycles;
 
-internal sealed class Register : IEndpoint
+internal sealed class RegisterMotorcycle : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {

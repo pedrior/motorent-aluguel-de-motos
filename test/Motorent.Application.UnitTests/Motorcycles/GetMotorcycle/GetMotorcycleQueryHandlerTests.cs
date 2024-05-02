@@ -1,13 +1,13 @@
 using Motorent.Application.Common.Mappings;
 using Motorent.Application.Motorcycles.Common.Errors;
 using Motorent.Application.Motorcycles.Common.Mappings;
-using Motorent.Application.Motorcycles.Get;
+using Motorent.Application.Motorcycles.GetMotorcycle;
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Repository;
 using Motorent.TestUtils.Factories;
 
-namespace Motorent.Application.UnitTests.Motorcycles.Get;
+namespace Motorent.Application.UnitTests.Motorcycles.GetMotorcycle;
 
 [TestSubject(typeof(GetMotorcycleQueryHandler))]
 public sealed class GetMotorcycleQueryHandlerTests

@@ -2,9 +2,9 @@ using Motorent.Application.Motorcycles.Common.Validations;
 
 namespace Motorent.Application.Motorcycles.UpdateLicensePlate;
 
-internal sealed class ChangeLicensePlateCommandValidator : AbstractValidator<ChangeLicensePlateCommand>
+internal sealed class UpdateLicensePlateCommandValidator : AbstractValidator<UpdateLicensePlateCommand>
 {
-    public ChangeLicensePlateCommandValidator()
+    public UpdateLicensePlateCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()

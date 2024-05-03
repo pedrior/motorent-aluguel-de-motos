@@ -8,3 +8,7 @@ Arquitetura Limpa, DDD, CQRS, Testes de Unidade, Testes de Integração, boas pr
 
 Deixe uma ⭐ se você gostou deste projeto. Se tiver alguma pergunta, recomendação ou qualquer outra questão, abra uma issue ou entre em contato. 
 Este é um projeto feito por hobby, mas se houver algo em que eu possa melhorar, ficaria muito grato em saber 😄.
+
+## Licença
+
+Este repositório está licenciado sob a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).

@@ -78,6 +78,59 @@ O API utiliza códigos de resposta HTTP padrão para indicar o sucesso ou falha 
 | 429 - Too Many Requests     | Muitas solicitações atingiram a API muito rapidamente.                                                                     |
 | 500 - Internal Server Error | Ocorreu um erro inesperado.                                                                                                |
 
+## 🚀 Endpoints
+
+### Auth
+
+#### Login: Autentica um usuário no sistema.
+
+```http request
+POST https://localhost:8081/api/v1/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "john@doe.com",
+  "password": "JohnDoe123"
+}
+```
+
+__Resposta: 200 OK__
+
+```json
+{
+  "type": "Bearer",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR ...",
+  "expires_in": 3600
+}
+```
+
+#### Register: Registra um novo usuário no sistema.
+
+```http request
+POST https://localhost:8081/api/v1/auth/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "john@doe.com",
+  "password": "JohnDoe123",
+  "given_name": "John",
+  "family_name": "Doe",
+  "birthdate": "2000-09-05"
+}
+```
+
+__Resposta: 201 Created__
+
+```json
+{
+  "type": "Bearer",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR ...",
+  "expires_in": 3600
+}
+```
+
 ## Licença
 
 Este repositório está licenciado sob a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).

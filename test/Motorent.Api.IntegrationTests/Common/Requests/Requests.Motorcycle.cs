@@ -15,6 +15,15 @@ internal static partial class Requests
             LicensePlate = "PIA-2A91"
         };
 
+        public static readonly ListMotorcyclesRequest ListMotorcyclesRequest = new()
+        {
+            Page = 1,
+            Limit = 10,
+            Sort = "asc",
+            Order = null,
+            Search = null
+        };
+
         public static readonly UpdateLicensePlateRequest UpdateLicensePlateRequest = new()
         {
             LicensePlate = "KIL-2H17"
@@ -26,6 +35,17 @@ internal static partial class Requests
         public static HttpRequestMessage GetMotorcycle(string idOrLicensePlate) =>
             Get($"v1/motorcycles/{idOrLicensePlate}");
 
+        public static HttpRequestMessage ListMotorcycles(ListMotorcyclesRequest? request = null)
+        {
+            request ??= ListMotorcyclesRequest;
+            return Get($"v1/motorcycles" +
+                       $"?page={request.Page}" +
+                       $"&limit={request.Limit}" +
+                       $"&sort={request.Sort}" +
+                       $"&order={request.Order}" +
+                       $"&search={request.Search}");
+        }
+        
         public static HttpRequestMessage ChangeLicensePlate(string idOrLicensePlate,
             UpdateLicensePlateRequest? request = null)
         {

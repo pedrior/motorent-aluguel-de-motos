@@ -26,7 +26,7 @@ public sealed class ListMotorcyclesTests(WebApplicationFactory api) : WebApplica
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var motorcycles = JsonSerializer.Deserialize<PageResponse<MotorcycleResponse>>(
+        var motorcycles = JsonSerializer.Deserialize<PageResponse<MotorcycleSummaryResponse>>(
             content, SerializationOptions.Options);
 
         motorcycles.Should().BeEquivalentTo(new

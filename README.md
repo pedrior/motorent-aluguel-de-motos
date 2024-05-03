@@ -167,9 +167,7 @@ Resposta 200 OK
       "brand": "yamaha",
       "year": 2024,
       "daily_price": 57.99,
-      "license_plate": "KPA7A55",
-      "created_at": "2024-05-03T02:20:45.89759+00:00",
-      "updated_at": null
+      "license_plate": "KPA7A55"
     },
     {
       "id": "01HWXVQD61BVNZRJVD7QRDD3TJ",
@@ -177,9 +175,7 @@ Resposta 200 OK
       "brand": "honda",
       "year": 2022,
       "daily_price": 38.99,
-      "license_plate": "PIA2A91",
-      "created_at": "2024-05-02T23:55:08.479875+00:00",
-      "updated_at": null
+      "license_plate": "PIA2A91"
     },
     ...
   ]

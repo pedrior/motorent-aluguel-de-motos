@@ -90,7 +90,7 @@ public sealed class ListMotorcyclesQueryHandlerTests
         
         // Assert
         result.Should().BeSuccess();
-        result.Value.Should().BeEquivalentTo(PageResponse<MotorcycleResponse>.Empty(query.Page, query.Limit));
+        result.Value.Should().BeEquivalentTo(PageResponse<MotorcycleSummaryResponse>.Empty(query.Page, query.Limit));
         
         A.CallTo(() => motorcycleRepository.CountAsync(query.Search, A<CancellationToken>.Ignored))
             .MustNotHaveHappened();

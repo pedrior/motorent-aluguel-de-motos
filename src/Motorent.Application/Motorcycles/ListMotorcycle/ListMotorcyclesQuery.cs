@@ -4,7 +4,7 @@ using Motorent.Contracts.Motorcycles.Responses;
 
 namespace Motorent.Application.Motorcycles.ListMotorcycle;
 
-public sealed record ListMotorcyclesQuery : IQuery<PageResponse<MotorcycleResponse>>
+public sealed record ListMotorcyclesQuery : IQuery<PageResponse<MotorcycleSummaryResponse>>
 {
     public int Page { get; init; }
     

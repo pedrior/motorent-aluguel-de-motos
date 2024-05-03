@@ -95,7 +95,7 @@ Content-Type: application/json
 }
 ```
 
-__Resposta: 200 OK__
+Resposta: 200 OK
 
 ```json
 {
@@ -121,7 +121,7 @@ Content-Type: application/json
 }
 ```
 
-__Resposta: 201 Created__
+Resposta: 201 Created
 
 ```json
 {
@@ -150,7 +150,7 @@ Essa requisição aceita os seguintes parâmetros:
 | order     | Ordem de classificação dos itens. Padrão: Pode ser  `asc` ou `desc`. Padrão `asc`.                       |
 
 
-__Resposta 200 OK__
+Resposta 200 OK
 
 ```json
 {
@@ -193,7 +193,7 @@ GET https://localhost:8081/api/v1/motorcycles/id-ou-placa
 Accept: application/json
 ```
 
-__Resposta 200 OK__
+Resposta 200 OK
 
 ```json
 {
@@ -225,7 +225,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 }
 ```
 
-__Resposta 201 Created__
+Resposta 201 Created
 
 ```json
 {
@@ -253,7 +253,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 }
 ```
 
-__Resposta 204 No Content__
+Resposta 204 No Content
 
 #### Exclui uma moto cadastrada.
 
@@ -262,7 +262,7 @@ DELETE https://localhost:8081/api/v1/motorcycles/id-da-moto
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 ```
 
-__Resposta 204 No Content__
+Resposta 204 No Content
 
 ## Licença
 

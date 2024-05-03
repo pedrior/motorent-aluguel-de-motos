@@ -131,6 +131,139 @@ __Resposta: 201 Created__
 }
 ```
 
+### Motos
+
+#### Listar Motos: Retorna uma lista paginada de motos.
+
+```http request
+GET https://localhost:8081/api/v1/motorcycles?page=1&limit=15&sort=model&order=asc
+Accept: application/json
+```
+
+Essa requisição aceita os seguintes parâmetros:
+
+| Parâmetro | Descrição                                                                                                |
+|-----------|----------------------------------------------------------------------------------------------------------|
+| page      | Número da página a ser retornada. Padrão: `1`.                                                           |
+| limit     | Número de itens por página. Padrão: `15`.                                                                |
+| sort      | Campo pelo qual os itens serão ordenados. Pode ser `model`, `brand` ou `license_plate`. Padrão: `model`. |
+| order     | Ordem de classificação dos itens. Padrão: Pode ser  `asc` ou `desc`. Padrão `asc`.                       |
+
+
+__Resposta 200 OK__
+
+```json
+{
+  "page": 1,
+  "size": 15,
+  "total_items": 30,
+  "total_pages": 2,
+  "has_previous_page": false,
+  "has_next_page": true,
+  "items": [
+    {
+      "id": "01HWY421T6WQMPG7Q9Z6V9M2HP",
+      "model": "Fazer 250 ABS",
+      "brand": "yamaha",
+      "year": 2024,
+      "daily_price": 57.99,
+      "license_plate": "KPA7A55",
+      "created_at": "2024-05-03T02:20:45.89759+00:00",
+      "updated_at": null
+    },
+    {
+      "id": "01HWXVQD61BVNZRJVD7QRDD3TJ",
+      "model": "Titan 160cc ABS",
+      "brand": "honda",
+      "year": 2022,
+      "daily_price": 38.99,
+      "license_plate": "PIA2A91",
+      "created_at": "2024-05-02T23:55:08.479875+00:00",
+      "updated_at": null
+    },
+    ...
+  ]
+}
+```
+
+#### Detalhes da Moto: Retorna os detalhes de uma moto específica por ID ou placa.
+
+```http request
+GET https://localhost:8081/api/v1/motorcycles/id-ou-placa
+Accept: application/json
+```
+
+__Resposta 200 OK__
+
+```json
+{
+  "id": "01HWY421T6WQMPG7Q9Z6V9M2HP",
+  "model": "Fazer 250 ABS",
+  "brand": "yamaha",
+  "year": 2024,
+  "daily_price": 57.99,
+  "license_plate": "KPA7A55",
+  "created_at": "2024-05-03T02:20:45.89759+00:00",
+  "updated_at": null
+}
+```
+
+#### Cadastrar Moto: Cadastra uma nova moto no sistema.
+
+```http request
+POST https://localhost:8081/api/v1/motorcycles
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
+
+{
+  "model": "Fazer 250 ABS",
+  "brand": "yamaha",
+  "year": 2024,
+  "daily_price": 57.99,
+  "license_plate": "KPA7A55"
+}
+```
+
+__Resposta 201 Created__
+
+```json
+{
+  "id": "01HWY421T6WQMPG7Q9Z6V9M2HP",
+  "model": "Fazer 250 ABS",
+  "brand": "yamaha",
+  "year": 2024,
+  "daily_price": 57.99,
+  "license_plate": "KPA7A55",
+  "created_at": "2024-05-03T02:20:45.89759+00:00",
+  "updated_at": null
+}
+```
+
+#### Atualiza a placa de uma mota cadastrada.
+
+```http request
+POST https://localhost:8081/api/v1/motorcycles/id-da-moto/update-license-plate
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
+
+{
+  "license_plate": "kOA-2A91"
+}
+```
+
+__Resposta 204 No Content__
+
+#### Exclui uma moto cadastrada.
+
+```http request
+DELETE https://localhost:8081/api/v1/motorcycles/id-da-moto
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
+```
+
+__Resposta 204 No Content__
+
 ## Licença
 
 Este repositório está licenciado sob a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).

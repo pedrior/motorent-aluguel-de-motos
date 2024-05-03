@@ -240,7 +240,6 @@ Resposta 201 Created
 
 ```http request
 POST https://localhost:8081/api/v1/motorcycles/id-da-moto/update-license-plate
-Accept: application/json
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 

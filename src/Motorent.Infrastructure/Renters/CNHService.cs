@@ -8,5 +8,5 @@ namespace Motorent.Infrastructure.Renters;
 internal sealed class CNHService(DataContext dataContext) : ICNHService
 {
     public async Task<bool> IsUniqueAsync(CNH cnh, CancellationToken cancellationToken = default) => 
-        !await dataContext.Renters.AnyAsync(r => r.CNH == cnh, cancellationToken);
+        !await dataContext.Renters.AnyAsync(r => r.CNH.Number == cnh.Number, cancellationToken);
 }

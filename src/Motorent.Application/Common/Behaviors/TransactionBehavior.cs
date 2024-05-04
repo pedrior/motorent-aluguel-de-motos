@@ -6,8 +6,10 @@ namespace Motorent.Application.Common.Behaviors;
 
 internal sealed class TransactionBehavior<TRequest, TResponse>(
     IUnitOfWork unitOfWork,
-    ILogger<TransactionBehavior<TRequest, TResponse>> logger) 
-    : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>, ITransactional
+    ILogger<TransactionBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>, ITransactional
+    where TResponse : IResult
 {
     public async Task<TResponse> Handle(
         TRequest request,
@@ -15,13 +17,17 @@ internal sealed class TransactionBehavior<TRequest, TResponse>(
         CancellationToken cancellationToken)
     {
         var requestName = typeof(TRequest).Name;
-        
+
         try
         {
             logger.LogInformation("Starting transaction for {RequestName}", requestName);
             await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             var response = await next();
+            if (response.IsFailure)
+            {
+                return response;
+            }
 
             logger.LogInformation("Committing transaction for {RequestName}", requestName);
             await unitOfWork.CommitTransactionAsync(cancellationToken);

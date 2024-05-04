@@ -21,24 +21,4 @@ internal static class AuthValidations
             .Matches(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).*$")
             .WithMessage("Must contain at least one uppercase letter, one lowercase letter and one digit.");
     }
-    
-    public static IRuleBuilderOptions<T, string> Name<T>(this IRuleBuilder<T, string> builder)
-    {
-        return builder
-            .NotEmpty()
-            .WithMessage("Must not be empty.")
-            .Length(min: 2, max: 50)
-            .WithMessage("Must be between 2 and 50 characters.")
-            .Matches(@"^(?!.*['.]$)[\p{L}'. }]+$")
-            .WithMessage("Must contain only letters and spaces, periods and apostrophes followed by letters.");
-    }
-    
-    public static IRuleBuilderOptions<T, DateOnly> Birthdate<T>(this IRuleBuilder<T, DateOnly> builder)
-    {
-        return builder
-            .NotEmpty()
-            .WithMessage("Must not be empty.")
-            .LessThan(DateOnly.FromDateTime(DateTime.Today))
-            .WithMessage("Must be in the past.");
-    }
 }

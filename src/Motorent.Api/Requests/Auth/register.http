@@ -7,7 +7,11 @@ Content-Type: application/json
   "password": "JohnDoe123",
   "given_name": "John",
   "family_name": "Doe",
-  "birthdate": "2000-09-05"
+  "birthdate": "2000-09-05",
+  "cnpj": "18.864.014/0001-19",
+  "cnh_number": "92353762700",
+  "cnh_category": "ab",
+  "cnh_exp_date": "2026-12-31"
 }
 
 > {% 

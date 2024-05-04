@@ -2,14 +2,39 @@ using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Common.Abstractions.Requests;
 using Motorent.Application.Common.Abstractions.Security;
 using Motorent.Contracts.Auth.Responses;
+using Motorent.Domain.Renters;
+using Motorent.Domain.Renters.Enums;
+using Motorent.Domain.Renters.Repository;
+using Motorent.Domain.Renters.Services;
+using Motorent.Domain.Renters.ValueObjects;
 
 namespace Motorent.Application.Auth.Register;
 
-internal sealed class RegisterCommandHandler(IUserService userService, ISecurityTokenProvider securityTokenProvider)
+internal sealed class RegisterCommandHandler(
+    IUserService userService,
+    ISecurityTokenProvider securityTokenProvider,
+    IRenterRepository renterRepository,
+    ICNPJService cnpjService,
+    ICNHService cnhService)
     : ICommandHandler<RegisterCommand, TokenResponse>
 {
     public async Task<Result<TokenResponse>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
+        var cnpj = CNPJ.Create(command.CNPJ);
+        var email = EmailAddress.Create(command.Email);
+        var fullName = new FullName(command.GivenName, command.FamilyName);
+        var birthdate = Birthdate.Create(command.Birthdate);
+        var cnh = CNH.Create(
+            command.CNHNumber,
+            CNHCategory.FromName(command.CNHCategory, ignoreCase: true),
+            command.CNHExpDate);
+
+        var errors = ErrorCombiner.Combine(cnpj, email, birthdate, cnh);
+        if (errors.Any())
+        {
+            return errors;
+        }
+
         var result = userService.CreateUserAsync(
             command.Email,
             command.Password,
@@ -22,8 +47,41 @@ internal sealed class RegisterCommandHandler(IUserService userService, ISecurity
             },
             cancellationToken: cancellationToken);
 
-        return await result.ThenAsync(userId => GenerateSecurityTokenAsync(userId, cancellationToken))
+        return await result
+            .ThenAsync(userId => CreateRenterUserAsync(
+                userId,
+                cnpj.Value,
+                email.Value,
+                fullName,
+                birthdate.Value,
+                cnh.Value,
+                cancellationToken))
+            .ThenAsync(renter => GenerateSecurityTokenAsync(renter.UserId, cancellationToken))
             .Then(securityToken => securityToken.Adapt<TokenResponse>());
+    }
+
+    private Task<Result<Renter>> CreateRenterUserAsync(
+        string userId,
+        CNPJ cnpj,
+        EmailAddress email,
+        FullName fullName,
+        Birthdate birthdate,
+        CNH cnh,
+        CancellationToken cancellationToken)
+    {
+        var result = Renter.CreateAsync(
+            id: RenterId.New(),
+            userId: userId,
+            cnpj: cnpj,
+            email: email,
+            fullName: fullName,
+            birthdate: birthdate,
+            cnh: cnh,
+            cnpjService: cnpjService,
+            cnhService: cnhService,
+            cancellationToken: cancellationToken);
+
+        return result.ThenAsync(renter => renterRepository.AddAsync(renter, cancellationToken));
     }
 
     private Task<SecurityToken> GenerateSecurityTokenAsync(string userId, CancellationToken cancellationToken) =>

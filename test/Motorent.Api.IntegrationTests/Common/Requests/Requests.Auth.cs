@@ -18,7 +18,11 @@ internal static partial class Requests
             Password = "JohnDoe123",
             GivenName = "John",
             FamilyName = "Doe",
-            Birthdate = new DateOnly(2000, 09, 05)
+            Birthdate = new DateOnly(2000, 09, 05),
+            CNPJ = "18.864.014/0001-19",
+            CNHNumber = "92353762700",
+            CNHCategory = "ab",
+            CNHExpDate = new DateOnly(DateTime.Today.Year + 1, 01, 01)
         };
 
         public static HttpRequestMessage Login(LoginRequest? request = null) =>

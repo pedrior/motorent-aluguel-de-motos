@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Motorent.Contracts.Auth.Requests;
 
 public sealed record RegisterRequest
@@ -11,4 +13,15 @@ public sealed record RegisterRequest
     public string FamilyName { get; init; } = null!;
 
     public DateOnly Birthdate { get; init; }
+    
+    public string CNPJ { get; init; } = null!;
+    
+    [JsonPropertyName("cnh_number")]
+    public string CNHNumber { get; init; } = null!;
+    
+    [JsonPropertyName("cnh_category")]
+    public string CNHCategory { get; init; } = null!;
+    
+    [JsonPropertyName("cnh_exp_date")]
+    public DateOnly CNHExpDate { get; init; }
 }

@@ -10,7 +10,29 @@ namespace Motorent.Api.IntegrationTests.Auth;
 public sealed class RegisterTests(WebApplicationFactory api) : WebApplicationFixture(api)
 {
     [Fact]
-    public async Task Register_WhenCommandIsValid_ShouldReturnCreated()
+    public async Task Register_WhenRequestIsValid_ShouldCreateUsers()
+    {
+        // Arrange
+        var request = Requests.Auth.Register();
+
+        // Act
+        var response = await Client.SendAsync(request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        
+        var user = await DataContext.Users.SingleOrDefaultAsync(
+            u => u.Email == Requests.Auth.RegisterRequest.Email);
+
+        user.Should().NotBeNull();
+
+        var renter = await DataContext.Renters.SingleOrDefaultAsync(r => r.UserId == user!.Id);
+        
+        renter.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public async Task Register_WhenRequestIsValid_ShouldReturnTokenResponse()
     {
         // Arrange
         var request = Requests.Auth.Register();

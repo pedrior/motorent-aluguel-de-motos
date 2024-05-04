@@ -2,6 +2,12 @@ using Motorent.Application.Auth.Register;
 using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Common.Abstractions.Security;
 using Motorent.Contracts.Auth.Responses;
+using Motorent.Domain.Renters;
+using Motorent.Domain.Renters.Enums;
+using Motorent.Domain.Renters.Repository;
+using Motorent.Domain.Renters.Services;
+using Motorent.Domain.Renters.ValueObjects;
+using Motorent.TestUtils.Factories;
 
 namespace Motorent.Application.UnitTests.Auth.Register;
 
@@ -10,6 +16,9 @@ public sealed class RegisterCommandHandlerTests
 {
     private readonly IUserService userService = A.Fake<IUserService>();
     private readonly ISecurityTokenProvider securityTokenProvider = A.Fake<ISecurityTokenProvider>();
+    private readonly IRenterRepository renterRepository = A.Fake<IRenterRepository>();
+    private readonly ICNPJService cnpjService = A.Fake<ICNPJService>();
+    private readonly ICNHService cnhService = A.Fake<ICNHService>();
 
     private readonly RegisterCommandHandler sut;
 
@@ -19,19 +28,43 @@ public sealed class RegisterCommandHandlerTests
         Password = "JohnDoe123",
         GivenName = "John",
         FamilyName = "Doe",
-        Birthdate = new DateOnly(2000, 09, 05)
+        Birthdate = new DateOnly(2000, 09, 05),
+        CNPJ = "18.864.014/0001-19",
+        CNHNumber = "92353762700",
+        CNHCategory = "ab",
+        CNHExpDate = new DateOnly(DateTime.Today.Year + 1, 01, 01)
     };
+
+    private readonly string userId = Ulid.NewUlid().ToString();
 
     public RegisterCommandHandlerTests()
     {
-        sut = new RegisterCommandHandler(userService, securityTokenProvider);
+        sut = new RegisterCommandHandler(
+            userService,
+            securityTokenProvider,
+            renterRepository,
+            cnpjService,
+            cnhService);
+
+        A.CallTo(() => userService.CreateUserAsync(
+                A<string>._,
+                A<string>._,
+                A<string[]>._,
+                A<Dictionary<string, string>>._,
+                A<CancellationToken>._))
+            .Returns(userId);
+
+        A.CallTo(() => cnpjService.IsUniqueAsync(A<CNPJ>._, A<CancellationToken>._))
+            .Returns(true);
+
+        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+            .Returns(true);
     }
 
     [Fact]
     public async Task Handle_WhenCommandIsValid_ShouldReturnTokenResponse()
     {
         // Arrange
-        const string userId = "user-id";
         var securityToken = new SecurityToken("access-token", 3600);
 
         A.CallTo(() => userService.CreateUserAsync(
@@ -59,6 +92,38 @@ public sealed class RegisterCommandHandlerTests
     }
 
     [Fact]
+    public async Task Handle_WhenCommandIsValid_ShouldCreateRenterUser()
+    {
+        // Arrange
+        var renter = (await Factories.Renter.CreateAsync(
+                userId: userId,
+                email: EmailAddress.Create(command.Email).Value,
+                cnpj: CNPJ.Create(command.CNPJ).Value,
+                fullName: new FullName(command.GivenName, command.FamilyName),
+                birthdate: Birthdate.Create(command.Birthdate).Value,
+                cnh: CNH.Create(
+                    command.CNHNumber,
+                    CNHCategory.FromName(command.CNHCategory, ignoreCase: true),
+                    command.CNHExpDate).Value))
+            .Value;
+
+        // Act
+        await sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        A.CallTo(() => renterRepository.AddAsync(
+                A<Renter>.That.Matches(
+                    r => r.UserId == userId
+                         && r.CNPJ == renter.CNPJ
+                         && r.Email == renter.Email
+                         && r.FullName == renter.FullName
+                         && r.Birthdate == renter.Birthdate
+                         && r.CNH == renter.CNH),
+                A<CancellationToken>._))
+            .MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
     public async Task Handle_WhenCreateUserFails_ShouldReturnFailure()
     {
         // Arrange
@@ -80,6 +145,26 @@ public sealed class RegisterCommandHandlerTests
     }
 
     [Fact]
+    public async Task Handle_WhenCreateUserFails_ShouldNotCreateRenterUser()
+    {
+        // Arrange
+        A.CallTo(() => userService.CreateUserAsync(
+                A<string>._,
+                A<string>._,
+                A<string[]>._,
+                A<Dictionary<string, string>>._,
+                A<CancellationToken>._))
+            .Returns(UserErrors.DuplicateEmail);
+
+        // Act
+        await sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        A.CallTo(() => renterRepository.AddAsync(A<Renter>._, A<CancellationToken>._))
+            .MustNotHaveHappened();
+    }
+
+    [Fact]
     public async Task Handle_WhenCreateUserFails_ShouldNotGenerateSecurityToken()
     {
         // Arrange
@@ -90,6 +175,35 @@ public sealed class RegisterCommandHandlerTests
                 A<Dictionary<string, string>>._,
                 A<CancellationToken>._))
             .Returns(UserErrors.DuplicateEmail);
+
+        // Act
+        await sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        A.CallTo(() => securityTokenProvider.GenerateSecurityTokenAsync(A<string>._, A<CancellationToken>._))
+            .MustNotHaveHappened();
+    }
+
+    [Fact]
+    public async Task Handle_WhenCreateRenterFails_ShouldReturnFailure()
+    {
+        // Arrange
+        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+            .Returns(false); // Faz com que a criação do Renter falhe
+
+        // Act
+        var result = await sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Should().BeFailure();
+    }
+
+    [Fact]
+    public async Task Handle_WhenCreateRenterFails_ShouldNotGenerateSecurityToken()
+    {
+        // Arrange
+        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+            .Returns(false); // Faz com que a criação do Renter falhe
 
         // Act
         await sut.Handle(command, CancellationToken.None);

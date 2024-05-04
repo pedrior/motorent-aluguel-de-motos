@@ -1,4 +1,5 @@
 using Motorent.Application.Auth.Common.Validations;
+using Motorent.Application.Common.Validations;
 
 namespace Motorent.Application.Auth.Register;
 
@@ -20,5 +21,17 @@ internal sealed class RegisterCommandValidator : AbstractValidator<RegisterComma
 
         RuleFor(x => x.Birthdate)
             .Birthdate();
+
+        RuleFor(x => x.CNPJ)
+            .CNPJ();
+
+        RuleFor(x => x.CNHNumber)
+            .CNHNumber();
+
+        RuleFor(x => x.CNHCategory)
+            .CNHCategory();
+        
+        RuleFor(x => x.CNHExpDate)
+            .CNHExpDate();
     }
 }

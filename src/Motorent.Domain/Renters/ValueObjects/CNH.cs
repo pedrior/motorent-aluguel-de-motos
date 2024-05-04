@@ -11,6 +11,10 @@ public sealed class CNH : ValueObject
 
     private const string CNHOnes = "11111111111";
 
+    private CNH()
+    {
+    }
+
     public string Number { get; private init; } = null!;
 
     public CNHCategory Category { get; private init; } = null!;

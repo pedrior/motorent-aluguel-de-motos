@@ -152,6 +152,7 @@ Essa requisição aceita os seguintes parâmetros:
 | limit     | Número de itens por página. Padrão: `15`.                                                                |
 | sort      | Campo pelo qual os itens serão ordenados. Pode ser `model`, `brand` ou `license_plate`. Padrão: `model`. |
 | order     | Ordem de classificação dos itens. Padrão: Pode ser  `asc` ou `desc`. Padrão `asc`.                       |
+| search    | Filtro de pesquisa. Pesquisa por modelo, marca ou placa. Padrão: `null`.                                 |
 
 
 Resposta 200 OK

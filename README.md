@@ -140,7 +140,7 @@ Resposta: 201 Created
 #### Listar Motos: Retorna uma lista paginada de motos.
 
 ```http request
-GET https://localhost:8081/api/v1/motorcycles?page=1&limit=15&sort=model&order=asc
+GET https://localhost:8081/api/v1/motorcycles?page=1&limit=15&order=model&sort=asc&search=ABS
 Accept: application/json
 ```
 

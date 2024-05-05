@@ -1,4 +1,5 @@
 using System.Text;
+using Coravel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +23,6 @@ using Motorent.Infrastructure.Motorcycles.Persistence;
 using Motorent.Infrastructure.Renters;
 using Motorent.Infrastructure.Renters.Persistence;
 using Npgsql;
-using Quartz;
 using Serilog;
 
 namespace Motorent.Infrastructure;
@@ -83,19 +83,9 @@ public static class ServiceExtensions
 
     private static void AddBackgroundJobs(this IServiceCollection services)
     {
-        services.AddQuartz(configurator =>
-        {
-            configurator.AddJob<ProcessOutboxMessagesJob>(builder => builder
-                    .DisallowConcurrentExecution()
-                    .WithIdentity(nameof(ProcessOutboxMessagesJob)))
-                .AddTrigger(trigger => trigger
-                    .ForJob(nameof(ProcessOutboxMessagesJob))
-                    .WithSimpleSchedule(schedule => schedule
-                        .WithInterval(TimeSpan.FromSeconds(10))
-                        .RepeatForever()));
-        });
-
-        services.AddQuartzHostedService();
+        services.AddScheduler();
+        
+        services.AddTransient<ProcessOutboxMessagesJob>();
     }
 
     private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)

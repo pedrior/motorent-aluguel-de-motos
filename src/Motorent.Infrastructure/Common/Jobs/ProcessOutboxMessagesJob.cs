@@ -1,21 +1,21 @@
+using Coravel.Invocable;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Motorent.Domain.Common.Events;
 using Motorent.Infrastructure.Common.Outbox;
 using Motorent.Infrastructure.Common.Persistence;
-using Quartz;
 
 namespace Motorent.Infrastructure.Common.Jobs;
 
 internal sealed class ProcessOutboxMessagesJob(
     DataContext dataContext,
     IPublisher publisher,
-    ILogger<ProcessOutboxMessagesJob> logger) : IJob
+    ILogger<ProcessOutboxMessagesJob> logger) : IInvocable
 {
-    public async Task Execute(IJobExecutionContext context)
+    public async Task Invoke()
     {
-        var messages = await FetchIncomingOutboxMessagesAsync(context.CancellationToken);
+        var messages = await FetchIncomingOutboxMessagesAsync();
         if (messages.Count is 0)
         {
             return;
@@ -37,7 +37,7 @@ internal sealed class ProcessOutboxMessagesJob(
 
             try
             {
-                await publisher.Publish(@event, context.CancellationToken);
+                await publisher.Publish(@event);
                 message.MarkAsProcessed();
 
                 logger.LogInformation("Outbox message {MessageId} has been successfully processed", message.Id);
@@ -53,10 +53,10 @@ internal sealed class ProcessOutboxMessagesJob(
             }
         }
 
-        await dataContext.SaveChangesAsync(context.CancellationToken);
+        await dataContext.SaveChangesAsync();
     }
 
-    private Task<List<OutboxMessage>> FetchIncomingOutboxMessagesAsync(CancellationToken cancellationToken)
+    private Task<List<OutboxMessage>> FetchIncomingOutboxMessagesAsync()
     {
         return dataContext.OutboxMessages
             .Where(om => om.Status == OutboxMessageStatus.Pending
@@ -64,6 +64,6 @@ internal sealed class ProcessOutboxMessagesJob(
                                                                     && om.NextAttemptAt <= DateTime.UtcNow))
             .OrderBy(om => om.CreatedAt)
             .Take(20)
-            .ToListAsync(cancellationToken);
+            .ToListAsync();
     }
 }

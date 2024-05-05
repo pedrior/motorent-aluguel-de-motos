@@ -1,4 +1,3 @@
-using System.Collections.Specialized;
 using System.Data.Common;
 using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Hosting;
@@ -8,8 +7,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Motorent.Infrastructure.Common.Persistence;
 using Motorent.Infrastructure.Common.Persistence.Interceptors;
 using Npgsql;
-using Quartz;
-using Quartz.Impl;
 using Respawn;
 using Testcontainers.PostgreSql;
 
@@ -57,7 +54,6 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
         builder.ConfigureServices(services =>
         {
             ConfigurePersistence(services, databaseContainer.GetConnectionString());
-            ConfigureQuartz(services);
         });
     }
 
@@ -80,16 +76,6 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
         });
     }
     
-    private static void ConfigureQuartz(IServiceCollection services)
-    {
-        services.RemoveAll<ISchedulerFactory>();
-        services.AddSingleton<ISchedulerFactory>(_ => new StdSchedulerFactory(
-            new NameValueCollection
-            {
-                ["quartz.scheduler.instanceName"] = Guid.NewGuid().ToString()
-            }));
-    }
-
     private async Task InitializeDatabaseAsync()
     {
         DataContext = Services.CreateScope()

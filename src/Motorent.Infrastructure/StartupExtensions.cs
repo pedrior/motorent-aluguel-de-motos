@@ -1,4 +1,6 @@
+using Coravel;
 using Microsoft.AspNetCore.Builder;
+using Motorent.Infrastructure.Common.Jobs;
 using Serilog;
 
 namespace Motorent.Infrastructure;
@@ -12,5 +14,12 @@ public static class StartupExtensions
         app.UseAuthentication();
         
         app.UseAuthorization();
+
+        app.Services.UseScheduler(scheduler =>
+        {
+            scheduler.Schedule<ProcessOutboxMessagesJob>()
+                .EverySeconds(10)
+                .PreventOverlapping(nameof(ProcessOutboxMessagesJob));
+        });
     }
 }

@@ -19,26 +19,12 @@ internal static class MotorcycleRepositoryExtensions
 
     public static IQueryable<Motorcycle> ApplyOrder(this IQueryable<Motorcycle> query, string? sort, string? order)
     {
-        sort = sort?.ToLowerInvariant();
-        order = order?.ToLowerInvariant();
-
-        return sort switch
+        var asc = sort?.Equals("asc", StringComparison.InvariantCultureIgnoreCase) ?? true;
+        return order?.ToLowerInvariant() switch
         {
-            "model" => order == "asc"
-                ? query.OrderBy(m => m.Model)
-                : query.OrderByDescending(m => m.Model),
-
-            "brand" => order == "asc"
-                ? query.OrderBy(m => m.Brand)
-                : query.OrderByDescending(m => m.Brand),
-
-            "license_plate" => order == "asc"
-                ? query.OrderBy(m => m.LicensePlate)
-                : query.OrderByDescending(m => m.LicensePlate),
-            
-            _ => order == "asc"
-                ? query.OrderBy(m => m.Id)
-                : query.OrderByDescending(m => m.Id)
+            "brand" => asc ? query.OrderBy(m => m.Brand) : query.OrderByDescending(m => m.Brand),
+            "license_plate" => asc ? query.OrderBy(m => m.LicensePlate) : query.OrderByDescending(m => m.LicensePlate),
+            _ => asc ? query.OrderBy(m => m.Model) : query.OrderByDescending(m => m.Model)
         };
     }
 }

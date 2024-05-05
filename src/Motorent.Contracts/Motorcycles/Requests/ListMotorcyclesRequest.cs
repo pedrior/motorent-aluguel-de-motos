@@ -6,9 +6,9 @@ public sealed record ListMotorcyclesRequest
 
     public int Limit { get; init; } = 15;
     
-    public string? Sort { get; init; } = "model";
+    public string? Sort { get; init; }
     
-    public string? Order { get; init; } = "asc";
+    public string? Order { get; init; }
     
     public string? Search { get; init; }
 }

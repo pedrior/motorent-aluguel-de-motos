@@ -1,0 +1,7 @@
+POST {{url}}/api/v1/motorcycles/{{motorcycle_id}}/update-daily-price
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "daily_price": "57.99"
+}

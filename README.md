@@ -253,6 +253,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 }
 ```
 
+#### Atualizar o preço diário de uma moto cadastrada.
+
+```http request
+POST https://localhost:8081/api/v1/motorcycles/id-da-moto/update-daily-price
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
+
+{
+  "daily_price": "57.99"
+}
+```
+
 Resposta 204 No Content
 
 #### Exclui uma moto cadastrada.

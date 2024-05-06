@@ -29,6 +29,11 @@ internal static partial class Requests
             LicensePlate = "KIL-2H17"
         };
 
+        public static readonly UpdateDailyPriceRequest UpdateDailyPriceRequest = new()
+        {
+            DailyPrice = 42.99m
+        };
+
         public static HttpRequestMessage RegisterMotorcycle(RegisterMotorcycleRequest? request = null) =>
             Post("v1/motorcycles", request ?? RegisterMotorcycleRequest);
 
@@ -52,6 +57,9 @@ internal static partial class Requests
             return Post($"v1/motorcycles/{idOrLicensePlate}/update-license-plate",
                 request ?? UpdateLicensePlateRequest);
         }
+        
+        public static HttpRequestMessage UpdateDailyPrice(string id, UpdateDailyPriceRequest? request = null) =>
+            Post($"v1/motorcycles/{id}/update-daily-price", request ?? UpdateDailyPriceRequest);
 
         public static HttpRequestMessage RemoveMotorcycle(Ulid id) => Delete($"v1/motorcycles/{id}");
     }

@@ -137,7 +137,7 @@ Resposta: 201 Created
 
 ### Motos
 
-#### Listar Motos: Retorna uma lista paginada de motos.
+#### Listar as motos cadastradas no sistema.
 
 ```http request
 GET https://localhost:8081/api/v1/motorcycles?page=1&limit=15&order=model&sort=asc&search=ABS
@@ -187,7 +187,7 @@ Resposta 200 OK
 }
 ```
 
-#### Detalhes da Moto: Retorna os detalhes de uma moto específica por ID ou placa.
+#### Obter os detalhes de uma moto específica por ID ou placa.
 
 ```http request
 GET https://localhost:8081/api/v1/motorcycles/id-ou-placa
@@ -209,7 +209,7 @@ Resposta 200 OK
 }
 ```
 
-#### Cadastrar Moto: Cadastra uma nova moto no sistema.
+#### Cadastrar uma nova moto no sistema.
 
 ```http request
 POST https://localhost:8081/api/v1/motorcycles
@@ -241,7 +241,7 @@ Resposta 201 Created
 }
 ```
 
-#### Atualiza a placa de uma mota cadastrada.
+#### Atualizar a placa de uma mota cadastrada.
 
 ```http request
 POST https://localhost:8081/api/v1/motorcycles/id-da-moto/update-license-plate
@@ -267,7 +267,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 
 Resposta 204 No Content
 
-#### Exclui uma moto cadastrada.
+#### Excluir uma moto cadastrada.
 
 ```http request
 DELETE https://localhost:8081/api/v1/motorcycles/id-da-moto

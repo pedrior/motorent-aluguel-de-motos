@@ -38,14 +38,14 @@ public sealed class MotorcycleTests
     }
 
     [Fact]
-    public async Task UpdateDailyPrice_ShouldUpdateDailyPrice()
+    public async Task ChangeDailyPrice_ShouldUpdateDailyPrice()
     {
         // Arrange
         var newDailyPrice = Money.Create(35.50m).Value;
         var motorcycle = (await Factories.Motorcycle.CreateAsync()).Value;
 
         // Act
-        motorcycle.UpdateDailyPrice(newDailyPrice);
+        motorcycle.ChangeDailyPrice(newDailyPrice);
 
         // Assert
         motorcycle.DailyPrice.Should().Be(newDailyPrice);

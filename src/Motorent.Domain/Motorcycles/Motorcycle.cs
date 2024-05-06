@@ -52,7 +52,7 @@ public sealed class Motorcycle : Entity<MotorcycleId>, IAggregateRoot, IAuditabl
         };
     }
     
-    public void UpdateDailyPrice(Money dailyPrice) => DailyPrice = dailyPrice;
+    public void ChangeDailyPrice(Money dailyPrice) => DailyPrice = dailyPrice;
 
     public async Task<Result<Success>> ChangeLicensePlateAsync(
         LicensePlate licensePlate,

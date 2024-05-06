@@ -1,0 +1,9 @@
+POST {{url}}/api/v1/renters/update-personal-information
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "given_name": "Jane",
+  "family_name": "Doe",
+  "birthdate": "2000-09-05"
+}

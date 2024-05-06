@@ -274,6 +274,8 @@ DELETE https://localhost:8081/api/v1/motorcycles/id-da-moto
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 ```
 
+Resposta 204 No Content
+
 ### Alugador
 
 #### Obter o perfil do alugador.
@@ -300,6 +302,20 @@ Resposta 200 OK
     "front_image": null,
     "back_image": null
   }
+}
+```
+
+#### Atualizar informações pessoais do alugador.
+
+```http request
+POST https://localhost:8081/api/v1/renters/update-personal-information
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
+
+{
+  "given_name": "Jane",
+  "family_name": "Doe",
+  "birthdate": "2000-09-05"
 }
 ```
 

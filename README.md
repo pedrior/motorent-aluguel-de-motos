@@ -274,6 +274,35 @@ DELETE https://localhost:8081/api/v1/motorcycles/id-da-moto
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 ```
 
+### Alugador
+
+#### Obter o perfil do alugador.
+
+```http request
+GET https://localhost:8081/api/v1/renters/profile
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
+```
+
+Resposta 200 OK
+
+```json
+{
+  "cnpj": "18.864.014/0001-19",
+  "email": "john@doe.com",
+  "full_name": "John Doe",
+  "birthdate": "2000-09-05",
+  "cnh": {
+    "status": "pending_validation",
+    "number": "92353762700",
+    "category": "AB",
+    "exp": "2026-12-31",
+    "front_image": null,
+    "back_image": null
+  }
+}
+```
+
 Resposta 204 No Content
 
 ## Licença

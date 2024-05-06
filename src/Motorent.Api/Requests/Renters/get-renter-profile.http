@@ -1,0 +1,3 @@
+GET {{url}}/api/v1/renters/profile
+Accept: application/json
+Authorization: Bearer {{access_token}}

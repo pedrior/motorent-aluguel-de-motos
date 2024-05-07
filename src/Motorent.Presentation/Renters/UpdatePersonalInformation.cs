@@ -7,7 +7,7 @@ internal sealed class UpdatePersonalInformation : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapPost("renters/update-personal-information", (
+        app.MapPut("renters/personal-information", (
                 UpdatePersonalInformationRequest request,
                 ISender sender,
                 CancellationToken cancellationToken) => sender.Send(

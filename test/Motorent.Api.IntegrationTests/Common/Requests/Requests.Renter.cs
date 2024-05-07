@@ -16,6 +16,6 @@ internal static partial class Requests
         public static HttpRequestMessage GetRenterProfile() => Get("v1/renters/profile");
 
         public static HttpRequestMessage UpdatePersonalInformation(UpdatePersonalInformationRequest? request = null) =>
-            Post("v1/renters/update-personal-information", request ?? UpdatePersonalInformationRequest);
+            Put("v1/renters/personal-information", request ?? UpdatePersonalInformationRequest);
     }
 }

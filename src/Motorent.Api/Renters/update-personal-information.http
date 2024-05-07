@@ -1,4 +1,4 @@
-POST {{url}}/api/v1/renters/update-personal-information
+PUT {{url}}/api/v1/renters/personal-information
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 

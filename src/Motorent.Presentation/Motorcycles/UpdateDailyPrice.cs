@@ -7,7 +7,7 @@ internal sealed class UpdateDailyPrice : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapPost("motorcycles/{id}/update-daily-price", (
+        app.MapPut("motorcycles/{id}/daily-price", (
                 Ulid id,
                 UpdateDailyPriceRequest request,
                 ISender sender,

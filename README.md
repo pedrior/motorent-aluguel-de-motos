@@ -244,7 +244,7 @@ Resposta 201 Created
 #### Atualizar a placa de uma mota cadastrada.
 
 ```http request
-POST https://localhost:8081/api/v1/motorcycles/id-da-moto/update-license-plate
+PUT https://localhost:8081/api/v1/motorcycles/id-da-moto/license-plate
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 
@@ -256,7 +256,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 #### Atualizar o preço diário de uma moto cadastrada.
 
 ```http request
-POST https://localhost:8081/api/v1/motorcycles/id-da-moto/update-daily-price
+PUT https://localhost:8081/api/v1/motorcycles/id-da-moto/daily-price
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 
@@ -308,7 +308,7 @@ Resposta 200 OK
 #### Atualizar informações pessoais do alugador.
 
 ```http request
-POST https://localhost:8081/api/v1/renters/update-personal-information
+PUT https://localhost:8081/api/v1/renters/personal-information
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR ...
 

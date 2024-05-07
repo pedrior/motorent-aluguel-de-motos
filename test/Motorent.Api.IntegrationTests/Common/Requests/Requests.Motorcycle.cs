@@ -51,15 +51,14 @@ internal static partial class Requests
                        $"&search={request.Search}");
         }
         
-        public static HttpRequestMessage ChangeLicensePlate(string idOrLicensePlate,
+        public static HttpRequestMessage UpdateLicensePlate(string idOrLicensePlate,
             UpdateLicensePlateRequest? request = null)
         {
-            return Post($"v1/motorcycles/{idOrLicensePlate}/update-license-plate",
-                request ?? UpdateLicensePlateRequest);
+            return Put($"v1/motorcycles/{idOrLicensePlate}/license-plate", request ?? UpdateLicensePlateRequest);
         }
         
         public static HttpRequestMessage UpdateDailyPrice(string id, UpdateDailyPriceRequest? request = null) =>
-            Post($"v1/motorcycles/{id}/update-daily-price", request ?? UpdateDailyPriceRequest);
+            Put($"v1/motorcycles/{id}/daily-price", request ?? UpdateDailyPriceRequest);
 
         public static HttpRequestMessage RemoveMotorcycle(Ulid id) => Delete($"v1/motorcycles/{id}");
     }

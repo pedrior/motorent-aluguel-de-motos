@@ -1,4 +1,4 @@
-POST {{url}}/api/v1/motorcycles/{{motorcycle_id}}/update-daily-price
+PUT {{url}}/api/v1/motorcycles/{{motorcycle_id}}/daily-price
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 

@@ -7,7 +7,7 @@ internal sealed class UpdateLicensePlate : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapPost("motorcycles/{id}/update-license-plate", (
+        app.MapPut("motorcycles/{id}/license-plate", (
                 Ulid id,
                 UpdateLicensePlateRequest request,
                 ISender sender,

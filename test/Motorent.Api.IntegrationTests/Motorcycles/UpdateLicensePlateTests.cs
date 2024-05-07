@@ -14,7 +14,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
         await AuthenticateUserAsync(await CreateUserAsync(TestUser.Admin));
 
         var motorcycleId = await CreateMotorcycleAsync();
-        var request = Requests.Motorcycle.ChangeLicensePlate(motorcycleId.ToString());
+        var request = Requests.Motorcycle.UpdateLicensePlate(motorcycleId.ToString());
         
         // Act
         var result = await Client.SendAsync(request);
@@ -28,7 +28,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
     {
         // Arrange
         var motorcycleId = await CreateMotorcycleAsync();
-        var request = Requests.Motorcycle.ChangeLicensePlate(motorcycleId.ToString());
+        var request = Requests.Motorcycle.UpdateLicensePlate(motorcycleId.ToString());
 
         // Act
         var result = await Client.SendAsync(request);
@@ -44,7 +44,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
         await AuthenticateUserAsync(await CreateUserAsync(TestUser.Renter));
 
         var motorcycleId = await CreateMotorcycleAsync();
-        var request = Requests.Motorcycle.ChangeLicensePlate(motorcycleId.ToString());
+        var request = Requests.Motorcycle.UpdateLicensePlate(motorcycleId.ToString());
 
         // Act
         var result = await Client.SendAsync(request);
@@ -59,7 +59,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
         // Arrange
         await AuthenticateUserAsync(await CreateUserAsync(TestUser.Admin));
 
-        var request = Requests.Motorcycle.ChangeLicensePlate(Ulid.NewUlid().ToString());
+        var request = Requests.Motorcycle.UpdateLicensePlate(Ulid.NewUlid().ToString());
 
         // Act
         var result = await Client.SendAsync(request);

@@ -1,17 +1,17 @@
-using Motorent.Application.Renters.UpdatePersonalInformation;
+using Motorent.Application.Renters.UpdatePersonalInfo;
 using Motorent.Contracts.Renters.Requests;
 
 namespace Motorent.Presentation.Renters;
 
-internal sealed class UpdatePersonalInformation : IEndpoint
+internal sealed class UpdatePersonalInfo : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapPut("renters/personal-information", (
-                UpdatePersonalInformationRequest request,
+        app.MapPut("renters/personal-info", (
+                UpdatePersonalInfoRequest request,
                 ISender sender,
                 CancellationToken cancellationToken) => sender.Send(
-                    request.Adapt<UpdatePersonalInformationCommand>(),
+                    request.Adapt<UpdatePersonalInfoCommand>(),
                     cancellationToken)
                 .ToResponseAsync(_ => Results.NoContent()))
             .RequireAuthorization();

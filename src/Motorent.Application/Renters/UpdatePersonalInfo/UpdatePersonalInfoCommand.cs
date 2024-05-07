@@ -1,8 +1,8 @@
 using Motorent.Application.Common.Abstractions.Requests;
 
-namespace Motorent.Application.Renters.UpdatePersonalInformation;
+namespace Motorent.Application.Renters.UpdatePersonalInfo;
 
-public sealed record UpdatePersonalInformationCommand : ICommand, ITransactional
+public sealed record UpdatePersonalInfoCommand : ICommand, ITransactional
 {
     public required string GivenName { get; init; }
 

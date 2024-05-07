@@ -1,6 +1,6 @@
 namespace Motorent.Contracts.Renters.Requests;
 
-public sealed record UpdatePersonalInformationRequest
+public sealed record UpdatePersonalInfoRequest
 {
     public string GivenName { get; init; } = null!;
     

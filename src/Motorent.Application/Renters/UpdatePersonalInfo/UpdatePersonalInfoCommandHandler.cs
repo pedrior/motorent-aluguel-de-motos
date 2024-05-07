@@ -3,13 +3,13 @@ using Motorent.Application.Common.Abstractions.Requests;
 using Motorent.Domain.Renters.Repository;
 using Motorent.Domain.Renters.ValueObjects;
 
-namespace Motorent.Application.Renters.UpdatePersonalInformation;
+namespace Motorent.Application.Renters.UpdatePersonalInfo;
 
-internal sealed class UpdatePersonalInformationCommandHandler(
+internal sealed class UpdatePersonalInfoCommandHandler(
     IUserContext userContext,
-    IRenterRepository renterRepository) : ICommandHandler<UpdatePersonalInformationCommand>
+    IRenterRepository renterRepository) : ICommandHandler<UpdatePersonalInfoCommand>
 {
-    public async Task<Result<Success>> Handle(UpdatePersonalInformationCommand command,
+    public async Task<Result<Success>> Handle(UpdatePersonalInfoCommand command,
         CancellationToken cancellationToken)
     {
         var fullName = new FullName(command.GivenName, command.FamilyName);

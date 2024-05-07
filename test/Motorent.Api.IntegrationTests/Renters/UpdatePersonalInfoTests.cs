@@ -3,11 +3,11 @@ using Motorent.TestUtils.Factories;
 
 namespace Motorent.Api.IntegrationTests.Renters;
 
-[TestSubject(typeof(UpdatePersonalInformation))]
-public sealed class UpdatePersonalInformationTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(UpdatePersonalInfo))]
+public sealed class UpdatePersonalInfoTests(WebApplicationFactory api) : WebApplicationFixture(api)
 {
     [Fact]
-    public async Task UpdatePersonalInformation_WhenRequested_ShouldUpdatePersonalInformation()
+    public async Task UpdatePersonalInfo_WhenRequested_ShouldUpdatePersonalInfo()
     {
         // Arrange
         var userId = await CreateUserAsync(TestUser.Renter);
@@ -15,7 +15,7 @@ public sealed class UpdatePersonalInformationTests(WebApplicationFactory api) : 
         
         await CreateRenterAsync(userId);
         
-        var request = Requests.Renter.UpdatePersonalInformation();
+        var request = Requests.Renter.UpdatePersonalInfo();
         
         // Act
         var response = await Client.SendAsync(request);
@@ -27,13 +27,13 @@ public sealed class UpdatePersonalInformationTests(WebApplicationFactory api) : 
         
         var renter = await DataContext.Renters.SingleAsync(r => r.UserId == userId);
         
-        renter.FullName.GivenName.Should().Be(Requests.Renter.UpdatePersonalInformationRequest.GivenName);
-        renter.FullName.FamilyName.Should().Be(Requests.Renter.UpdatePersonalInformationRequest.FamilyName);
-        renter.Birthdate.Value.Should().Be(Requests.Renter.UpdatePersonalInformationRequest.Birthdate);
+        renter.FullName.GivenName.Should().Be(Requests.Renter.UpdatePersonalInfoRequest.GivenName);
+        renter.FullName.FamilyName.Should().Be(Requests.Renter.UpdatePersonalInfoRequest.FamilyName);
+        renter.Birthdate.Value.Should().Be(Requests.Renter.UpdatePersonalInfoRequest.Birthdate);
     }
     
     [Fact]
-    public async Task UpdatePersonalInformation_WhenUnauthenticated_ShouldReturnUnauthorized()
+    public async Task UpdatePersonalInfo_WhenUnauthenticated_ShouldReturnUnauthorized()
     {
         // Arrange
         var request = Requests.Renter.GetRenterProfile();
@@ -46,7 +46,7 @@ public sealed class UpdatePersonalInformationTests(WebApplicationFactory api) : 
     }
     
     [Fact]
-    public async Task UpdatePersonalInformation_WhenRequestedByNonRenter_ShouldReturnForbidden()
+    public async Task UpdatePersonalInfo_WhenRequestedByNonRenter_ShouldReturnForbidden()
     {
         // Arrange
         var userId = await CreateUserAsync(TestUser.Admin);

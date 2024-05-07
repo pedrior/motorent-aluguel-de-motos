@@ -6,7 +6,7 @@ internal static partial class Requests
 {
     public static class Renter
     {
-        public static readonly UpdatePersonalInformationRequest UpdatePersonalInformationRequest = new()
+        public static readonly UpdatePersonalInfoRequest UpdatePersonalInfoRequest = new()
         {
             GivenName = "Jane",
             FamilyName = "Doe",
@@ -15,7 +15,7 @@ internal static partial class Requests
 
         public static HttpRequestMessage GetRenterProfile() => Get("v1/renters/profile");
 
-        public static HttpRequestMessage UpdatePersonalInformation(UpdatePersonalInformationRequest? request = null) =>
-            Put("v1/renters/personal-information", request ?? UpdatePersonalInformationRequest);
+        public static HttpRequestMessage UpdatePersonalInfo(UpdatePersonalInfoRequest? request = null) =>
+            Put("v1/renters/personal-info", request ?? UpdatePersonalInfoRequest);
     }
 }

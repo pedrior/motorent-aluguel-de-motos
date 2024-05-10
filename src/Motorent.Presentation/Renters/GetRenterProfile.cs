@@ -1,4 +1,5 @@
 using Motorent.Application.Renters.GetRenterProfile;
+using Motorent.Contracts.Renters.Responses;
 
 namespace Motorent.Presentation.Renters;
 
@@ -11,6 +12,11 @@ internal sealed class GetRenterProfile : IEndpoint
                 CancellationToken cancellationToken) => sender.Send(
                     new GetRenterProfileQuery(), cancellationToken)
                 .ToResponseAsync(Results.Ok))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("GetRenterProfile")
+            .WithTags("Renters")
+            .Produces<RenterProfileResponse>()
+            .Produces(StatusCodes.Status403Forbidden)
+            .WithOpenApi();
     }
 }

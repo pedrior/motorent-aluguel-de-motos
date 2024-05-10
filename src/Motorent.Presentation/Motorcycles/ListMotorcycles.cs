@@ -1,5 +1,7 @@
 using Motorent.Application.Motorcycles.ListMotorcycle;
+using Motorent.Contracts.Common.Responses;
 using Motorent.Contracts.Motorcycles.Requests;
+using Motorent.Contracts.Motorcycles.Responses;
 
 namespace Motorent.Presentation.Motorcycles;
 
@@ -14,6 +16,10 @@ internal sealed class ListMotorcycles : IEndpoint
                     request.Adapt<ListMotorcyclesQuery>(),
                     cancellationToken)
                 .ToResponseAsync(Results.Ok))
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithName("ListMotorcycle")
+            .WithTags("Motorcycles")
+            .Produces<PageResponse<MotorcycleSummaryResponse>>()
+            .WithOpenApi();
     }
 }

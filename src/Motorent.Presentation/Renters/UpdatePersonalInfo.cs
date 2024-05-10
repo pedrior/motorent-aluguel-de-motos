@@ -14,6 +14,11 @@ internal sealed class UpdatePersonalInfo : IEndpoint
                     request.Adapt<UpdatePersonalInfoCommand>(),
                     cancellationToken)
                 .ToResponseAsync(_ => Results.NoContent()))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("UpdatePersonalInfo")
+            .WithTags("Renters")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status403Forbidden)
+            .WithOpenApi();
     }
 }

@@ -1,5 +1,6 @@
 using Motorent.Application.Auth.Login;
 using Motorent.Contracts.Auth.Requests;
+using Motorent.Contracts.Auth.Responses;
 
 namespace Motorent.Presentation.Auth;
 
@@ -14,6 +15,12 @@ internal sealed class Login : IEndpoint
                     request.Adapt<LoginCommand>(),
                     cancellationToken)
                 .ToResponseAsync(Results.Ok))
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithName("Login")
+            .WithTags("Auth")
+            .Produces<TokenResponse>()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .WithOpenApi();
     }
 }

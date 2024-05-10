@@ -18,6 +18,14 @@ internal sealed class UpdateLicensePlate : IEndpoint
                     },
                     cancellationToken)
                 .ToResponseAsync(_ => Results.NoContent()))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("UpdateLicensePlate")
+            .WithTags("Motorcycles")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status409Conflict)
+            .WithOpenApi();
     }
 }

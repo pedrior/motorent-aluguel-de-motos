@@ -1,5 +1,6 @@
 using Motorent.Application.Motorcycles.RegisterMotorcycle;
 using Motorent.Contracts.Motorcycles.Requests;
+using Motorent.Contracts.Motorcycles.Responses;
 
 namespace Motorent.Presentation.Motorcycles;
 
@@ -14,9 +15,16 @@ internal sealed class RegisterMotorcycle : IEndpoint
                     request.Adapt<RegisterMotorcycleCommand>(),
                     cancellationToken)
                 .ToResponseAsync(response => Results.CreatedAtRoute(
-                    routeName: "get-motorcycle",
+                    routeName: "GetMotorcycle",
                     routeValues: new { idOrLicensePlate = response.Id },
                     value: response)))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("RegisterMotorcycle")
+            .WithTags("Motorcycles")
+            .Produces<MotorcycleResponse>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status409Conflict)
+            .WithOpenApi();
     }
 }

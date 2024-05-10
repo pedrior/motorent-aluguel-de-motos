@@ -18,6 +18,13 @@ internal sealed class UpdateDailyPrice : IEndpoint
                     },
                     cancellationToken)
                 .ToResponseAsync(_ => Results.NoContent()))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("UpdateDailyPrice")
+            .WithTags("Motorcycles")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi();
     }
 }

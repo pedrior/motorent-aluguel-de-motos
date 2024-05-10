@@ -1,4 +1,5 @@
 using Motorent.Application.Motorcycles.GetMotorcycle;
+using Motorent.Contracts.Motorcycles.Responses;
 
 namespace Motorent.Presentation.Motorcycles;
 
@@ -14,6 +15,11 @@ internal sealed class GetMotorcycle : IEndpoint
                     cancellationToken)
                 .ToResponseAsync(Results.Ok))
             .AllowAnonymous()
-            .WithName("get-motorcycle");
+            .WithName("GetMotorcycle")
+            .WithTags("Motorcycles")
+            .Produces<MotorcycleResponse>()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi();
     }
 }

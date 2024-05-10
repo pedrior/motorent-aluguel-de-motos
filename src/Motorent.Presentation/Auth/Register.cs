@@ -1,5 +1,6 @@
 using Motorent.Application.Auth.Register;
 using Motorent.Contracts.Auth.Requests;
+using Motorent.Contracts.Auth.Responses;
 
 namespace Motorent.Presentation.Auth;
 
@@ -16,6 +17,12 @@ internal sealed class Register : IEndpoint
                 .ToResponseAsync(response => Results.Created(
                     uri: null as Uri,
                     value: response)))
-            .AllowAnonymous();
+            .AllowAnonymous()
+            .WithName("Register")
+            .WithTags("Auth")
+            .Produces<TokenResponse>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status409Conflict)
+            .WithOpenApi();
     }
 }

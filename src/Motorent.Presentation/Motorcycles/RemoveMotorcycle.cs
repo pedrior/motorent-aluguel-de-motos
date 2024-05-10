@@ -13,6 +13,13 @@ internal sealed class RemoveMotorcycle : IEndpoint
                     new RemoveMotorcycleCommand(id),
                     cancellationToken)
                 .ToResponseAsync(_ => Results.NoContent()))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName("RemoveMotorcycle")
+            .WithTags("Motorcycles")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi();
     }
 }

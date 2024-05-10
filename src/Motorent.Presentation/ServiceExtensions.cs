@@ -23,7 +23,11 @@ public static class ServiceExtensions
             options.DefaultApiVersion = new ApiVersion(1);
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.ApiVersionReader = new UrlSegmentApiVersionReader();
-        });
+        }).AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        }).EnableApiVersionBinding();
 
         services.AddEndpoints();
 

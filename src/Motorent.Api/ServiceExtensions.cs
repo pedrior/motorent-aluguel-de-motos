@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using Motorent.Api.OpenApi;
 
 namespace Motorent.Api;
 
@@ -58,6 +59,8 @@ internal static class ServiceExtensions
                     []
                 }
             });
+            
+            setup.SchemaFilter<SnakeCaseSchemaFilter>();
         });
     }
 }

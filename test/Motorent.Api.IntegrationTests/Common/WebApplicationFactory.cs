@@ -73,6 +73,8 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
             options.AddInterceptors(
                 provider.GetRequiredService<AuditEntitiesOnSaveChangesInterceptor>(),
                 provider.GetRequiredService<PersistOutboxDomainEventsOnSaveChangesInterceptor>());
+            
+            options.EnableServiceProviderCaching(false);
         });
     }
     

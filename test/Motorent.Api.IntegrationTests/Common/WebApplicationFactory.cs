@@ -1,5 +1,6 @@
 using System.Data.Common;
 using DotNet.Testcontainers.Builders;
+using Hangfire;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,6 +55,7 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
         builder.ConfigureServices(services =>
         {
             ConfigurePersistence(services, databaseContainer.GetConnectionString());
+            ConfigureBackgroundJobs(services);
         });
     }
 
@@ -76,6 +78,13 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
             
             options.EnableServiceProviderCaching(false);
         });
+    }
+    
+    private static void ConfigureBackgroundJobs(IServiceCollection services)
+    {
+        services.RemoveAll(typeof(GlobalConfiguration));
+        
+        services.AddHangfire(config => config.UseInMemoryStorage());
     }
     
     private async Task InitializeDatabaseAsync()

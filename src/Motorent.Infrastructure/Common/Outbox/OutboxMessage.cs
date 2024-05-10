@@ -1,11 +1,14 @@
+using Newtonsoft.Json;
+
 namespace Motorent.Infrastructure.Common.Outbox;
 
 internal sealed class OutboxMessage
 {
-    public const int MaxAttempt = 6;
-
-    public static readonly int[] RetryDelays = [0, 1, 5, 10, 30, 60];
-
+    public static readonly JsonSerializerSettings JsonSerializerSettings = new()
+    {
+        TypeNameHandling = TypeNameHandling.All
+    };
+    
     private OutboxMessage()
     {
     }
@@ -15,68 +18,26 @@ internal sealed class OutboxMessage
     public string Type { get; init; } = null!;
 
     public string Data { get; init; } = null!;
+    
+    public string? Error { get; private set; }
 
     public DateTimeOffset CreatedAt { get; init; }
-
-    public DateTimeOffset? NextAttemptAt { get; private set; }
-
+    
     public DateTimeOffset? ProcessedAt { get; private set; }
-
-    public OutboxMessageStatus Status { get; private set; }
-
-    public int Attempt { get; private set; }
-
-    public string? ErrorType { get; private set; }
-
-    public string? ErrorMessage { get; private set; }
-
-    public string? ErrorDetails { get; private set; }
 
     public static OutboxMessage Create<T>(T entity) where T : class => new()
     {
         Id = Guid.NewGuid(),
         Type = entity.GetType().Name,
-        Data = OutboxMessageSerializer.Serialize(entity),
-        CreatedAt = DateTimeOffset.UtcNow,
-        Status = OutboxMessageStatus.Pending,
-        Attempt = 1
+        Data = JsonConvert.SerializeObject(entity, JsonSerializerSettings),
+        CreatedAt = DateTimeOffset.UtcNow
     };
 
-    public void MarkAsProcessed()
+    public void MarkAsProcessed() => ProcessedAt = DateTimeOffset.UtcNow;
+    
+    public void MarkAsFailed(string error)
     {
-        if (Status == OutboxMessageStatus.Processed || Attempt > MaxAttempt)
-        {
-            return;
-        }
-
+        Error = error;
         ProcessedAt = DateTimeOffset.UtcNow;
-        Status = OutboxMessageStatus.Processed;
-        NextAttemptAt = null;
-    }
-
-    public void MarkAsFailed(string errorType, string errorMessage, string errorDetails)
-    {
-        if (Status == OutboxMessageStatus.Processed)
-        {
-            return;
-        }
-
-        if (Attempt is MaxAttempt)
-        {
-            throw new Exception($"Retry attempt limit reached for outbox message '{Id}'");
-        }
-
-        ErrorType = errorType;
-        ErrorMessage = errorMessage;
-        ErrorDetails = errorDetails;
-        
-        Attempt++;
-        
-        NextAttemptAt = Attempt is MaxAttempt 
-            ? null 
-            : DateTimeOffset.UtcNow.AddMinutes(RetryDelays[Attempt - 1]);
-
-        ProcessedAt = DateTimeOffset.UtcNow;
-        Status = OutboxMessageStatus.Retry;
     }
 }

@@ -1,5 +1,6 @@
 using System.Text;
-using Coravel;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -41,7 +42,7 @@ public static class ServiceExtensions
 
         services.AddPersistence(configuration);
 
-        services.AddBackgroundJobs();
+        services.AddBackgroundJobs(configuration);
 
         services.AddHttpContextAccessor();
 
@@ -51,10 +52,10 @@ public static class ServiceExtensions
         services.AddScoped<IUserService, UserService>();
 
         services.AddScoped<ILicensePlateService, LicensePlateService>();
-        
+
         services.AddScoped<ICNPJService, CNPJService>();
         services.AddScoped<ICNHService, CNHService>();
-        
+
         return services;
     }
 
@@ -81,11 +82,17 @@ public static class ServiceExtensions
         });
     }
 
-    private static void AddBackgroundJobs(this IServiceCollection services)
+    private static void AddBackgroundJobs(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScheduler();
-        
-        services.AddTransient<ProcessOutboxMessagesJob>();
+        services.AddHangfire(hangfireConfiguration =>
+        {
+            hangfireConfiguration.UsePostgreSqlStorage(options =>
+                options.UseNpgsqlConnection(configuration.GetConnectionString("DefaultConnection")!));
+        });
+
+        services.AddHangfireServer(options => { options.SchedulePollingInterval = TimeSpan.FromSeconds(1); });
+
+        services.AddScoped<IProcessOutboxMessagesJob, ProcessOutboxMessagesJob>();
     }
 
     private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)

@@ -24,12 +24,24 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Coravel" Version="5.0.3" />
       <PackageReference Include="EntityFrameworkCore.NamingConventions" Version="8.0.0" />
+      <PackageReference Include="Hangfire.AspNetCore" Version="1.8.12" />
+      <PackageReference Include="Hangfire.PostgreSql" Version="1.20.8" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Npgsql.DependencyInjection" Version="8.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\Persistence\Migrations\" />
+      <Folder Include="Common\Persistence\Outbox\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Common\Persistence\Outbox\OutboxMessage.cs" />
+      <Compile Remove="Common\Persistence\DbConnectionFactory.cs" />
+      <Compile Remove="Common\Persistence\IDbConnectionFactory.cs" />
     </ItemGroup>
 </Project>

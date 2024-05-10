@@ -8,11 +8,5 @@ internal static class OutboxMessageConstants
     
     public const int DataMaxLength = 8192;
     
-    public const int ErrorTypeMaxLength = 50;
-    
-    public const int ErrorMessageMaxLength = 100;
-    
-    public const int ErrorDetailsMaxLength = 2048;
-    
-    public const int StatusMaxLength = 20;
+    public const int ErrorMaxLength = 2048;
 }

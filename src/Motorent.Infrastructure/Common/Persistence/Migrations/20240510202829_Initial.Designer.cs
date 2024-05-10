@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Motorent.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240503224100_Renter")]
-    partial class Renter
+    [Migration("20240510202829_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,10 +165,10 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "01HX09WBR16929RWN4RTJHMWD9",
+                            Id = "01HXJ32R78AMGH0CGPKPZRA0WB",
                             Claims = new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" },
                             Email = "john@admin.com",
-                            PasswordHash = "4hHwCWvHISBng4NmGp8v8Byd1+88t20zhYnaP0MTb/k=:0w1cbItzUkOlwC6a1iCg4Q==:50000:SHA256",
+                            PasswordHash = "0p9n6E8pTwcJOjVe1IXdBw5nLkzwAii7N9eupIqm8vo=:fMaufrO/TnCt5h3ChfffUw==:50000:SHA256",
                             Roles = new[] { "admin" }
                         });
                 });
@@ -178,10 +178,6 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
-
-                    b.Property<int>("Attempt")
-                        .HasColumnType("integer")
-                        .HasColumnName("attempt");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -193,40 +189,26 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("character varying(8192)")
                         .HasColumnName("data");
 
-                    b.Property<string>("ErrorDetails")
+                    b.Property<string>("Error")
                         .HasMaxLength(2048)
                         .HasColumnType("character varying(2048)")
-                        .HasColumnName("error_details");
-
-                    b.Property<string>("ErrorMessage")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("error_message");
-
-                    b.Property<string>("ErrorType")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("error_type");
-
-                    b.Property<DateTimeOffset?>("NextAttemptAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("next_attempt_at");
+                        .HasColumnName("error");
 
                     b.Property<DateTimeOffset?>("ProcessedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("processed_at");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("status");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
                         .HasColumnName("type");
+
+                    b.Property<uint>("version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id")
                         .HasName("pk_outbox_messages");

@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Motorent.Infrastructure.Common.Outbox;
 using Motorent.Infrastructure.Common.Persistence.Configurations.Constants;
 
@@ -20,20 +19,13 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
         
         builder.Property(o => o.Data)
             .HasMaxLength(OutboxMessageConstants.DataMaxLength);
-        
-        builder.Property(o => o.ErrorType)
-            .HasMaxLength(OutboxMessageConstants.ErrorTypeMaxLength);
-        
-        builder.Property(o => o.ErrorMessage)
-            .HasMaxLength(OutboxMessageConstants.ErrorMessageMaxLength);
-        
-        builder.Property(o => o.ErrorDetails)
-            .HasMaxLength(OutboxMessageConstants.ErrorDetailsMaxLength);
 
-        builder.Property(o => o.Status)
-            .HasConversion<EnumToStringConverter<OutboxMessageStatus>>()
-            .HasMaxLength(OutboxMessageConstants.StatusMaxLength);
-        
+        builder.Property(o => o.Error)
+            .HasMaxLength(OutboxMessageConstants.ErrorMaxLength);
+
         builder.ToTable(OutboxMessageConstants.TableName);
+        
+        builder.Property<uint>("version")
+            .IsRowVersion();
     }
 }

@@ -1,67 +1,61 @@
-using Coravel.Invocable;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Motorent.Domain.Common.Events;
 using Motorent.Infrastructure.Common.Outbox;
 using Motorent.Infrastructure.Common.Persistence;
+using Newtonsoft.Json;
 
 namespace Motorent.Infrastructure.Common.Jobs;
 
 internal sealed class ProcessOutboxMessagesJob(
     DataContext dataContext,
     IPublisher publisher,
-    ILogger<ProcessOutboxMessagesJob> logger) : IInvocable
+    ILogger<ProcessOutboxMessagesJob> logger) : IProcessOutboxMessagesJob
 {
-    public async Task Invoke()
+    public async Task ProcessAsync()
     {
+        logger.LogInformation("Processing Outbox messages...");
+
         var messages = await FetchIncomingOutboxMessagesAsync();
         if (messages.Count is 0)
         {
+            logger.LogInformation("No Outbox messages to process");
             return;
         }
 
+        await using var transaction = await dataContext.Database.BeginTransactionAsync();
+
         foreach (var message in messages)
         {
-            logger.LogInformation("Processing outbox message {MessageId}. Attempt: {Attempt}",
-                message.Id, message.Attempt);
-
-            var @event = OutboxMessageSerializer.Deserialize<IEvent>(message.Data);
-            if (@event is null)
-            {
-                logger.LogError("Failed to deserialize Outbox message ({@Message}) to type {Type}",
-                    message, typeof(IEvent));
-
-                continue;
-            }
-
             try
             {
+                var @event = JsonConvert.DeserializeObject<IEvent>(
+                    message.Data, OutboxMessage.JsonSerializerSettings)!;
+                
                 await publisher.Publish(@event);
+
                 message.MarkAsProcessed();
-
-                logger.LogInformation("Outbox message {MessageId} has been successfully processed", message.Id);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                message.MarkAsFailed(
-                    errorType: ex.GetType().Name,
-                    errorMessage: ex.Message,
-                    errorDetails: ex.ToString());
-
-                logger.LogError(ex, "Failed to process outbox message ({@Message})", message);
+                logger.LogError(exception, "Error processing Outbox message with Id: {Id}", message.Id);
+                
+                message.MarkAsFailed(exception.ToString());
             }
+            
+            await dataContext.SaveChangesAsync();
         }
-
-        await dataContext.SaveChangesAsync();
+        
+        await transaction.CommitAsync();
+        
+        logger.LogInformation("Processed {Count} Outbox messages", messages.Count);
     }
 
     private Task<List<OutboxMessage>> FetchIncomingOutboxMessagesAsync()
     {
         return dataContext.OutboxMessages
-            .Where(om => om.Status == OutboxMessageStatus.Pending
-                         || (om.Status == OutboxMessageStatus.Retry && om.NextAttemptAt != null
-                                                                    && om.NextAttemptAt <= DateTime.UtcNow))
+            .Where(om => om.ProcessedAt == null)
             .OrderBy(om => om.CreatedAt)
             .Take(20)
             .ToListAsync();

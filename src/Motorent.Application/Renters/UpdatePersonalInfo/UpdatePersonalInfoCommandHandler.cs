@@ -26,7 +26,7 @@ internal sealed class UpdatePersonalInfoCommandHandler(
             throw new ApplicationException($"Renter not found for user {userContext.UserId}");
         }
 
-        renter.ChangePersonalInformation(fullName, birthdate.Value);
+        renter.ChangePersonalInfo(fullName, birthdate.Value);
         
         await renterRepository.UpdateAsync(renter, cancellationToken);
 

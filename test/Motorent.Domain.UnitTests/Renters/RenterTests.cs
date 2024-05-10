@@ -56,7 +56,7 @@ public sealed class RenterTests
     }
 
     [Fact]
-    public async Task ChangePersonalInformation_WhenCalled_ShouldChangePersonalInformation()
+    public async Task ChangePersonalInfo_WhenCalled_ShouldChangePersonalInfo()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
@@ -64,7 +64,7 @@ public sealed class RenterTests
         var newBirthdate = Birthdate.Create(new DateOnly(1990, 1, 1)).Value;
 
         // Act
-        renter.ChangePersonalInformation(newFullName, newBirthdate);
+        renter.ChangePersonalInfo(newFullName, newBirthdate);
 
         // Assert
         renter.FullName.Should().Be(newFullName);

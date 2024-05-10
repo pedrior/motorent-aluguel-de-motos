@@ -63,7 +63,7 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         };
     }
 
-    public void ChangePersonalInformation(FullName fullName, Birthdate birthdate)
+    public void ChangePersonalInfo(FullName fullName, Birthdate birthdate)
     {
         FullName = fullName;
         Birthdate = birthdate;

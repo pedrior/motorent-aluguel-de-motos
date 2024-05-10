@@ -1,9 +1,0 @@
-PUT {{url}}/api/v1/renters/personal-information
-Content-Type: application/json
-Authorization: Bearer {{access_token}}
-
-{
-  "given_name": "Jane",
-  "family_name": "Doe",
-  "birthdate": "2000-09-05"
-}

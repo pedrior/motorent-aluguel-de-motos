@@ -1,2 +1,0 @@
-GET {{url}}/api/v1/motorcycles/{{motorcycle_id}}
-Accept: application/json

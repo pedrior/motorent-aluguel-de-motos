@@ -1,2 +1,0 @@
-DELETE {{url}}/api/v1/motorcycles/{{motorcycle_id}}
-Authorization: Bearer {{access_token}}

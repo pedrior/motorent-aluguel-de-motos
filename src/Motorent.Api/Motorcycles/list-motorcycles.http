@@ -1,2 +1,0 @@
-GET {{url}}/api/v1/motorcycles?page=1&limit=15&order=model&sort=asc&search=Honda
-Accept: application/json

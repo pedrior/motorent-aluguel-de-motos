@@ -1,7 +1,0 @@
-PUT {{url}}/api/v1/motorcycles/{{motorcycle_id}}/license-plate
-Content-Type: application/json
-Authorization: Bearer {{access_token}}
-
-{
-  "license_plate": "kOA-2A91"
-}

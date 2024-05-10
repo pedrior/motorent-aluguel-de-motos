@@ -18,6 +18,7 @@ internal sealed class UpdatePersonalInfo : IEndpoint
             .WithName("UpdatePersonalInfo")
             .WithTags("Renters")
             .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status403Forbidden)
             .WithOpenApi();
     }

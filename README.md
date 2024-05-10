@@ -6,9 +6,11 @@ Arquitetura Limpa, DDD, CQRS, Testes de Unidade, Testes de Integração, boas pr
 > Este projeto está sendo inspirado no [desafio backend da Mottu](https://github.com/Mottu-ops/Desafio-BackEnd), porém foi desenvolvido
 > por interesse próprio, não estou participando ou participei de algum processo seletivo da empresa.
 
-Deixe uma ⭐ se você gostou deste projeto. Se tiver alguma pergunta, recomendação ou qualquer outra questão, abra uma issue ou entre em contato. 
-Este é um projeto feito por hobby, mas se houver algo em que eu possa melhorar, ficaria muito grato em saber 😄.
+Este é um projeto feito por hobby. Se tiver alguma pergunta, recomendação ou qualquer outra questão, por favor abra uma issue ou entre em contato.
 
+## 🌟 Achou interessante? 
+
+Que tal deixar uma estrela para que eu saiba e também me mantenha motivado a terminar este projeto 😄.
 
 ## 🌐 API
 

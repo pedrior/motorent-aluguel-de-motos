@@ -1,9 +1,12 @@
 using System.Data.Common;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.S3;
 using DotNet.Testcontainers.Builders;
 using FakeItEasy;
 using Hangfire;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Motorent.Application.Common.Abstractions.Storage;
@@ -54,6 +57,20 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        var configurationValues = new Dictionary<string, string?>
+        {
+            { "AWS:Region", "us-east-1" },
+            { "AWS:Profile", "some-profile" },
+            { "Storage:BucketName", "some-bucket" }
+        };
+        
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(configurationValues)
+            .Build();
+
+        // Used during the creation of the application
+        builder.UseConfiguration(configuration);
+        
         builder.ConfigureServices(services =>
         {
             ConfigurePersistence(services, databaseContainer.GetConnectionString());

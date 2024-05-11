@@ -7,7 +7,7 @@ internal sealed class GetRenterProfile : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapGet("renters/profile", (
+        app.MapGet("renters", (
                 ISender sender,
                 CancellationToken cancellationToken) => sender.Send(
                     new GetRenterProfileQuery(), cancellationToken)

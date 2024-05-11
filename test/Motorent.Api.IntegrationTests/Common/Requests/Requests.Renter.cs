@@ -20,7 +20,7 @@ internal static partial class Requests
             ExpDate = new DateOnly(DateTime.Today.Year + 2, 10, 25)
         };
 
-        public static HttpRequestMessage GetRenterProfile() => Get("v1/renters/profile");
+        public static HttpRequestMessage GetRenterProfile() => Get("v1/renters");
 
         public static HttpRequestMessage UpdatePersonalInfo(UpdatePersonalInfoRequest? request = null) =>
             Put("v1/renters/personal-info", request ?? UpdatePersonalInfoRequest);

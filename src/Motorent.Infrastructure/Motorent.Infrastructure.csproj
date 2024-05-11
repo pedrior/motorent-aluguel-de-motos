@@ -35,15 +35,4 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Common\Persistence\Migrations\" />
-      <Folder Include="Common\Persistence\Outbox\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Common\Persistence\Outbox\OutboxMessage.cs" />
-      <Compile Remove="Common\Persistence\DbConnectionFactory.cs" />
-      <Compile Remove="Common\Persistence\IDbConnectionFactory.cs" />
-    </ItemGroup>
 </Project>

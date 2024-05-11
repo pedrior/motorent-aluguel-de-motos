@@ -15,6 +15,7 @@ internal sealed class GetRenterProfile : IEndpoint
             .RequireAuthorization()
             .WithName("GetRenterProfile")
             .WithTags("Renters")
+            .WithSummary("Gets the renter's profile")
             .Produces<RenterProfileResponse>()
             .Produces(StatusCodes.Status403Forbidden)
             .WithOpenApi();

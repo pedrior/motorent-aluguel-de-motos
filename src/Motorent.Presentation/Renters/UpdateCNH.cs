@@ -17,6 +17,7 @@ internal sealed class UpdateCNH : IEndpoint
             .RequireAuthorization()
             .WithName("UpdateCNH")
             .WithTags("Renters")
+            .WithSummary("Updates the renter's CNH")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status403Forbidden)

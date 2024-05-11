@@ -20,6 +20,7 @@ internal sealed class Register : IEndpoint
             .AllowAnonymous()
             .WithName("Register")
             .WithTags("Auth")
+            .WithSummary("Registers a new user in the system")
             .Produces<TokenResponse>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict)

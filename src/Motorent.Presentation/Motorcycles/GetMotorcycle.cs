@@ -17,6 +17,7 @@ internal sealed class GetMotorcycle : IEndpoint
             .AllowAnonymous()
             .WithName("GetMotorcycle")
             .WithTags("Motorcycles")
+            .WithSummary("Gets a motorcycle by its ID or license plate")
             .Produces<MotorcycleResponse>()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)

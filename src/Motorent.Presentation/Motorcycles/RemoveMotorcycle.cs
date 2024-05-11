@@ -16,6 +16,7 @@ internal sealed class RemoveMotorcycle : IEndpoint
             .RequireAuthorization()
             .WithName("RemoveMotorcycle")
             .WithTags("Motorcycles")
+            .WithSummary("Removes a motorcycle by its ID")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status403Forbidden)

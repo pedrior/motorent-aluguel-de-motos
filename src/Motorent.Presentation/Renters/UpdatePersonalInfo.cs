@@ -17,6 +17,7 @@ internal sealed class UpdatePersonalInfo : IEndpoint
             .RequireAuthorization()
             .WithName("UpdatePersonalInfo")
             .WithTags("Renters")
+            .WithSummary("Updates the renter's personal information")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status403Forbidden)

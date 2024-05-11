@@ -1,7 +1,6 @@
 using Motorent.Domain.Renters.ValueObjects;
 using Motorent.Presentation.Renters;
 using Motorent.TestUtils.Constants;
-using Motorent.TestUtils.Factories;
 
 namespace Motorent.Api.IntegrationTests.Renters;
 

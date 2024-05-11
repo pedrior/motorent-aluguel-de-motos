@@ -4,7 +4,6 @@ using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.ValueObjects;
 using Motorent.Presentation.Motorcycles;
-using Motorent.TestUtils.Factories;
 
 namespace Motorent.Api.IntegrationTests.Motorcycles;
 

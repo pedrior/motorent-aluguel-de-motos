@@ -1,6 +1,6 @@
 using Microsoft.IdentityModel.JsonWebTokens;
 
-namespace Motorent.Api.IntegrationTests.Common;
+namespace Motorent.Api.IntegrationTests.TestUtils;
 
 public sealed record TestUser(
     string Email,

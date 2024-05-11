@@ -1,5 +1,4 @@
 using Motorent.Presentation.Renters;
-using Motorent.TestUtils.Factories;
 
 namespace Motorent.Api.IntegrationTests.Renters;
 

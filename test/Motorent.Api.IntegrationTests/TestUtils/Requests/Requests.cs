@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 
-namespace Motorent.Api.IntegrationTests.Common.Requests;
+namespace Motorent.Api.IntegrationTests.TestUtils.Requests;
 
 internal static partial class Requests
 {

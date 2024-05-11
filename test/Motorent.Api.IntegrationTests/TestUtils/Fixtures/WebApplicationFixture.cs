@@ -4,7 +4,7 @@ using Motorent.Application.Common.Abstractions.Security;
 using Motorent.Infrastructure.Common.Identity;
 using Motorent.Infrastructure.Common.Persistence;
 
-namespace Motorent.Api.IntegrationTests.Common;
+namespace Motorent.Api.IntegrationTests.TestUtils.Fixtures;
 
 public abstract class WebApplicationFixture(WebApplicationFactory api)
     : IClassFixture<WebApplicationFactory>, IAsyncLifetime

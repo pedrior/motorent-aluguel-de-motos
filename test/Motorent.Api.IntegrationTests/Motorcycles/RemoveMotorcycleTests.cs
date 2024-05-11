@@ -1,6 +1,5 @@
 using Motorent.Domain.Motorcycles.ValueObjects;
 using Motorent.Presentation.Motorcycles;
-using Motorent.TestUtils.Factories;
 
 namespace Motorent.Api.IntegrationTests.Motorcycles;
 

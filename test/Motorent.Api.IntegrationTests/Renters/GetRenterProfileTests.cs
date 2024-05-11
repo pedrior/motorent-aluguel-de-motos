@@ -2,7 +2,6 @@ using Mapster;
 using Motorent.Contracts.Renters.Responses;
 using Motorent.Domain.Renters;
 using Motorent.Presentation.Renters;
-using Motorent.TestUtils.Factories;
 
 namespace Motorent.Api.IntegrationTests.Renters;
 

@@ -11,7 +11,7 @@ using Npgsql;
 using Respawn;
 using Testcontainers.PostgreSql;
 
-namespace Motorent.Api.IntegrationTests.Common;
+namespace Motorent.Api.IntegrationTests.TestUtils.Fixtures;
 
 public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {

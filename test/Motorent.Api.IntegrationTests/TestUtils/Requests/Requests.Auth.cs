@@ -1,6 +1,6 @@
 using Motorent.Contracts.Auth.Requests;
 
-namespace Motorent.Api.IntegrationTests.Common.Requests;
+namespace Motorent.Api.IntegrationTests.TestUtils.Requests;
 
 internal static partial class Requests
 {

@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Motorent.Api.IntegrationTests.Common;
+namespace Motorent.Api.IntegrationTests.TestUtils;
 
 internal static class SerializationOptions
 {

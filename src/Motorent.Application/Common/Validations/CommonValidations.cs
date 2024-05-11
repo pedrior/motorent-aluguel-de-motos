@@ -1,3 +1,6 @@
+using Motorent.Application.Common.Abstractions.Storage;
+using Motorent.Application.Common.Imaging;
+
 namespace Motorent.Application.Common.Validations;
 
 internal static class CommonValidations
@@ -60,5 +63,12 @@ internal static class CommonValidations
             .WithMessage("Must not be empty.")
             .GreaterThan(DateOnly.FromDateTime(DateTime.UtcNow))
             .WithMessage("Must be in the future.");
+    }
+    
+    public static IRuleBuilderOptions<T, IFile> Image<T>(this IRuleBuilder<T, IFile> rule)
+    {
+        return rule
+            .Must(x => x.Stream.IsImage())
+            .WithMessage("Must be a valid image (PNG, JPG, JPEG or BMP).");
     }
 }

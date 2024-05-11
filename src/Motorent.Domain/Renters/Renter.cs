@@ -89,7 +89,7 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         return Success.Value;
     }
 
-    public Result<Success> SetCNHWaitingApprovalStatus(CNHValidationImages cnhValidationImages)
+    public Result<Success> SendCNHImagesForValidation(CNHValidationImages cnhValidationImages)
     {
         if (!IsCNHPendingValidation())
         {

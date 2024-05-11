@@ -23,6 +23,7 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+      - ~/.aws:/root/.aws:ro
   
   postgres:
     image: postgres

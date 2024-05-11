@@ -1,4 +1,5 @@
 using System.Text;
+using Amazon.S3;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Common.Abstractions.Persistence;
 using Motorent.Application.Common.Abstractions.Security;
+using Motorent.Application.Common.Abstractions.Storage;
 using Motorent.Domain.Motorcycles.Repository;
 using Motorent.Domain.Motorcycles.Services;
 using Motorent.Domain.Renters.Repository;
@@ -19,6 +21,7 @@ using Motorent.Infrastructure.Common.Jobs;
 using Motorent.Infrastructure.Common.Persistence;
 using Motorent.Infrastructure.Common.Persistence.Interceptors;
 using Motorent.Infrastructure.Common.Security;
+using Motorent.Infrastructure.Common.Storage;
 using Motorent.Infrastructure.Motorcycles;
 using Motorent.Infrastructure.Motorcycles.Persistence;
 using Motorent.Infrastructure.Renters;
@@ -44,6 +47,8 @@ public static class ServiceExtensions
 
         services.AddBackgroundJobs(configuration);
 
+        services.AddStorage(configuration);
+            
         services.AddHttpContextAccessor();
 
         services.AddTransient<TimeProvider>(_ => TimeProvider.System);
@@ -129,5 +134,19 @@ public static class ServiceExtensions
                         Encoding.ASCII.GetBytes(securityTokenOptions.Key))
                 };
             });
+    }
+    
+    private static void AddStorage(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+        
+        services.AddOptions<StorageOptions>()
+            .Bind(configuration.GetSection(StorageOptions.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+        
+        services.AddAWSService<IAmazonS3>();
+        
+        services.AddScoped<IStorageService, StorageService>();
     }
 }

@@ -1,10 +1,12 @@
 using System.Data.Common;
 using DotNet.Testcontainers.Builders;
+using FakeItEasy;
 using Hangfire;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Motorent.Application.Common.Abstractions.Storage;
 using Motorent.Infrastructure.Common.Persistence;
 using Motorent.Infrastructure.Common.Persistence.Interceptors;
 using Npgsql;
@@ -56,6 +58,7 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
         {
             ConfigurePersistence(services, databaseContainer.GetConnectionString());
             ConfigureBackgroundJobs(services);
+            ConfigureStorage(services);
         });
     }
 
@@ -85,6 +88,21 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
         services.RemoveAll(typeof(GlobalConfiguration));
         
         services.AddHangfire(config => config.UseInMemoryStorage());
+    }
+    
+    private static void ConfigureStorage(IServiceCollection services)
+    {
+        services.RemoveAll<IStorageService>();
+        
+        services.AddSingleton<IStorageService>(_ =>
+        {
+           var storageService = A.Fake<IStorageService>();
+
+           A.CallTo(() => storageService.GenerateUrlAsync(A<Uri>._, A<int>._))
+               .Returns(new Uri($"https://bucket-name.s3.region.amazonaws.com/{Ulid.NewUlid()}.png"));
+           
+           return storageService;
+        });
     }
     
     private async Task InitializeDatabaseAsync()

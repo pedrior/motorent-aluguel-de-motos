@@ -8,9 +8,6 @@ Arquitetura Limpa, DDD, CQRS, Testes de Unidade, Testes de Integração, boas pr
 
 Este é um projeto feito por hobby. Se tiver alguma pergunta, recomendação ou qualquer outra questão, por favor abra uma issue ou entre em contato.
 
-## 🌟 Achou interessante? 
-
-Que tal deixar uma estrela para que eu saiba e também me mantenha motivado a terminar este projeto 😄.
 
 ## 🌐 API
 

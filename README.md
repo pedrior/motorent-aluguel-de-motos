@@ -10,6 +10,53 @@ de programação e muito mais.
 Este é um projeto feito por hobby. Se tiver alguma pergunta, recomendação ou qualquer outra questão, por favor abra uma
 issue ou entre em contato.
 
+## 🚀 Guia de Execução
+
+### Pré-requisitos
+
+- [.NET 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Docker](https://www.docker.com/get-started)
+- [AWS S3](https://aws.amazon.com/pt/s3/)
+- [EF Core CLI](https://docs.microsoft.com/pt-br/ef/core/cli/dotnet)
+
+### Executando o Projeto
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/pedrior/motorent-aluguel-de-motos.git
+cd motorent-aluguel-de-motos
+```
+
+2. Modifique o arquivo `Motorent.Api > appsettings.Development.json` com suas próprias configurações:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=8003;Database=motorent;Username=root;Password=password"
+  },
+  "Storage": {
+    "BucketName": "Your unique AWS S3 bucket name"
+  },
+  "AWS": {
+    "Profile": "Your AWS profile",
+    "Region": "Your AWS region"
+  }
+}
+```
+
+3. Aplique as migrações do banco de dados (a instância do PostgreSQL deve estar em execução):
+
+```bash
+dotnet ef database update -s src/Motorent.Api -p src/Motorent.Infrastructure
+```
+
+4. Execute o projeto via Docker Compose:
+
+```bash
+docker-compose up --build -d
+```
+
 ## 🌐 API
 
 A API está disponível em:

@@ -53,7 +53,7 @@ Se você não fornecer o token de acesso ou fornecer um inválido, você receber
 ### Autorização
 
 Alguns endpoints podem exigir requisitos específicos para serem executados com sucesso. Se você fizer uma requisição
-autenticada, mas não atender aos requisitos de autorização, receberá uma resposta de `403 Forbidden`.
+autenticada, mas não atender aos requisitos de autorização, receberá uma resposta `403 Forbidden`.
 
 ### Erros
 

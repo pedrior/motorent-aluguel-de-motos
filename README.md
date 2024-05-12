@@ -1,31 +1,48 @@
 # Projeto: Motorent - Aluguel de Motos
 
-Uma API REST para gerenciar aluguel de motos. Este projeto está sendo desenvolvido com ASP.NET Core, EF Core, PostgreSQL, Docker/Docker Compose,
-Arquitetura Limpa, DDD, CQRS, Testes de Unidade, Testes de Integração, boas práticas de programação e muito mais.
+Uma API REST para gerenciar aluguel de motos. Este projeto está sendo desenvolvido com ASP.NET Core, EF Core,
+PostgreSQL, Docker/Docker Compose, Arquitetura Limpa, DDD, CQRS, Testes de Unidade, Testes de Integração, boas práticas
+de programação e muito mais.
 
-> Este projeto está sendo inspirado no [desafio backend da Mottu](https://github.com/Mottu-ops/Desafio-BackEnd), porém foi desenvolvido
-> por interesse próprio, não estou participando ou participei de algum processo seletivo da empresa.
+> Este projeto está sendo inspirado no [desafio backend da Mottu](https://github.com/Mottu-ops/Desafio-BackEnd), porém
+> foi desenvolvido por interesse próprio, não estou participando ou participei de algum processo seletivo da empresa.
 
-Este é um projeto feito por hobby. Se tiver alguma pergunta, recomendação ou qualquer outra questão, por favor abra uma issue ou entre em contato.
-
+Este é um projeto feito por hobby. Se tiver alguma pergunta, recomendação ou qualquer outra questão, por favor abra uma
+issue ou entre em contato.
 
 ## 🌐 API
 
-A API está disponível em: `https://localhost:8081/api/{version}`.
+A API está disponível em:
 
-__Versionamento__
+```plain
+https://localhost:8081/api/{version}
+```
 
-A API é versionada via URL. Por padrão, todos os endpoints usam a versão `v1` da API.
+### Endpoints
 
-__Limitação de Taxa__
+Acesse a documentação da API para obter informações detalhadas sobre os endpoints disponíveis.
 
-A maioria dos endpoints tem limites de taxa para evitar abusos. Se esse limite for atingido dentro de um determinado período de tempo, você receberá
-uma resposta `429 Too Many Requests`.
+```plain
+https://localhost:8001/swagger/index.html
+```
 
-__Autenticação__
+### Versionamento
 
-A API implementa autenticação via JWT para proteção de endpoints. Ao fazer solicitações autenticadas, é necessário incluir o token de acesso no 
-cabeçalho `Authorization` com o esquema `Bearer`.
+A API é versionada via URL. Por padrão, todos os endpoints usam a versão `v1`.
+
+```plain
+https://localhost:8081/api/v1
+```
+
+### Limitação de Taxa
+
+A maioria dos endpoints possui limitação de taxa para evitar abusos. Se esse limite for atingido em uma determinada
+janela de tempo, você receberá uma resposta `429 Too Many Requests`.
+
+### Autenticação
+
+A API implementa autenticação via JWT para proteção de endpoints. Ao fazer solicitações autenticadas, é necessário
+incluir o token de acesso no cabeçalho `Authorization` com o esquema `Bearer`.
 
 ```plain
 Authorization: Bearer {token-de-acesso}
@@ -33,14 +50,15 @@ Authorization: Bearer {token-de-acesso}
 
 Se você não fornecer o token de acesso ou fornecer um inválido, você receberá uma resposta `401 Unauthorized`.
 
-__Autorização__
+### Autorização
 
-Alguns endpoints podem exigir requisitos específicos para serem executados com sucesso. Se você fizer uma chamada a um endpoint autenticado,
-mas não atender aos requisitos de autorização, receberá uma resposta de `403 Forbidden`.
+Alguns endpoints podem exigir requisitos específicos para serem executados com sucesso. Se você fizer uma requisição
+autenticada, mas não atender aos requisitos de autorização, receberá uma resposta de `403 Forbidden`.
 
-__Erros__
+### Erros
 
-A API fornece respostas de erro em de acordo com o RFC 7807. A resposta pode conter campos adicionais para fornecer uma descrição mais detalhada do erro.
+A API fornece respostas de erro em conforme o RFC 7807. A resposta pode conter campos adicionais para fornecer uma
+descrição mais detalhada do erro.
 
 ```json
 {
@@ -60,25 +78,26 @@ A API fornece respostas de erro em de acordo com o RFC 7807. A resposta pode con
 }
 ```
 
-__Respostas__
+### Respostas
 
-O API utiliza códigos de resposta HTTP padrão para indicar o sucesso ou falha de uma solicitação de API.
+A API utiliza códigos de resposta HTTP padrão para indicar o sucesso ou falha de uma requisição.
 
-| Código                      | Descrição                                                                                                                  |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| 200 - OK                    | Tudo funcionou como esperado.                                                                                              |
-| 201 - Created               | Tudo funcionou como esperado e, como resultado, foi criado um novo recurso.                                                |
-| 204 - No Content            | Tudo funcionou como esperado, mas não retornou nenhum conteúdo.                                                            |
-| 400 - Bad Request           | A solicitação foi inaceitável, frequentemente devido à falta de um parâmetro obrigatório ou parâmetro malformado.          |
-| 401 - Unauthorized          | A solicitação requer autenticação do usuário.                                                                              |
-| 403 - Forbidden             | O usuário está autenticado, mas não autorizado a realizar a solicitação.                                                   |
-| 404 - Not Found             | O recurso solicitado não existe.                                                                                           |
-| 409 - Conflict              | A solicitação não pôde ser concluída devido a um conflito com o estado atual do recurso.                                   |
-| 422 - Unprocessable Entity  | O corpo da solicitação era aceitável, mas não pôde ser processado.                                                         |
-| 429 - Too Many Requests     | Muitas solicitações atingiram a API muito rapidamente.                                                                     |
-| 500 - Internal Server Error | Ocorreu um erro inesperado.                                                                                                |
-
+| Código                      | Descrição                                                                                                         |
+|-----------------------------|-------------------------------------------------------------------------------------------------------------------|
+| 200 - OK                    | Tudo funcionou como esperado.                                                                                     |
+| 201 - Created               | Tudo funcionou como esperado e, como resultado, foi criado um novo recurso.                                       |
+| 204 - No Content            | Tudo funcionou como esperado, mas não retornou nenhum conteúdo.                                                   |
+| 400 - Bad Request           | A solicitação foi inaceitável, frequentemente devido à falta de um parâmetro obrigatório ou parâmetro malformado. |
+| 401 - Unauthorized          | A solicitação requer autenticação do usuário.                                                                     |
+| 403 - Forbidden             | O usuário está autenticado, mas não autorizado a realizar a solicitação.                                          |
+| 404 - Not Found             | O recurso solicitado não existe.                                                                                  |
+| 409 - Conflict              | A solicitação não pôde ser concluída devido a um conflito com o estado atual do recurso.                          |
+| 422 - Unprocessable Entity  | O corpo da solicitação era aceitável, mas não pôde ser processado.                                                |
+| 429 - Too Many Requests     | Muitas solicitações atingiram a API muito rapidamente.                                                            |
+| 500 - Internal Server Error | Ocorreu um erro inesperado.                                                                                       |
+| 503 - Service Unavailable   | O serviço não está disponível no momento.                                                                         |
 
 ## Licença
 
-Este repositório está licenciado sob a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).
+Este repositório está licenciado sob
+a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).

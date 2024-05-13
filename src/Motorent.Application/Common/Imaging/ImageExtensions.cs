@@ -5,7 +5,6 @@ internal static class ImageExtensions
     private static readonly List<byte[]> ImageHeaders =
     [
         [0x42, 0x4D], // BMP
-        [0xFF, 0xD8], // JPG, JPEG
         [0x89, 0x50, 0x4E, 0x47, 0xD, 0xA, 0x1A, 0xA] // PNG
     ];
 

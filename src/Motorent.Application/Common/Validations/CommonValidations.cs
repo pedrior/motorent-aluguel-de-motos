@@ -69,6 +69,6 @@ internal static class CommonValidations
     {
         return rule
             .Must(x => x.Stream.IsImage())
-            .WithMessage("Must be a valid image (PNG, JPG, JPEG or BMP).");
+            .WithMessage("Must be a valid PNG or BMP image.");
     }
 }

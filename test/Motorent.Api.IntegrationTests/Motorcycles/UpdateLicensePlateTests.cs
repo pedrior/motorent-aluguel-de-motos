@@ -10,7 +10,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
     public async Task ChangeLicensePlate_WhenMotorcycleExists_ShouldReturnNoContent()
     {
         // Arrange
-        await AuthenticateUserAsync(await CreateUserAsync(TestUser.Admin));
+        await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
 
         var motorcycleId = await CreateMotorcycleAsync();
         var request = Requests.Motorcycle.UpdateLicensePlate(motorcycleId.ToString());
@@ -40,7 +40,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
     public async Task ChangeLicensePlace_WhenUserIsNotAuthorized_ShouldReturnForbidden()
     {
         // Arrange
-        await AuthenticateUserAsync(await CreateUserAsync(TestUser.Renter));
+        await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Renter]));
 
         var motorcycleId = await CreateMotorcycleAsync();
         var request = Requests.Motorcycle.UpdateLicensePlate(motorcycleId.ToString());
@@ -56,7 +56,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
     public async Task ChangeLicensePlate_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
     {
         // Arrange
-        await AuthenticateUserAsync(await CreateUserAsync(TestUser.Admin));
+        await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
 
         var request = Requests.Motorcycle.UpdateLicensePlate(Ulid.NewUlid().ToString());
 

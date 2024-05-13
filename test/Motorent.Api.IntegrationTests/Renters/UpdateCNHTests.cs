@@ -11,7 +11,7 @@ public sealed class UpdateCNHTests(WebApplicationFactory api) : WebApplicationFi
     public async Task UpdateCNH_WhenRequestIsValid_ShouldReturnNoContent()
     {
         // Arrange
-        var userId = await CreateUserAsync(TestUser.Renter);
+        var userId = await CreateUserAsync(roles: [UserRoles.Renter]);
         await AuthenticateUserAsync(userId);
 
         await CreateRenterAsync(userId);
@@ -37,7 +37,7 @@ public sealed class UpdateCNHTests(WebApplicationFactory api) : WebApplicationFi
     public async Task UpdateCNH_WhenCNHIsDuplicate_ShouldReturnConflict()
     {
         // Arrange
-        var userId = await CreateUserAsync(TestUser.Renter);
+        var userId = await CreateUserAsync(roles: [UserRoles.Renter]);
         await AuthenticateUserAsync(userId);
 
         await CreateRenterAsync(userId, cnhNumber: Requests.Renter.UpdateCNHRequest.Number);
@@ -73,7 +73,7 @@ public sealed class UpdateCNHTests(WebApplicationFactory api) : WebApplicationFi
     public async Task UpdateCNH_WhenRequestedByNonRenter_ShouldReturnForbidden()
     {
         // Arrange
-        var userId = await CreateUserAsync(TestUser.Admin);
+        var userId = await CreateUserAsync(roles: [UserRoles.Admin]);
         await AuthenticateUserAsync(userId);
 
         var request = Requests.Renter.UpdateCNH();

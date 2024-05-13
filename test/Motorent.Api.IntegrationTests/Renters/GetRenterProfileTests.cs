@@ -12,7 +12,7 @@ public sealed class GetRenterProfileTests(WebApplicationFactory api) : WebApplic
     public async Task GetRenterProfile_WhenRequested_ShouldReturnRenterProfile()
     {
         // Arrange
-        var userId = await CreateUserAsync(TestUser.Renter);
+        var userId = await CreateUserAsync(roles: [UserRoles.Renter]);
         await AuthenticateUserAsync(userId);
         
         var renter = await CreateRenterAsync(userId);
@@ -25,8 +25,7 @@ public sealed class GetRenterProfileTests(WebApplicationFactory api) : WebApplic
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         
-        var profileResponse = await response.Content.ReadFromJsonAsync<RenterProfileResponse>(
-            SerializationOptions.Options);
+        var profileResponse = await response.Content.ReadFromJsonAsync<RenterProfileResponse>(SerializerOptions);
         
         profileResponse.Should().NotBeNull();
         profileResponse.Should().Be(renter.Adapt<RenterProfileResponse>());
@@ -49,7 +48,7 @@ public sealed class GetRenterProfileTests(WebApplicationFactory api) : WebApplic
     public async Task GetRenterProfile_WhenRequestedByNonRenter_ShouldReturnForbidden()
     {
         // Arrange
-        var userId = await CreateUserAsync(TestUser.Admin);
+        var userId = await CreateUserAsync(roles: [UserRoles.Admin]);
         await AuthenticateUserAsync(userId);
         
         var request = Requests.Renter.GetRenterProfile();

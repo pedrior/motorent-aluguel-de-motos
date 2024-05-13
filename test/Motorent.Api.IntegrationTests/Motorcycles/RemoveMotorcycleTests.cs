@@ -10,7 +10,7 @@ public class RemoveMotorcycleTests(WebApplicationFactory api) : WebApplicationFi
     public async Task RemoveMotorcycle_WhenRequestIsValid_ShouldRemoveMotorcycle()
     {
         // Arrange
-        await AuthenticateUserAsync(await CreateUserAsync(TestUser.Admin));
+        await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
 
         var motorcycleId = await CreateMotorcycleAsync();
         var request = Requests.Motorcycle.RemoveMotorcycle(motorcycleId.Value);
@@ -31,7 +31,7 @@ public class RemoveMotorcycleTests(WebApplicationFactory api) : WebApplicationFi
     public async Task RemoveMotorcycle_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
     {
         // Arrange
-        await AuthenticateUserAsync(await CreateUserAsync(TestUser.Admin));
+        await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
         var request = Requests.Motorcycle.RemoveMotorcycle(Ulid.NewUlid());
 
         // Act
@@ -59,7 +59,7 @@ public class RemoveMotorcycleTests(WebApplicationFactory api) : WebApplicationFi
     public async Task RemoveMotorcycle_WhenUserIsNotAuthorized_ShouldReturnForbidden()
     {
         // Arrange
-        await AuthenticateUserAsync(await CreateUserAsync(TestUser.Renter));
+        await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Renter]));
 
         var motorcycleId = await CreateMotorcycleAsync();
         var request = Requests.Motorcycle.RemoveMotorcycle(motorcycleId.Value);

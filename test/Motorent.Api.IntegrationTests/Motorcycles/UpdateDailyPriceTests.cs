@@ -10,7 +10,7 @@ public sealed class UpdateDailyPriceTests(WebApplicationFactory api) : WebApplic
     public async Task UpdateDailyPrice_WhenRequestIsValid_ShouldChangeDailyPrice()
     {
         // Arrange
-        await AuthenticateUserAsync(await CreateUserAsync(TestUser.Admin));
+        await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
         
         var motorcycleId = await CreateMotorcycleAsync();
 
@@ -49,7 +49,7 @@ public sealed class UpdateDailyPriceTests(WebApplicationFactory api) : WebApplic
     public async Task UpdateDailyPrice_WhenUserIsNotAdmin_ShouldReturnForbidden()
     {
         // Arrange
-        await AuthenticateUserAsync(await CreateUserAsync(TestUser.Renter));
+        await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Renter]));
         
         var motorcycleId = await CreateMotorcycleAsync();
 

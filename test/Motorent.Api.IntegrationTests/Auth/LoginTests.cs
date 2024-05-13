@@ -13,12 +13,10 @@ public sealed class LoginTests(WebApplicationFactory api) : WebApplicationFixtur
     public async Task Login_WhenCommandIsValid_ShouldReturnOk()
     {
         // Arrange
-        await CreateUserAsync(TestUser.Renter with
-        {
-            Email = Requests.Auth.LoginRequest.Email,
-            Password = Requests.Auth.LoginRequest.Password
-        });
-
+        await CreateUserAsync(
+            email: Requests.Auth.LoginRequest.Email,
+            password: Requests.Auth.LoginRequest.Password);
+        
         var request = Requests.Auth.Login();
 
         // Act
@@ -28,8 +26,7 @@ public sealed class LoginTests(WebApplicationFactory api) : WebApplicationFixtur
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(
-            content, SerializationOptions.Options);
+        var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(content, SerializerOptions);
 
         var expiryInSeconds = GetRequiredService<IConfiguration>()
             .GetValue<int>($"{SecurityTokenOptions.SectionName}:" +
@@ -57,11 +54,9 @@ public sealed class LoginTests(WebApplicationFactory api) : WebApplicationFixtur
     public async Task Login_WhenPasswordIsIncorrect_ShouldReturnUnauthorized()
     {
         // Arrange
-        await CreateUserAsync(TestUser.Renter with
-        {
-            Email = Requests.Auth.LoginRequest.Email,
-            Password = "password"
-        });
+        await CreateUserAsync(
+            email: Requests.Auth.LoginRequest.Email,
+            password: "password");
 
         var request = Requests.Auth.Login();
 

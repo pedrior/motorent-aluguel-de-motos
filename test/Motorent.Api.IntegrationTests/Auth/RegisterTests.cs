@@ -49,8 +49,7 @@ public sealed class RegisterTests(WebApplicationFactory api) : WebApplicationFix
         user.Should().NotBeNull();
 
         var content = await response.Content.ReadAsStringAsync();
-        var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(
-            content, SerializationOptions.Options);
+        var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(content, SerializerOptions);
 
         var expiryInSeconds = GetRequiredService<IConfiguration>()
             .GetValue<int>($"{SecurityTokenOptions.SectionName}:" +
@@ -65,10 +64,7 @@ public sealed class RegisterTests(WebApplicationFactory api) : WebApplicationFix
     public async Task Register_WhenEmailIsNotUnique_ShouldReturnConflict()
     {
         // Arrange
-        await CreateUserAsync(TestUser.Renter with
-        {
-            Email = Requests.Auth.RegisterRequest.Email
-        });
+        await CreateUserAsync(email: Requests.Auth.RegisterRequest.Email);
 
         var request = Requests.Auth.Register();
 

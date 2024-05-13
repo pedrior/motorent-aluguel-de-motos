@@ -9,7 +9,7 @@ public sealed class UpdatePersonalInfoTests(WebApplicationFactory api) : WebAppl
     public async Task UpdatePersonalInfo_WhenRequested_ShouldUpdatePersonalInfo()
     {
         // Arrange
-        var userId = await CreateUserAsync(TestUser.Renter);
+        var userId = await CreateUserAsync(roles: [UserRoles.Renter]);
         await AuthenticateUserAsync(userId);
         
         await CreateRenterAsync(userId);
@@ -48,7 +48,7 @@ public sealed class UpdatePersonalInfoTests(WebApplicationFactory api) : WebAppl
     public async Task UpdatePersonalInfo_WhenRequestedByNonRenter_ShouldReturnForbidden()
     {
         // Arrange
-        var userId = await CreateUserAsync(TestUser.Admin);
+        var userId = await CreateUserAsync(roles: [UserRoles.Admin]);
         await AuthenticateUserAsync(userId);
         
         var request = Requests.Renter.GetRenterProfile();

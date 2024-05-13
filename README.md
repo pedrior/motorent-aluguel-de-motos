@@ -28,13 +28,10 @@ git clone https://github.com/pedrior/motorent-aluguel-de-motos.git
 cd motorent-aluguel-de-motos
 ```
 
-2. Modifique o arquivo `Motorent.Api > appsettings.Development.json` com suas próprias configurações:
+2. Você precisará definir algumas configurações da aplicação em `Motorent.Api > appsettings*.json`:
 
 ```json
 {
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=8003;Database=motorent;Username=root;Password=password"
-  },
   "Storage": {
     "BucketName": "Your unique AWS S3 bucket name"
   },
@@ -45,16 +42,27 @@ cd motorent-aluguel-de-motos
 }
 ```
 
-3. Aplique as migrações do banco de dados (a instância do PostgreSQL deve estar em execução):
+3. Crie um certificado para permitir a execução da API via HTTPS em contêineres Docker:
+
+```bash
+dotnet dev-certs https -ep ${HOME}/.aspnet/https/motorent.pfx -p password
+```
+
+4. Execute o banco de dados para aplicar a migração:
+
+```bash
+docker compose up -d postgres
+```
+
+5. Após a completa inicialização do banco de dados, aplique a migração:
 
 ```bash
 dotnet ef database update -s src/Motorent.Api -p src/Motorent.Infrastructure
 ```
-
-4. Execute o projeto via Docker Compose:
+6. Inicie a API:
 
 ```bash
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
 ## 🌐 API

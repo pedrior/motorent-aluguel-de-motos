@@ -6,19 +6,19 @@ internal static class AuthValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Must not be empty.")
+            .WithMessage("Não deve estar vazio.")
             .EmailAddress()
-            .WithMessage("Must be a valid email address.");
+            .WithMessage("Deve ser um endereço de email válido");
     }
 
     public static IRuleBuilderOptions<T, string> Password<T>(this IRuleBuilder<T, string> builder)
     {
         return builder
             .NotEmpty()
-            .WithMessage("Must not be empty.")
+            .WithMessage("Não deve estar vazio.")
             .MinimumLength(8)
-            .WithMessage("Must be at least 8 characters long.")
-            .Matches(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).*$")
-            .WithMessage("Must contain at least one uppercase letter, one lowercase letter and one digit.");
+            .WithMessage("Deve ter pelo menos 8 caracteres.")
+            .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).*$")
+            .WithMessage("Deve conter pelo menos uma letra maiúscula, uma letra minúscula e um algarismo.");
     }
 }

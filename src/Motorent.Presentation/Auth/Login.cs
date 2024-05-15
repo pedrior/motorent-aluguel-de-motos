@@ -18,7 +18,7 @@ internal sealed class Login : IEndpoint
             .AllowAnonymous()
             .WithName("Login")
             .WithTags("Auth")
-            .WithSummary("Authenticates to the system")
+            .WithSummary("Autentica um usuário no sistema")
             .Produces<TokenResponse>()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)

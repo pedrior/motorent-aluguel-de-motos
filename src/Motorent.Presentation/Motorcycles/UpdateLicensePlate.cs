@@ -21,7 +21,7 @@ internal sealed class UpdateLicensePlate : IEndpoint
             .RequireAuthorization()
             .WithName("UpdateLicensePlate")
             .WithTags("Motorcycles")
-            .WithSummary("Updates the license plate of a motorcycle")
+            .WithSummary("Atualiza a placa de uma moto cadastrada pelo ID")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status403Forbidden)

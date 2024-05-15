@@ -6,6 +6,6 @@ internal sealed class RemoveMotorcycleCommandValidator : AbstractValidator<Remov
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Must not be empty.");
+            .WithMessage("Não deve estar vazio.");
     }
 }

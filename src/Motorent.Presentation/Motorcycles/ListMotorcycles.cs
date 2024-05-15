@@ -19,7 +19,7 @@ internal sealed class ListMotorcycles : IEndpoint
             .AllowAnonymous()
             .WithName("ListMotorcycle")
             .WithTags("Motorcycles")
-            .WithSummary("Lists all registered motorcycles")
+            .WithSummary("Lista todas as motos cadastradas no sistema")
             .Produces<PageResponse<MotorcycleSummaryResponse>>()
             .WithOpenApi();
     }

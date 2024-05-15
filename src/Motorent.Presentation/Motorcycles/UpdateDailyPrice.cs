@@ -21,7 +21,7 @@ internal sealed class UpdateDailyPrice : IEndpoint
             .RequireAuthorization()
             .WithName("UpdateDailyPrice")
             .WithTags("Motorcycles")
-            .WithSummary("Updates the daily price of a motorcycle")
+            .WithSummary("Atualiza o preço diário de uma moto cadastrada pelo ID")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status403Forbidden)

@@ -8,7 +8,7 @@ internal sealed class UpdateDailyPriceCommandValidator : AbstractValidator<Updat
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Must not be empty.");
+            .WithMessage("Não deve estar vazio.");
 
         RuleFor(x => x.DailyPrice)
             .MotorcycleDailyPrice();

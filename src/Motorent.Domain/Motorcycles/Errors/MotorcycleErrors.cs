@@ -5,7 +5,7 @@ namespace Motorent.Domain.Motorcycles.Errors;
 internal static class MotorcycleErrors
 {
     public static Error LicensePlateNotUnique(LicensePlate licensePlate) => Error.Conflict(
-        "There is already a motorcycle with the same license plate in the system.",
+        "Já existe uma moto com a mesma placa no sistema.",
         code: "motorcycle.license_plate_not_unique",
         details: new() { ["license_plate"] = licensePlate.ToString() });
 }

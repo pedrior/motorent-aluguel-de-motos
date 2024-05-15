@@ -9,66 +9,66 @@ internal static class CommonValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Must not be empty.")
+            .WithMessage("Não deve estar vazio.")
             .Length(min: 2, max: 50)
-            .WithMessage("Must be between 2 and 50 characters.")
+            .WithMessage("Deve ter entre 2 e 50 caracteres.")
             .Matches(@"^(?!.*['.]$)[\p{L}'. }]+$")
-            .WithMessage("Must contain only letters and spaces, periods and apostrophes followed by letters.");
+            .WithMessage("Deve conter apenas letras e espaços, pontos e apóstrofos seguidos de letras.");
     }
     
     public static IRuleBuilderOptions<T, DateOnly> Birthdate<T>(this IRuleBuilder<T, DateOnly> builder)
     {
         return builder
             .NotEmpty()
-            .WithMessage("Must not be empty.")
+            .WithMessage("Não deve estar vazio.")
             .LessThan(DateOnly.FromDateTime(DateTime.Today))
-            .WithMessage("Must be in the past.");
+            .WithMessage("Deve estar no passado.");
     }
     
     public static IRuleBuilderOptions<T, string> CNPJ<T>(this IRuleBuilder<T, string> builder)
     {
         return builder
             .NotEmpty()
-            .WithMessage("Must not be empty.")
+            .WithMessage("Não deve estar vazio.")
             .Length(11, 18)
-            .WithMessage("Must be between 11 and 18 characters.")
+            .WithMessage("Deve ter entre 11 e 18 caracteres.")
             .Matches(@"^[\d.\-/]+$")
-            .WithMessage("Must contain only numbers, periods, slashes and hyphens.");
+            .WithMessage("Deve conter apenas números, pontos, barras e hífenes.");
     }
     
     public static IRuleBuilderOptions<T, string> CNHNumber<T>(this IRuleBuilder<T, string> builder)
     {
         return builder
             .NotEmpty()
-            .WithMessage("Must not be empty.")
+            .WithMessage("Não deve estar vazio.")
             .Length(11, 11)
-            .WithMessage("Must be 11 characters.")
+            .WithMessage("Deve ter 11 caracteres.")
             .Matches(@"^\d{11}$")
-            .WithMessage("Must contain only numbers.");
+            .WithMessage("Deve conter apenas números.");
     }
 
     public static IRuleBuilderOptions<T, string> CNHCategory<T>(this IRuleBuilder<T, string> builder)
     {
         return builder
             .NotEmpty()
-            .WithMessage("Must not be empty.")
+            .WithMessage("Não deve estar vazio.")
             .Must(v => Domain.Renters.Enums.CNHCategory.IsDefined(v, ignoreCase: true))
-            .WithMessage($"Must be one of the following: {string.Join(", ", Domain.Renters.Enums.CNHCategory.List)}");
+            .WithMessage($"Deve ser um dos seguintes: {string.Join(", ", Domain.Renters.Enums.CNHCategory.List)}");
     }
     
     public static IRuleBuilderOptions<T, DateOnly> CNHExpDate<T>(this IRuleBuilder<T, DateOnly> builder)
     {
         return builder
             .NotEmpty()
-            .WithMessage("Must not be empty.")
+            .WithMessage("Não deve estar vazio.")
             .GreaterThan(DateOnly.FromDateTime(DateTime.UtcNow))
-            .WithMessage("Must be in the future.");
+            .WithMessage("Deve estar no futuro.");
     }
     
     public static IRuleBuilderOptions<T, IFile> Image<T>(this IRuleBuilder<T, IFile> rule)
     {
         return rule
             .Must(x => x.Stream.IsImage())
-            .WithMessage("Must be a valid PNG or BMP image.");
+            .WithMessage("Deve ser uma imagem PNG ou BMP válida.");
     }
 }

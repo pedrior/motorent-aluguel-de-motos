@@ -21,7 +21,7 @@ internal sealed class UploadCNHValidationImages : IEndpoint
             .DisableAntiforgery()
             .RequireAuthorization()
             .WithName("UploadCNHValidationImages")
-            .WithSummary("Upload CNH images for validation")
+            .WithSummary("Envia as imagens da CNH para validação do locatário autenticado")
             .WithTags("Renters")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)

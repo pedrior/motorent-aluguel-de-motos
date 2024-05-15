@@ -21,7 +21,7 @@ internal sealed class RegisterMotorcycle : IEndpoint
             .RequireAuthorization()
             .WithName("RegisterMotorcycle")
             .WithTags("Motorcycles")
-            .WithSummary("Registers a new motorcycle")
+            .WithSummary("Registra uma nova moto no sistema")
             .Produces<MotorcycleResponse>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status403Forbidden)

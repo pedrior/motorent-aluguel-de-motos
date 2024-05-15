@@ -182,13 +182,11 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasMaxLength(8192)
-                        .HasColumnType("character varying(8192)")
+                        .HasColumnType("character")
                         .HasColumnName("data");
 
                     b.Property<string>("Error")
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)")
+                        .HasColumnType("character")
                         .HasColumnName("error");
 
                     b.Property<DateTimeOffset?>("ProcessedAt")

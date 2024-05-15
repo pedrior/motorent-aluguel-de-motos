@@ -16,12 +16,6 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
 
         builder.Property(o => o.Type)
             .HasMaxLength(OutboxMessageConstants.TypeMaxLength);
-        
-        builder.Property(o => o.Data)
-            .HasMaxLength(OutboxMessageConstants.DataMaxLength);
-
-        builder.Property(o => o.Error)
-            .HasMaxLength(OutboxMessageConstants.ErrorMaxLength);
 
         builder.ToTable(OutboxMessageConstants.TableName);
         

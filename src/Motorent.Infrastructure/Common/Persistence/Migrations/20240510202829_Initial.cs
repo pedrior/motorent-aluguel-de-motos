@@ -36,8 +36,8 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     type = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    data = table.Column<string>(type: "character varying(8192)", maxLength: 8192, nullable: false),
-                    error = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
+                    data = table.Column<string>(type: "character", maxLength: 8192, nullable: false),
+                    error = table.Column<string>(type: "character", maxLength: 2048, nullable: true),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     processed_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)

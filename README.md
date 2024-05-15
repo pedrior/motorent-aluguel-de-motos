@@ -1,8 +1,8 @@
 # Projeto: Motorent - Aluguel de Motos
 
-Uma API REST para gerenciar aluguel de motos. Este projeto está sendo desenvolvido com ASP.NET Core, EF Core,
-PostgreSQL, Docker/Docker Compose, Arquitetura Limpa, DDD, CQRS, Testes de Unidade, Testes de Integração, boas práticas
-de programação e muito mais.
+Uma API para gerenciar aluguel de motos. Este projeto está sendo desenvolvido com ASP.NET Core, EF Core, PostgreSQL, Docker/Docker Compose,
+RabbitMQ, MassTransit, Arquitetura Limpa, DDD, CQRS, Testes de Unidade, Testes de Integração, boas práticas de programação e outras
+tecnologias.
 
 > Este projeto está sendo inspirado no [desafio backend da Mottu](https://github.com/Mottu-ops/Desafio-BackEnd), porém
 > foi desenvolvido por interesse próprio, não estou participando ou participei de algum processo seletivo da empresa.

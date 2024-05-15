@@ -7,4 +7,5 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .data/
+.rabbitmq/
 .idea/

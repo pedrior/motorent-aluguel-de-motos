@@ -2,6 +2,7 @@ using System.Data.Common;
 using DotNet.Testcontainers.Builders;
 using FakeItEasy;
 using Hangfire;
+using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
@@ -79,6 +80,7 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
             AddPersistence(services);
             AddBackgroundJobs(services);
             AddStorage(services);
+            AddMessaging(services);
         });
     }
 
@@ -139,5 +141,11 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
 
             return fake;
         });
+    }
+
+    private static void AddMessaging(IServiceCollection services)
+    {
+        services.RemoveMassTransitHostedService();
+        services.AddMassTransitTestHarness();
     }
 }

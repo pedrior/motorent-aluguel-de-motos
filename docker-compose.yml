@@ -13,6 +13,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
     environment:
       - ASPNETCORE_URLS=http://+:8080;https://+:8081
@@ -41,3 +43,19 @@ services:
       - POSTGRES_PASSWORD=password
     volumes:
       - .data:/var/lib/postgresql/data
+  
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: motorent-queue
+    hostname: motorent-queue
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 30s
+      retries: 5
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - .rabbitmq/data:/var/lib/rabbitmq
+      - .rabbitmq/logs:/var/log/rabbitmq

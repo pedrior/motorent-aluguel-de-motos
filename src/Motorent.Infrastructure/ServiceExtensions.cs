@@ -2,13 +2,16 @@ using System.Text;
 using Amazon.S3;
 using Hangfire;
 using Hangfire.PostgreSql;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Motorent.Application.Common.Abstractions.Identity;
+using Motorent.Application.Common.Abstractions.Messaging;
 using Motorent.Application.Common.Abstractions.Persistence;
 using Motorent.Application.Common.Abstractions.Security;
 using Motorent.Application.Common.Abstractions.Storage;
@@ -18,6 +21,7 @@ using Motorent.Domain.Renters.Repository;
 using Motorent.Domain.Renters.Services;
 using Motorent.Infrastructure.Common.Identity;
 using Motorent.Infrastructure.Common.Jobs;
+using Motorent.Infrastructure.Common.Messaging;
 using Motorent.Infrastructure.Common.Persistence;
 using Motorent.Infrastructure.Common.Persistence.Interceptors;
 using Motorent.Infrastructure.Common.Security;
@@ -48,7 +52,9 @@ public static class ServiceExtensions
         services.AddBackgroundJobs(configuration);
 
         services.AddStorage(configuration);
-            
+
+        services.AddMessaging(configuration);
+        
         services.AddHttpContextAccessor();
 
         services.AddTransient<TimeProvider>(_ => TimeProvider.System);
@@ -148,5 +154,32 @@ public static class ServiceExtensions
         services.AddAWSService<IAmazonS3>();
         
         services.AddScoped<IStorageService, StorageService>();
+    }
+
+    private static void AddMessaging(this IServiceCollection service, IConfiguration configuration)
+    {
+        service.AddOptions<MessageBusOptions>()
+            .Bind(configuration.GetSection(MessageBusOptions.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        service.AddTransient<IMessageBus, MessageBus>();
+        
+        service.AddMassTransit(config =>
+        {
+            config.SetKebabCaseEndpointNameFormatter();
+
+            config.UsingRabbitMq((context, configurator) =>
+            {
+                var options = context.GetRequiredService<IOptions<MessageBusOptions>>().Value;
+                configurator.Host(options.Host, hostConfigurator =>
+                {
+                    hostConfigurator.Username(options.Username);
+                    hostConfigurator.Password(options.Password);
+                });
+                
+                configurator.ConfigureEndpoints(context);
+            });
+        });
     }
 }

@@ -18,7 +18,7 @@ internal static class MotorcycleValidations
         return rule
             .NotEmpty()
             .WithMessage("Must not be empty.")
-            .Must(v => Brand.IsDefined(v))
+            .Must(v => Brand.IsDefined(v, ignoreCase: true))
             .WithMessage($"Must be one of the following: {string.Join(", ", Brand.List)}.");
     }
 

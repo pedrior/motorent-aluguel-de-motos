@@ -20,7 +20,7 @@ internal sealed class RegisterMotorcycleCommandHandler(
     public async Task<Result<MotorcycleResponse>> Handle(RegisterMotorcycleCommand command,
         CancellationToken cancellationToken)
     {
-        var brand = Brand.FromName(command.Brand);
+        var brand = Brand.FromName(command.Brand, ignoreCase: true);
         var year = Year.Create(command.Year);
         var dailyPrice = Money.Create(command.DailyPrice);
         var licensePlate = LicensePlate.Create(command.LicensePlate);

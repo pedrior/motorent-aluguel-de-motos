@@ -36,7 +36,7 @@ services:
       timeout: 30s
       retries: 5
     ports:
-      - "8003:5432"
+      - "8002:5432"
     environment:
       - POSTGRES_DB=motorent
       - POSTGRES_USER=root
@@ -53,6 +53,8 @@ services:
       interval: 10s
       timeout: 30s
       retries: 5
+    ports:
+      - "8003:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest

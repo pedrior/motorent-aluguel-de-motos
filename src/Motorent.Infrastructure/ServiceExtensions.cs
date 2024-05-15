@@ -27,6 +27,7 @@ using Motorent.Infrastructure.Common.Persistence.Interceptors;
 using Motorent.Infrastructure.Common.Security;
 using Motorent.Infrastructure.Common.Storage;
 using Motorent.Infrastructure.Motorcycles;
+using Motorent.Infrastructure.Motorcycles.Consumers;
 using Motorent.Infrastructure.Motorcycles.Persistence;
 using Motorent.Infrastructure.Renters;
 using Motorent.Infrastructure.Renters.Persistence;
@@ -180,6 +181,8 @@ public static class ServiceExtensions
                 
                 configurator.ConfigureEndpoints(context);
             });
+            
+            config.AddConsumer<MotorcycleRegisteredConsumer>();
         });
     }
 }

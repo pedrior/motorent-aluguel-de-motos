@@ -1,5 +1,7 @@
+using Motorent.Application.Common.Abstractions.Messaging;
 using Motorent.Application.Common.Mappings;
 using Motorent.Application.Motorcycles.Common.Mappings;
+using Motorent.Application.Motorcycles.Common.Messaging;
 using Motorent.Application.Motorcycles.RegisterMotorcycle;
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles;
@@ -15,6 +17,7 @@ public sealed class RegisterMotorcycleCommandHandlerTests
 {
     private readonly IMotorcycleRepository motorcycleRepository = A.Fake<IMotorcycleRepository>();
     private readonly ILicensePlateService licensePlateService = A.Fake<ILicensePlateService>();
+    private readonly IMessageBus messageBus = A.Fake<IMessageBus>();
 
     private readonly RegisterMotorcycleCommandHandler sut;
 
@@ -39,7 +42,7 @@ public sealed class RegisterMotorcycleCommandHandlerTests
         TypeAdapterConfig.GlobalSettings.Apply(new CommonMappings());
         TypeAdapterConfig.GlobalSettings.Apply(new MotorcycleMappings());
 
-        sut = new RegisterMotorcycleCommandHandler(motorcycleRepository, licensePlateService);
+        sut = new RegisterMotorcycleCommandHandler(motorcycleRepository, licensePlateService, messageBus);
     }
 
     [Fact]
@@ -71,6 +74,22 @@ public sealed class RegisterMotorcycleCommandHandlerTests
 
         // Assert
         A.CallTo(() => motorcycleRepository.AddAsync(A<Motorcycle>._, A<CancellationToken>._))
+            .MustHaveHappenedOnceExactly();
+    }
+
+    [Fact]
+    public async Task Handle_WhenCalledWithValidCommand_ShouldPublishMotorcycleRegisteredMessage()
+    {
+        // Arrange
+        var licensePlate = LicensePlate.Create(Command.LicensePlate).Value;
+        A.CallTo(() => licensePlateService.IsUniqueAsync(licensePlate, A<CancellationToken>._))
+            .Returns(true);
+
+        // Act
+        await sut.Handle(Command, CancellationToken.None);
+
+        // Assert
+        A.CallTo(() => messageBus.PublishAsync(A<MotorcycleRegisteredMessage>._, A<CancellationToken>._))
             .MustHaveHappenedOnceExactly();
     }
 

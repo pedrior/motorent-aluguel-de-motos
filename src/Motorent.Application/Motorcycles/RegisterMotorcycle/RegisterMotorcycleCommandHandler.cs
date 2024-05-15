@@ -1,4 +1,6 @@
+using Motorent.Application.Common.Abstractions.Messaging;
 using Motorent.Application.Common.Abstractions.Requests;
+using Motorent.Application.Motorcycles.Common.Messaging;
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Common.ValueObjects;
 using Motorent.Domain.Motorcycles;
@@ -11,7 +13,8 @@ namespace Motorent.Application.Motorcycles.RegisterMotorcycle;
 
 internal sealed class RegisterMotorcycleCommandHandler(
     IMotorcycleRepository motorcycleRepository,
-    ILicensePlateService licensePlateService)
+    ILicensePlateService licensePlateService,
+    IMessageBus messageBus)
     : ICommandHandler<RegisterMotorcycleCommand, MotorcycleResponse>
 {
     public async Task<Result<MotorcycleResponse>> Handle(RegisterMotorcycleCommand command,
@@ -40,6 +43,23 @@ internal sealed class RegisterMotorcycleCommandHandler(
 
         return await result
             .ThenAsync(motorcycle => motorcycleRepository.AddAsync(motorcycle, cancellationToken))
+            .ThenAsync(async motorcycle =>
+            {
+                await PublishMotorcycleRegisteredMessage(motorcycle, cancellationToken);
+                return motorcycle;
+            })
             .Then(motorcycle => motorcycle.Adapt<MotorcycleResponse>());
+    }
+
+    private Task PublishMotorcycleRegisteredMessage(Motorcycle motorcycle, CancellationToken cancellationToken)
+    {
+        return messageBus.PublishAsync(new MotorcycleRegisteredMessage(
+                MotorcycleId: motorcycle.Id.Value,
+                Model: motorcycle.Model,
+                Brand: motorcycle.Brand.ToString(),
+                Year: motorcycle.Year.Value,
+                CreatedAt: DateTimeOffset.UtcNow
+            ),
+            cancellationToken);
     }
 }

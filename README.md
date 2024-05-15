@@ -49,7 +49,7 @@ Seu objetivo é criar uma aplicação para gerenciar aluguel de motos e entregad
         - ⬜ Para plano de 15 dias o valor da multa é de 40% sobre o valor das diárias não efetivadas.
     - ⬜ Quando a data informada for superior a data prevista do término, será cobrado um valor adicional de R$50,00 por diária adicional.
 
-## 🚀 Guia de Execução
+## 🔰 Guia de Execução
 
 ### Pré-requisitos
 
@@ -104,20 +104,17 @@ dotnet ef database update -s src/Motorent.Api -p src/Motorent.Infrastructure
 docker compose up --build -d
 ```
 
+## 🔗 URLS
+
+__Documentação da API:__ [https://localhost:8001/swagger/index.html](https://localhost:8001/swagger/index.html)\
+__Gerenciamento do RabbitMQ:__ [https://localhost:8003](https://localhost:8003)
+
 ## 🌐 API
 
 A API está disponível em:
 
 ```plain
 https://localhost:8081/api/{version}
-```
-
-### Endpoints
-
-Acesse a documentação da API para obter informações detalhadas sobre os endpoints disponíveis.
-
-```plain
-https://localhost:8001/swagger/index.html
 ```
 
 ### Versionamento

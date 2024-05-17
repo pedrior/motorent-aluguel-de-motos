@@ -21,7 +21,7 @@ Seu objetivo é criar uma aplicação para gerenciar aluguel de motos e entregad
   - ✅ Quando a moto for cadastrada a aplicação deverá gerar um evento de moto cadastrada
     - ✅ A notificação deverá ser publicada por mensageria.
     - ✅ Criar um consumidor para notificar quando o ano da moto for "2024"
-    - ⬜ Assim que a mensagem for recebida, deverá ser armazenada no banco de dados para consulta futura.
+    - ✅ Assim que a mensagem for recebida, deverá ser armazenada no banco de dados para consulta futura.
 - ✅ Eu como usuário admin quero consultar as motos existentes na plataforma e conseguir filtrar pela placa.
 - ✅ Eu como usuário admin quero modificar uma moto alterando apenas sua placa que foi cadastrado indevidamente
 - ✅ Eu como usuário admin quero remover uma moto que foi cadastrado incorretamente, desde que não tenha registro de

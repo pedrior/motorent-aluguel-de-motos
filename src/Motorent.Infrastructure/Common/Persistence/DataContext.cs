@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Renters;
 using Motorent.Infrastructure.Common.Identity;
+using Motorent.Infrastructure.Common.Messaging;
 using Motorent.Infrastructure.Common.Outbox;
 
 namespace Motorent.Infrastructure.Common.Persistence;
@@ -23,6 +24,8 @@ internal class DataContext : DbContext
     public DbSet<Renter> Renters => Set<Renter>();
 
     public DbSet<User> Users => Set<User>();
+    
+    public DbSet<MessageLog> MessageLogs => Set<MessageLog>();
 
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 

@@ -165,11 +165,13 @@ public static class ServiceExtensions
             .ValidateOnStart();
 
         service.AddTransient<IMessageBus, MessageBus>();
+
+        service.AddReceiveObserver<MessageLogging>();
         
         service.AddMassTransit(config =>
         {
             config.SetKebabCaseEndpointNameFormatter();
-
+            
             config.UsingRabbitMq((context, configurator) =>
             {
                 var options = context.GetRequiredService<IOptions<MessageBusOptions>>().Value;

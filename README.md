@@ -15,7 +15,7 @@ issue ou entre em contato.
 Seu objetivo é criar uma aplicação para gerenciar aluguel de motos e entregadores.
 
 #### Casos de uso
-- ✅ check Eu como usuário admin quero cadastrar uma nova moto.
+- ✅ Eu como usuário admin quero cadastrar uma nova moto.
   - ✅ Os dados obrigatórios da moto são Identificador, Ano, Modelo e Placa
   - ✅ A placa é um dado único e não pode se repetir.
   - ✅ Quando a moto for cadastrada a aplicação deverá gerar um evento de moto cadastrada

@@ -113,7 +113,7 @@ docker compose up --build -d
 ## 🔗 URLS
 
 __Documentação da API:__ [https://localhost:8001/swagger/index.html](https://localhost:8001/swagger/index.html)\
-__Gerenciamento do RabbitMQ:__ [https://localhost:8003](https://localhost:8003)
+__Gerenciamento do RabbitMQ:__ [http://localhost:8003](https://localhost:8003)
 
 ## 🌐 API
 

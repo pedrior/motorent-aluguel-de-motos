@@ -6,6 +6,8 @@ boas práticas de programação e outras tecnologias.
 
 > Este projeto está sendo inspirado no [desafio backend da Mottu](https://github.com/Mottu-ops/Desafio-BackEnd), porém
 > foi desenvolvido por interesse próprio, não estou participando ou participei de algum processo seletivo da empresa.
+> Sendo assim, ainda é importante ressaltar que esse projeto não segue por completo a sua proposta original. Há casos
+> uso modificados e adicionados.
 
 Este é um projeto feito por hobby. Se tiver alguma pergunta, recomendação ou qualquer outra questão, por favor abra uma
 issue ou entre em contato.

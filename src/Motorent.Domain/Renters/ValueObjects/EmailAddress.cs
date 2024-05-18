@@ -5,7 +5,7 @@ namespace Motorent.Domain.Renters.ValueObjects;
 
 public sealed partial class EmailAddress : ValueObject
 {
-    public static readonly Error Invalid = Error.Validation("The email address is invalid.", code: "email");
+    internal static readonly Error Invalid = Error.Validation("O endereço de e-mail é inválido.");
 
     private EmailAddress()
     {

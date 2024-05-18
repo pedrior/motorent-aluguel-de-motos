@@ -5,9 +5,9 @@ namespace Motorent.Domain.Renters.ValueObjects;
 
 public sealed class CNH : ValueObject
 {
-    public static readonly Error Expired = Error.Validation("The CNH is expired.", code: "cnh");
+    internal static readonly Error Expired = Error.Validation("A CNH está expirada.");
 
-    public static readonly Error Invalid = Error.Validation("Invalid CNH number.", code: "cnh");
+    internal static readonly Error Invalid = Error.Validation("Número de CNH é inválido.");
 
     private const string CNHOnes = "11111111111";
 

@@ -2,8 +2,8 @@ namespace Motorent.Domain.Common.ValueObjects;
 
 public sealed class Money : ValueObject
 {
-    public static readonly Error CannotBeNegative = Error.Validation(
-        "Money cannot be negative.", code: "money");
+    internal static readonly Error CannotBeNegative = Error.Validation(
+        "O valor monetário não pode ser negativo.");
 
     private Money()
     {

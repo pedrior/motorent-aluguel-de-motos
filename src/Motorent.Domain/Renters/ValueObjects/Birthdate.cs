@@ -4,8 +4,8 @@ namespace Motorent.Domain.Renters.ValueObjects;
 
 public sealed class Birthdate : ValueObject
 {
-    public static readonly Error MustBeAtLeast18YearsOld = Error.Validation(
-        "Must be at least 18 years old.", code: "birthdate");
+    internal static readonly Error MustBeAtLeast18YearsOld = Error.Validation(
+        "Deve ter pelo menos 18 anos de idade.");
 
     private Birthdate()
     {

@@ -4,8 +4,8 @@ namespace Motorent.Domain.Motorcycles.ValueObjects;
 
 public sealed class Year : ValueObject
 {
-    public static readonly Error YearTooOld = Error.Validation(
-        "The year provided is too old. Must be at most 5 years old.", code: "year");
+    internal static readonly Error ToolOld = Error.Validation(
+        "O ano da moto não deve ser inferior a 5 anos.");
  
     private const int YearsOldThreshold = 5;
     
@@ -19,7 +19,7 @@ public sealed class Year : ValueObject
     {
         return value >= DateTime.UtcNow.Year - YearsOldThreshold 
             ? new Year { Value = value } 
-            : YearTooOld;
+            : ToolOld;
     }
     
     public override string ToString() => Value.ToString();

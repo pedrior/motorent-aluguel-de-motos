@@ -5,9 +5,8 @@ namespace Motorent.Domain.Motorcycles.ValueObjects;
 
 public sealed partial class LicensePlate : ValueObject
 {
-    public static readonly Error Malformed = Error.Validation(
-        "The license plate provided is invalid. Must be in the format AAA0A00.", 
-        code: "license_plate");
+    internal static readonly Error Malformed = Error.Validation(
+        "A placa da moto deve estár no formato AAA1A11.");
     
     private LicensePlate()
     {

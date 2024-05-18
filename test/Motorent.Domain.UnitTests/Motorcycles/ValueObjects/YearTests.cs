@@ -34,7 +34,7 @@ public sealed class YearTests
     }
 
     [Fact]
-    public void Create_WhenValueIsOlderThan5Years_ShouldReturnYearTooOld()
+    public void Create_WhenValueIsOlderThan5Years_ShouldReturnToolOld()
     {
         // Arrange
         const int value = 2010;
@@ -43,6 +43,6 @@ public sealed class YearTests
         var result = Year.Create(value);
 
         // Assert
-        result.Should().BeFailure(Year.YearTooOld);
+        result.Should().BeFailure(Year.ToolOld);
     }
 }

@@ -4,7 +4,7 @@ namespace Motorent.Domain.Renters.ValueObjects;
 
 public sealed class CNPJ : ValueObject
 {
-    public static readonly Error Invalid = Error.Validation("The CNPJ is invalid.", code: "cnpj");
+    internal static readonly Error Invalid = Error.Validation("O CNPJ é inválido.");
 
     private const int Length = 14;
     private const int MaxLength = 18;

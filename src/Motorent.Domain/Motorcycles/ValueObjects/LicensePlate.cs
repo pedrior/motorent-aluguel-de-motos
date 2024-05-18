@@ -6,7 +6,7 @@ namespace Motorent.Domain.Motorcycles.ValueObjects;
 public sealed partial class LicensePlate : ValueObject
 {
     public static readonly Error Malformed = Error.Validation(
-        "The license plate provided is invalid. Must be in the format 'AAA-0A00' or 'AAA0A00'.", 
+        "The license plate provided is invalid. Must be in the format AAA0A00.", 
         code: "license_plate");
     
     private LicensePlate()
@@ -17,7 +17,7 @@ public sealed partial class LicensePlate : ValueObject
 
     public static Result<LicensePlate> Create(string value)
     {
-        value = value.ToUpperInvariant().Replace("-", string.Empty);
+        value = value.ToUpperInvariant();
         return IsValid(value)
             ? new LicensePlate { Value = value }
             : Malformed;
@@ -32,6 +32,6 @@ public sealed partial class LicensePlate : ValueObject
         yield return Value;
     }
 
-    [GeneratedRegex("^[A-Z]{3}[0-9][A-Z][0-9]{2}$", RegexOptions.Compiled | RegexOptions.IgnoreCase)]
+    [GeneratedRegex("^[A-Z]{3}[0-9][A-Z][0-9]{2}$", RegexOptions.Compiled)]
     private static partial Regex LicensePlateRegex();
 }

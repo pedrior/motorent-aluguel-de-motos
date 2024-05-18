@@ -12,7 +12,7 @@ internal static partial class Requests
             Brand = "honda",
             Year = DateTime.Today.Year - 2,
             DailyPrice = 38.99m,
-            LicensePlate = "PIA-2A91"
+            LicensePlate = "PIA2A91"
         };
 
         public static readonly ListMotorcyclesRequest ListMotorcyclesRequest = new()
@@ -26,7 +26,7 @@ internal static partial class Requests
 
         public static readonly UpdateLicensePlateRequest UpdateLicensePlateRequest = new()
         {
-            LicensePlate = "KIL-2H17"
+            LicensePlate = "KIL2H17"
         };
 
         public static readonly UpdateDailyPriceRequest UpdateDailyPriceRequest = new()

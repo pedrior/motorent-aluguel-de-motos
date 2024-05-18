@@ -54,7 +54,7 @@ public sealed class GetMotorcycleTests(WebApplicationFactory api) : WebApplicati
     public async Task GetMotorcycle_WhenMotorcycleDoesNotExistByLicensePlate_ShouldReturnNotFound()
     {
         // Arrange
-        var request = Requests.Motorcycle.GetMotorcycle("JPH-8H87");
+        var request = Requests.Motorcycle.GetMotorcycle("JPH8H87");
         
         // Act
         var result = await Client.SendAsync(request);

@@ -19,7 +19,7 @@ public sealed class UpdateLicensePlateCommandHandlerTests
     private readonly UpdateLicensePlateCommand command = new()
     {
         Id = Ulid.NewUlid(),
-        LicensePlate = "HAC-8Y96"
+        LicensePlate = "HAC8Y96"
     };
 
     public UpdateLicensePlateCommandHandlerTests()
@@ -77,7 +77,7 @@ public sealed class UpdateLicensePlateCommandHandlerTests
         
         var commandWithInvalidLicensePlate = command with
         {
-            LicensePlate = "invalid"
+            LicensePlate = "RIP5555"
         };
         
         A.CallTo(() => motorcycleRepository.FindAsync(motorcycleId, A<CancellationToken>._))

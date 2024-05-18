@@ -18,6 +18,6 @@ public static partial class Constants
         
         public static readonly Money DailyPrice = Money.Create(38.99m).Value;
 
-        public static readonly LicensePlate LicensePlate = LicensePlate.Create("PIA-2A91").Value;
+        public static readonly LicensePlate LicensePlate = LicensePlate.Create("PIA2A91").Value;
     }
 }

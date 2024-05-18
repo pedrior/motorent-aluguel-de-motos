@@ -74,7 +74,7 @@ public sealed class ListMotorcyclesTests(WebApplicationFactory api) : WebApplica
         for (var i = 0; i < count; i++)
         {
             var id = MotorcycleId.New();
-            var licensePlate = LicensePlate.Create($"PKP-{i % 9}A{i + 1 % 9}{i + 2 % 9}").Value;
+            var licensePlate = LicensePlate.Create($"PKP{i % 9}A{i + 1 % 9}{i + 2 % 9}").Value;
             motorcycles.Add((await Factories.Motorcycle.CreateAsync(id: id, licensePlate: licensePlate)).Value);
         }
 

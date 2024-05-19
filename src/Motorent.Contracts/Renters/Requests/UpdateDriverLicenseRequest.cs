@@ -6,5 +6,5 @@ public sealed record UpdateDriverLicenseRequest
     
     public string Category { get; init; } = null!;
 
-    public DateOnly ExpDate { get; init; }
+    public DateOnly Expiry { get; init; }
 }

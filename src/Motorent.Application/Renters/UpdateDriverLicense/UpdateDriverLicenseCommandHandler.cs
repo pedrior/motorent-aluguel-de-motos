@@ -17,7 +17,7 @@ internal sealed class UpdateDriverLicenseCommandHandler(
         var driverLicense = DriverLicense.Create(
             number: command.Number,
             category: DriverLicenseCategory.FromName(command.Category, ignoreCase: true),
-            expiry: command.ExpDate);
+            expiry: command.Expiry);
 
         if (driverLicense.IsFailure)
         {

@@ -12,7 +12,7 @@ internal sealed class UpdateDriverLicenseCommandValidator : AbstractValidator<Up
         RuleFor(x => x.Category)
             .DriverLicenseCategory();
 
-        RuleFor(x => x.ExpDate)
+        RuleFor(x => x.Expiry)
             .DriverLicenseExpiry();
     }
 }

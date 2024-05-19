@@ -28,7 +28,7 @@ public sealed partial class RenterEndpointsTests
 
         renter.DriverLicense.Number.Should().Be(Requests.Renter.UpdateDriverLicenseRequest.Number);
         renter.DriverLicense.Category.Name.Should().BeEquivalentTo(Requests.Renter.UpdateDriverLicenseRequest.Category);
-        renter.DriverLicense.Expiry.Should().Be(Requests.Renter.UpdateDriverLicenseRequest.ExpDate);
+        renter.DriverLicense.Expiry.Should().Be(Requests.Renter.UpdateDriverLicenseRequest.Expiry);
     }
 
     [Fact]

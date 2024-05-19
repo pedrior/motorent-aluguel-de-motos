@@ -21,7 +21,7 @@ public sealed class UpdateDriverLicenseCommandHandlerTests
     {
         Number = "92353762700",
         Category = "ab",
-        ExpDate = new DateOnly(DateTime.Today.Year + 1, 01, 01)
+        Expiry = new DateOnly(DateTime.Today.Year + 1, 01, 01)
     };
 
     private readonly string userId = Ulid.NewUlid().ToString();
@@ -52,7 +52,7 @@ public sealed class UpdateDriverLicenseCommandHandlerTests
         // Assert
         renter.DriverLicense.Number.Should().Be(command.Number);
         renter.DriverLicense.Category.Name.Should().BeEquivalentTo(command.Category);
-        renter.DriverLicense.Expiry.Should().Be(command.ExpDate);
+        renter.DriverLicense.Expiry.Should().Be(command.Expiry);
     }
 
     [Fact]

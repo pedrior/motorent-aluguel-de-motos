@@ -8,5 +8,5 @@ public sealed record UpdateDriverLicenseCommand : ICommand, ITransactional
     
     public required string Category { get; init; }
     
-    public required DateOnly ExpDate { get; init; }
+    public required DateOnly Expiry { get; init; }
 }

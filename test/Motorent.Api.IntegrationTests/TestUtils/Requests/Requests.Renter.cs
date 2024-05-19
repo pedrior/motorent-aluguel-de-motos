@@ -17,7 +17,7 @@ internal static partial class Requests
         {
             Number = "19452106448",
             Category = "B",
-            ExpDate = new DateOnly(DateTime.Today.Year + 2, 10, 25)
+            Expiry = new DateOnly(DateTime.Today.Year + 2, 10, 25)
         };
 
         public static HttpRequestMessage GetProfile() => Get("v1/renters");

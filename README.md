@@ -99,6 +99,10 @@ docker compose up --build -d
 
 ## 🌐 API
 
+> Alguns endpoints requerem um usuário administrador. Para isso, basta fazer login usando as credenciais:
+> email: john@admin.com\
+> password: John@123
+
 ### URLs
 
 __API:__ [https://localhost:8001/api/v1](https://localhost:8001/api/v1)\

@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Motorent.Contracts.Renters.Responses;
 
 public sealed record RenterDriverLicenseResponse

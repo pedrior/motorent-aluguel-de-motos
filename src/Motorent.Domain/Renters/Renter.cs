@@ -15,7 +15,7 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
 
     public string UserId { get; init; } = null!;
 
-    public CNPJ CNPJ { get; init; } = null!;
+    public Document Document { get; init; } = null!;
 
     public EmailAddress Email { get; init; } = null!;
 
@@ -32,18 +32,18 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
     public static async Task<Result<Renter>> CreateAsync(
         RenterId id,
         string userId,
-        CNPJ cnpj,
+        Document document,
         EmailAddress email,
         FullName fullName,
         Birthdate birthdate,
         CNH cnh,
-        ICNPJService cnpjService,
+        IDocumentService documentService,
         ICNHService cnhService,
         CancellationToken cancellationToken = default)
     {
-        if (!await cnpjService.IsUniqueAsync(cnpj, cancellationToken))
+        if (!await documentService.IsUniqueAsync(document, cancellationToken))
         {
-            return RenterErrors.CNPJNotUnique(cnpj);
+            return RenterErrors.DocumentNotUnique(document);
         }
 
         if (!await cnhService.IsUniqueAsync(cnh, cancellationToken))
@@ -54,7 +54,7 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         return new Renter(id)
         {
             UserId = userId,
-            CNPJ = cnpj,
+            Document = document,
             Email = email,
             FullName = fullName,
             Birthdate = birthdate,

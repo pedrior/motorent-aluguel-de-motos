@@ -15,7 +15,7 @@ public sealed record RegisterCommand : ICommand<TokenResponse>, ITransactional
 
     public required DateOnly Birthdate { get; init; }
 
-    public required string CNPJ { get; init; }
+    public required string Document { get; init; }
 
     public required string CNHNumber { get; init; }
 

@@ -22,8 +22,8 @@ internal sealed class RegisterCommandValidator : AbstractValidator<RegisterComma
         RuleFor(x => x.Birthdate)
             .Birthdate();
 
-        RuleFor(x => x.CNPJ)
-            .CNPJ();
+        RuleFor(x => x.Document)
+            .Document();
 
         RuleFor(x => x.CNHNumber)
             .CNHNumber();

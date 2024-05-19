@@ -25,7 +25,7 @@ internal static class CommonValidations
             .WithMessage("Deve estar no passado.");
     }
     
-    public static IRuleBuilderOptions<T, string> CNPJ<T>(this IRuleBuilder<T, string> builder)
+    public static IRuleBuilderOptions<T, string> Document<T>(this IRuleBuilder<T, string> builder)
     {
         return builder
             .NotEmpty()

@@ -12,10 +12,10 @@ internal static class RenterErrors
         "A CNH não está esperando aprovação.", 
         code: "renter.cnh_is_not_waiting_approval");
     
-    public static Error CNPJNotUnique(CNPJ cnpj) => Error.Conflict(
-        "Já existe locatário com o mesmo CNPJ no sistema",
-        code: "renter.cnpj_not_unique",
-        details: new() { ["cnpj"] = cnpj.ToString() });
+    public static Error DocumentNotUnique(Document document) => Error.Conflict(
+        "Já existe locatário com o mesmo documento CNPJ no sistema",
+        code: "renter.document_not_unique",
+        details: new() { ["document"] = document.ToString() });
     
     public static Error CNHNotUnique(CNH cnh) => Error.Conflict(
         "Já existe locatário com a mesma CNH no sistema",

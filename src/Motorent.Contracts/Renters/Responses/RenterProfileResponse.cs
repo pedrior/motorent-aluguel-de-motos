@@ -2,7 +2,7 @@ namespace Motorent.Contracts.Renters.Responses;
 
 public sealed record RenterProfileResponse
 {
-    public string CNPJ { get; init; } = null!;
+    public string Document { get; init; } = null!;
     
     public string Email { get; init; } = null!;
     

@@ -2,9 +2,9 @@ using Motorent.Domain.Common.ValueObjects;
 
 namespace Motorent.Domain.Renters.ValueObjects;
 
-public sealed class CNPJ : ValueObject
+public sealed class Document : ValueObject
 {
-    internal static readonly Error Invalid = Error.Validation("O CNPJ é inválido.");
+    internal static readonly Error Invalid = Error.Validation("Documento CNPJ inválido.");
 
     private const int Length = 14;
     private const int MaxLength = 18;
@@ -12,17 +12,17 @@ public sealed class CNPJ : ValueObject
     private static readonly int[] Multipliers1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
     private static readonly int[] Multipliers2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 
-    private CNPJ()
+    private Document()
     {
     }
 
     public string Value { get; private init; } = null!;
 
-    public static Result<CNPJ> Create(string value)
+    public static Result<Document> Create(string value)
     {
-        return IsCNPJInvalid(value) 
+        return IsDocumentInvalid(value) 
             ? Invalid 
-            : new CNPJ { Value = value };
+            : new Document { Value = value };
     }
 
     public override string ToString() => Value;
@@ -32,7 +32,7 @@ public sealed class CNPJ : ValueObject
         yield return Value;
     }
 
-    private static bool IsCNPJInvalid(string value)
+    private static bool IsDocumentInvalid(string value)
     {
         if (value.Length is < Length or > MaxLength)
         {

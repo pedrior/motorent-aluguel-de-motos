@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Motorent.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240519112806_Initial")]
+    [Migration("20240519194345_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -89,11 +89,11 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("character varying(20)")
                         .HasColumnName("cnh_status");
 
-                    b.Property<string>("CNPJ")
+                    b.Property<string>("Document")
                         .IsRequired()
                         .HasMaxLength(18)
                         .HasColumnType("character varying(18)")
-                        .HasColumnName("cnpj");
+                        .HasColumnName("document");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -160,10 +160,10 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "01HY89QQM2T5THZCM1KXDZ10G5",
+                            Id = "01HY9639QWNYNH3MPHEW9ENMJP",
                             Claims = new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" },
                             Email = "john@admin.com",
-                            PasswordHash = "tjwy+Xf1NuBHtFdh75cVsNtnfa9qwQJYZ+4BNYCgU+E=:1zaGX5TNm+4XWPwDIa4U6g==:50000:SHA256",
+                            PasswordHash = "BCKPB28VW+3pCeUGvDbp7RMsHSDX1PHaAMbPKhz9OI8=:cAvXcZgrXnxm+Epb2+ZZEA==:50000:SHA256",
                             Roles = new[] { "admin" }
                         });
                 });

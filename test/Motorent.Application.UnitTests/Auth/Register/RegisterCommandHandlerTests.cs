@@ -17,7 +17,7 @@ public sealed class RegisterCommandHandlerTests
     private readonly IUserService userService = A.Fake<IUserService>();
     private readonly ISecurityTokenProvider securityTokenProvider = A.Fake<ISecurityTokenProvider>();
     private readonly IRenterRepository renterRepository = A.Fake<IRenterRepository>();
-    private readonly ICNPJService cnpjService = A.Fake<ICNPJService>();
+    private readonly IDocumentService documentService = A.Fake<IDocumentService>();
     private readonly ICNHService cnhService = A.Fake<ICNHService>();
 
     private readonly RegisterCommandHandler sut;
@@ -29,7 +29,7 @@ public sealed class RegisterCommandHandlerTests
         GivenName = "John",
         FamilyName = "Doe",
         Birthdate = new DateOnly(2000, 09, 05),
-        CNPJ = "18.864.014/0001-19",
+        Document = "18.864.014/0001-19",
         CNHNumber = "92353762700",
         CNHCategory = "ab",
         CNHExpDate = new DateOnly(DateTime.Today.Year + 1, 01, 01)
@@ -43,7 +43,7 @@ public sealed class RegisterCommandHandlerTests
             userService,
             securityTokenProvider,
             renterRepository,
-            cnpjService,
+            documentService,
             cnhService);
 
         A.CallTo(() => userService.CreateUserAsync(
@@ -54,7 +54,7 @@ public sealed class RegisterCommandHandlerTests
                 A<CancellationToken>._))
             .Returns(userId);
 
-        A.CallTo(() => cnpjService.IsUniqueAsync(A<CNPJ>._, A<CancellationToken>._))
+        A.CallTo(() => documentService.IsUniqueAsync(A<Document>._, A<CancellationToken>._))
             .Returns(true);
 
         A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
@@ -98,7 +98,7 @@ public sealed class RegisterCommandHandlerTests
         var renter = (await Factories.Renter.CreateAsync(
                 userId: userId,
                 email: EmailAddress.Create(command.Email).Value,
-                cnpj: CNPJ.Create(command.CNPJ).Value,
+                document: Document.Create(command.Document).Value,
                 fullName: new FullName(command.GivenName, command.FamilyName),
                 birthdate: Birthdate.Create(command.Birthdate).Value,
                 cnh: CNH.Create(
@@ -114,7 +114,7 @@ public sealed class RegisterCommandHandlerTests
         A.CallTo(() => renterRepository.AddAsync(
                 A<Renter>.That.Matches(
                     r => r.UserId == userId
-                         && r.CNPJ == renter.CNPJ
+                         && r.Document == renter.Document
                          && r.Email == renter.Email
                          && r.FullName == renter.FullName
                          && r.Birthdate == renter.Birthdate

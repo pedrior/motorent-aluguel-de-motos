@@ -8,7 +8,7 @@ internal sealed class RenterMappings : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<CNPJ, string>()
+        config.NewConfig<Document, string>()
             .ConstructUsing(src => src.ToString());
         
         config.NewConfig<EmailAddress, string>()

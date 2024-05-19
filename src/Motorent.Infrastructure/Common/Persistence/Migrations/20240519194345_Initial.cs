@@ -67,7 +67,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                 {
                     id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
                     user_id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
-                    cnpj = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: false),
+                    document = table.Column<string>(type: "character varying(18)", maxLength: 18, nullable: false),
                     email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     given_name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     family_name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
@@ -101,7 +101,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "id", "claims", "email", "password_hash", "roles" },
-                values: new object[] { "01HY89QQM2T5THZCM1KXDZ10G5", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "tjwy+Xf1NuBHtFdh75cVsNtnfa9qwQJYZ+4BNYCgU+E=:1zaGX5TNm+4XWPwDIa4U6g==:50000:SHA256", new[] { "admin" } });
+                values: new object[] { "01HY9639QWNYNH3MPHEW9ENMJP", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "BCKPB28VW+3pCeUGvDbp7RMsHSDX1PHaAMbPKhz9OI8=:cAvXcZgrXnxm+Epb2+ZZEA==:50000:SHA256", new[] { "admin" } });
 
             migrationBuilder.CreateIndex(
                 name: "ix_motorcycles_license_plate",

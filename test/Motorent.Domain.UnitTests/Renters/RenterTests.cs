@@ -10,7 +10,7 @@ namespace Motorent.Domain.UnitTests.Renters;
 [TestSubject(typeof(Renter))]
 public sealed class RenterTests
 {
-    private readonly ICNPJService cnpjService = A.Fake<ICNPJService>();
+    private readonly IDocumentService documentService = A.Fake<IDocumentService>();
     private readonly ICNHService cnhService = A.Fake<ICNHService>();
 
     [Fact]
@@ -26,18 +26,18 @@ public sealed class RenterTests
     }
 
     [Fact]
-    public async Task CreateAsync_WhenCNPJIsNotUnique_ShouldReturnCnpjIsNotUniquer()
+    public async Task CreateAsync_WhenDocumentIsNotUnique_ShouldReturnDocumentIsNotUniquer()
     {
         // Arrange
-        var cnpj = Constants.Renter.CNPJ;
-        A.CallTo(() => cnpjService.IsUniqueAsync(cnpj, A<CancellationToken>._))
+        var document = Constants.Renter.Document;
+        A.CallTo(() => documentService.IsUniqueAsync(document, A<CancellationToken>._))
             .Returns(false);
 
         // Act
-        var result = await Factories.Renter.CreateAsync(cnpjService: cnpjService);
+        var result = await Factories.Renter.CreateAsync(documentService: documentService);
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNPJNotUnique(cnpj));
+        result.Should().BeFailure(RenterErrors.DocumentNotUnique(document));
     }
 
     [Fact]

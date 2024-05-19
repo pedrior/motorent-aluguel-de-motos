@@ -65,7 +65,7 @@ public static class ServiceExtensions
 
         services.AddScoped<ILicensePlateService, LicensePlateService>();
 
-        services.AddScoped<ICNPJService, CNPJService>();
+        services.AddScoped<IDocumentService, DocumentService>();
         services.AddScoped<ICNHService, CNHService>();
 
         return services;

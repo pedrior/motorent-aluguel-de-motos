@@ -27,9 +27,9 @@ internal sealed class RenterConfiguration : IEntityTypeConfiguration<Renter>
         builder.Property(r => r.UserId)
             .HasMaxLength(26);
 
-        builder.Property(r => r.CNPJ)
+        builder.Property(r => r.Document)
             .HasMaxLength(18)
-            .HasConversion(v => v.Value, v => CNPJ.Create(v).Value);
+            .HasConversion(v => v.Value, v => Document.Create(v).Value);
 
         builder.Property(r => r.Email)
             .HasMaxLength(255)

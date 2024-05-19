@@ -14,7 +14,7 @@ public sealed record RegisterRequest
 
     public DateOnly Birthdate { get; init; }
     
-    public string CNPJ { get; init; } = null!;
+    public string Document { get; init; } = null!;
     
     [JsonPropertyName("cnh_number")]
     public string CNHNumber { get; init; } = null!;

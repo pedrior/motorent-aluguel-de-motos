@@ -14,13 +14,13 @@ internal sealed class RegisterCommandHandler(
     IUserService userService,
     ISecurityTokenProvider securityTokenProvider,
     IRenterRepository renterRepository,
-    ICNPJService cnpjService,
+    IDocumentService documentService,
     ICNHService cnhService)
     : ICommandHandler<RegisterCommand, TokenResponse>
 {
     public async Task<Result<TokenResponse>> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        var cnpj = CNPJ.Create(command.CNPJ);
+        var document = Document.Create(command.Document);
         var email = EmailAddress.Create(command.Email);
         var fullName = new FullName(command.GivenName, command.FamilyName);
         var birthdate = Birthdate.Create(command.Birthdate);
@@ -29,7 +29,7 @@ internal sealed class RegisterCommandHandler(
             CNHCategory.FromName(command.CNHCategory, ignoreCase: true),
             command.CNHExpDate);
 
-        var errors = ErrorCombiner.Combine(cnpj, email, birthdate, cnh);
+        var errors = ErrorCombiner.Combine(document, email, birthdate, cnh);
         if (errors.Any())
         {
             return errors;
@@ -50,7 +50,7 @@ internal sealed class RegisterCommandHandler(
         return await result
             .ThenAsync(userId => CreateRenterUserAsync(
                 userId,
-                cnpj.Value,
+                document.Value,
                 email.Value,
                 fullName,
                 birthdate.Value,
@@ -62,7 +62,7 @@ internal sealed class RegisterCommandHandler(
 
     private Task<Result<Renter>> CreateRenterUserAsync(
         string userId,
-        CNPJ cnpj,
+        Document document,
         EmailAddress email,
         FullName fullName,
         Birthdate birthdate,
@@ -72,12 +72,12 @@ internal sealed class RegisterCommandHandler(
         var result = Renter.CreateAsync(
             id: RenterId.New(),
             userId: userId,
-            cnpj: cnpj,
+            document: document,
             email: email,
             fullName: fullName,
             birthdate: birthdate,
             cnh: cnh,
-            cnpjService: cnpjService,
+            documentService: documentService,
             cnhService: cnhService,
             cancellationToken: cancellationToken);
 

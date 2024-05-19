@@ -10,21 +10,21 @@ public static partial class Factories
         public static Task<Result<Domain.Renters.Renter>> CreateAsync(
             RenterId? id = null,
             string? userId = null,
-            CNPJ? cnpj = null,
+            Document? document = null,
             EmailAddress? email = null,
             FullName? fullName = null,
             Birthdate? birthdate = null,
             CNH? cnh = null,
-            ICNPJService? cnpjService = null,
+            IDocumentService? documentService = null,
             ICNHService? cnhService = null)
         {
-            cnpj ??= Constants.Constants.Renter.CNPJ;
+            document ??= Constants.Constants.Renter.Document;
             cnh ??= Constants.Constants.Renter.CNH;
 
-            if (cnpjService is null)
+            if (documentService is null)
             {
-                cnpjService = A.Fake<ICNPJService>();
-                A.CallTo(() => cnpjService.IsUniqueAsync(cnpj, A<CancellationToken>.Ignored))
+                documentService = A.Fake<IDocumentService>();
+                A.CallTo(() => documentService.IsUniqueAsync(document, A<CancellationToken>.Ignored))
                     .Returns(true);
             }
 
@@ -38,12 +38,12 @@ public static partial class Factories
             return Domain.Renters.Renter.CreateAsync(
                 id: id ?? Constants.Constants.Renter.Id,
                 userId: userId ?? Constants.Constants.Renter.UserId,
-                cnpj: cnpj,
+                document: document,
                 email: email ?? Constants.Constants.Renter.Email,
                 fullName: fullName ?? Constants.Constants.Renter.FullName,
                 birthdate: birthdate ?? Constants.Constants.Renter.Birthdate,
                 cnh: cnh,
-                cnpjService: cnpjService,
+                documentService: documentService,
                 cnhService: cnhService);
         }
     }

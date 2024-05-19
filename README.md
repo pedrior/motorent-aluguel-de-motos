@@ -64,7 +64,7 @@ git clone https://github.com/pedrior/motorent-aluguel-de-motos.git
 cd motorent-aluguel-de-motos
 ```
 
-2. Você precisará definir algumas configurações da aplicação em `Motorent.Api > appsettings*.json`:
+2. Forneça as configurações necessárias para a aplicação em `Motorent.Api > appsettings*.json`:
 
 ```json
 {
@@ -84,64 +84,64 @@ cd motorent-aluguel-de-motos
 dotnet dev-certs https -ep ${HOME}/.aspnet/https/motorent.pfx -p password
 ```
 
-4. Execute o banco de dados para aplicar a migração:
+4. Execute o banco de dados e aplique a migração:
 
 ```bash
 docker compose up -d postgres
-```
-
-5. Após a completa inicialização do banco de dados, aplique a migração:
-
-```bash
 dotnet ef database update -s src/Motorent.Api -p src/Motorent.Infrastructure
 ```
-6. Inicie a API:
+
+5. Inicie a API e os serviços necessários via Docker Compose:
 
 ```bash
 docker compose up --build -d
 ```
 
-## 🔗 URLS
-
-__Documentação da API:__ [https://localhost:8001/swagger/index.html](https://localhost:8001/swagger/index.html)\
-__Gerenciamento do RabbitMQ:__ [http://localhost:8003](https://localhost:8003)
-
 ## 🌐 API
 
-A API está disponível em:
+### URLs
 
-```plain
-https://localhost:8081/api/{version}
-```
+__API:__ [https://localhost:8001/api/v1](https://localhost:8001/api/v1)\
+__Documentação:__ [https://localhost:8001/swagger/index.html](https://localhost:8001/swagger/index.html)
 
 ### Versionamento
 
-A API é versionada via URL. Por padrão, todos os endpoints usam a versão `v1`.
-
-```plain
-https://localhost:8081/api/v1
-```
+A API é versionada via URL. Por padrão, todos os endpoints recebem a versão `v1`.
 
 ### Autenticação
 
 A API implementa autenticação via JWT para proteção de endpoints. Ao fazer solicitações autenticadas, é necessário
-incluir o token de acesso no cabeçalho `Authorization` com o esquema `Bearer`.
-
-```plain
-Authorization: Bearer {token-de-acesso}
-```
-
-Se você não fornecer o token de acesso ou fornecer um inválido, você receberá uma resposta `401 Unauthorized`.
+incluir o token de acesso no cabeçalho `Authorization` com o esquema `Bearer`. Se o token de acesso não for fornecido 
+ou for inválido, a API retornará uma resposta `401 Unauthorized`.
 
 ### Autorização
 
 Alguns endpoints podem exigir requisitos específicos para serem executados com sucesso. Se você fizer uma requisição
 autenticada, mas não atender aos requisitos de autorização, receberá uma resposta `403 Forbidden`.
 
+### Respostas
+
+A API utiliza códigos de resposta HTTP padrão para indicar o sucesso ou falha de uma requisição.
+
+| Código                      | Descrição                                                                                |
+|-----------------------------|------------------------------------------------------------------------------------------|
+| 200 - OK                    | Tudo funcionou como esperado.                                                            |
+| 201 - Created               | Tudo funcionou como esperado e, como resultado, foi criado um novo recurso.              |
+| 204 - No Content            | Tudo funcionou como esperado, mas não retornou nenhum conteúdo.                          |
+| 400 - Bad Request           | A solicitação contém um corpo ou parâmetro(s) inválido(s).                               |
+| 401 - Unauthorized          | A solicitação requer autenticação de um usuário                                          |
+| 403 - Forbidden             | O usuário está autenticado, mas não autorizado a realizar a solicitação.                 |
+| 404 - Not Found             | O recurso não existe.                                                                    |
+| 409 - Conflict              | A solicitação não pôde ser concluída devido a um conflito com o estado atual do recurso. |
+| 422 - Unprocessable Entity  | O corpo da solicitação era aceitável, mas não pôde ser processado.                       |
+| 429 - Too Many Requests     | Muitas solicitações atingiram a API muito rapidamente.                                   |
+| 500 - Internal Server Error | Ocorreu um erro inesperado.                                                              |
+| 503 - Service Unavailable   | Serviço temporariamente indisponível.                                                    |
+
 ### Erros
 
-A API fornece respostas de erro em conforme o RFC 7807. A resposta pode conter campos adicionais para fornecer uma
-descrição mais detalhada do erro.
+A API fornece respostas de erro em conforme o [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807).
+A resposta pode conter campos adicionais para fornecer uma descrição mais detalhada do erro.
 
 ```json
 {
@@ -161,26 +161,6 @@ descrição mais detalhada do erro.
 }
 ```
 
-### Respostas
-
-A API utiliza códigos de resposta HTTP padrão para indicar o sucesso ou falha de uma requisição.
-
-| Código                      | Descrição                                                                                                         |
-|-----------------------------|-------------------------------------------------------------------------------------------------------------------|
-| 200 - OK                    | Tudo funcionou como esperado.                                                                                     |
-| 201 - Created               | Tudo funcionou como esperado e, como resultado, foi criado um novo recurso.                                       |
-| 204 - No Content            | Tudo funcionou como esperado, mas não retornou nenhum conteúdo.                                                   |
-| 400 - Bad Request           | A solicitação foi inaceitável, frequentemente devido à falta de um parâmetro obrigatório ou parâmetro malformado. |
-| 401 - Unauthorized          | A solicitação requer autenticação do usuário.                                                                     |
-| 403 - Forbidden             | O usuário está autenticado, mas não autorizado a realizar a solicitação.                                          |
-| 404 - Not Found             | O recurso solicitado não existe.                                                                                  |
-| 409 - Conflict              | A solicitação não pôde ser concluída devido a um conflito com o estado atual do recurso.                          |
-| 422 - Unprocessable Entity  | O corpo da solicitação era aceitável, mas não pôde ser processado.                                                |
-| 429 - Too Many Requests     | Muitas solicitações atingiram a API muito rapidamente.                                                            |
-| 500 - Internal Server Error | Ocorreu um erro inesperado.                                                                                       |
-| 503 - Service Unavailable   | O serviço não está disponível no momento.                                                                         |
-
 ## Licença
 
-Este repositório está licenciado sob
-a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).
+Este repositório está licenciado sob a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).

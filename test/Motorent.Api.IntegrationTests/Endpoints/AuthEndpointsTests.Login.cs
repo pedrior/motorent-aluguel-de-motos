@@ -2,12 +2,12 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Motorent.Contracts.Auth.Responses;
 using Motorent.Infrastructure.Common.Security;
-using Motorent.Presentation.Auth;
+using Motorent.Presentation.Endpoints;
 
-namespace Motorent.Api.IntegrationTests.Auth;
+namespace Motorent.Api.IntegrationTests.Endpoints;
 
-[TestSubject(typeof(Login))]
-public sealed class LoginTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(AuthEndpoints))]
+public sealed partial class AuthEndpointsTests
 {
     [Fact]
     public async Task Login_WhenCommandIsValid_ShouldReturnOk()
@@ -16,7 +16,7 @@ public sealed class LoginTests(WebApplicationFactory api) : WebApplicationFixtur
         await CreateUserAsync(
             email: Requests.Auth.LoginRequest.Email,
             password: Requests.Auth.LoginRequest.Password);
-        
+
         var request = Requests.Auth.Login();
 
         // Act

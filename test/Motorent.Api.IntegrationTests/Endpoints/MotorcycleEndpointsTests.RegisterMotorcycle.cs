@@ -1,11 +1,11 @@
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles.ValueObjects;
-using Motorent.Presentation.Motorcycles;
+using Motorent.Presentation.Endpoints;
 
-namespace Motorent.Api.IntegrationTests.Motorcycles;
+namespace Motorent.Api.IntegrationTests.Endpoints;
 
-[TestSubject(typeof(RegisterMotorcycle))]
-public sealed class RegisterMotorcycleTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(MotorcycleEndpoints))]
+public sealed partial class MotorcycleEndpointsTests
 {
     [Fact]
     public async Task RegisterMotorcycle_WhenRequestIsValid_ShouldCreateMotorcycle()

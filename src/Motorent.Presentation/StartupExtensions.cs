@@ -19,12 +19,12 @@ public static class StartupExtensions
             .ReportApiVersions()
             .Build();
         
-        var routeGroup = app.MapGroup("api/v{version:apiVersion}")
+        var group = app.MapGroup("api/v{version:apiVersion}")
             .WithApiVersionSet(versionSet);
         
         foreach (var endpoint in app.Services.GetRequiredService<IEnumerable<IEndpoint>>())
         {
-            endpoint.MapEndpoints(routeGroup);
+            endpoint.MapEndpoints(group);
         }
     }
 }

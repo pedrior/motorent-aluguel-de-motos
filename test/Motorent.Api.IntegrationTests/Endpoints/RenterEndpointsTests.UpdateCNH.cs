@@ -1,11 +1,9 @@
-using Motorent.Domain.Renters.ValueObjects;
-using Motorent.Presentation.Renters;
-using Motorent.TestUtils.Constants;
+using Motorent.Presentation.Endpoints;
 
-namespace Motorent.Api.IntegrationTests.Renters;
+namespace Motorent.Api.IntegrationTests.Endpoints;
 
-[TestSubject(typeof(UpdateCNH))]
-public sealed class UpdateCNHTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(RenterEndpoints))]
+public sealed partial class RenterEndpointsTests
 {
     [Fact]
     public async Task UpdateCNH_WhenRequestIsValid_ShouldReturnNoContent()
@@ -32,7 +30,7 @@ public sealed class UpdateCNHTests(WebApplicationFactory api) : WebApplicationFi
         renter.CNH.Category.Name.Should().BeEquivalentTo(Requests.Renter.UpdateCNHRequest.Category);
         renter.CNH.ExpirationDate.Should().Be(Requests.Renter.UpdateCNHRequest.ExpDate);
     }
-    
+
     [Fact]
     public async Task UpdateCNH_WhenCNHIsDuplicate_ShouldReturnConflict()
     {
@@ -49,10 +47,10 @@ public sealed class UpdateCNHTests(WebApplicationFactory api) : WebApplicationFi
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-        
+
         var count = await DataContext.Renters.CountAsync(
             r => r.CNH.Number == Requests.Renter.UpdateCNHRequest.Number);
-        
+
         count.Should().Be(1);
     }
 
@@ -83,18 +81,5 @@ public sealed class UpdateCNHTests(WebApplicationFactory api) : WebApplicationFi
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
-    }
-
-    private async Task CreateRenterAsync(string userId, string? cnhNumber = null)
-    {
-        var renter = (await Factories.Renter.CreateAsync(
-            userId: userId,
-            cnh: CNH.Create(
-                number: cnhNumber ?? Constants.Renter.CNH.Number,
-                category: Constants.Renter.CNH.Category,
-                expirationDate: Constants.Renter.CNH.ExpirationDate).Value)).Value;
-
-        DataContext.Renters.Add(renter);
-        await DataContext.SaveChangesAsync();
     }
 }

@@ -50,6 +50,6 @@ internal static partial class Requests
             return Put($"v1/motorcycles/{idOrLicensePlate}/license-plate", request ?? UpdateLicensePlateRequest);
         }
 
-        public static HttpRequestMessage RemoveMotorcycle(Ulid id) => Delete($"v1/motorcycles/{id}");
+        public static HttpRequestMessage DeleteMotorcycle(Ulid id) => Delete($"v1/motorcycles/{id}");
     }
 }

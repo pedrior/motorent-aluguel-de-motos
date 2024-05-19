@@ -1,23 +1,22 @@
 using Mapster;
 using Motorent.Contracts.Renters.Responses;
-using Motorent.Domain.Renters;
-using Motorent.Presentation.Renters;
+using Motorent.Presentation.Endpoints;
 
-namespace Motorent.Api.IntegrationTests.Renters;
+namespace Motorent.Api.IntegrationTests.Endpoints;
 
-[TestSubject(typeof(GetRenterProfile))]
-public sealed class GetRenterProfileTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(RenterEndpoints))]
+public sealed partial class RenterEndpointsTests
 {
     [Fact]
-    public async Task GetRenterProfile_WhenRequested_ShouldReturnRenterProfile()
+    public async Task GetProfile_WhenRequested_ShouldReturnRenterProfile()
     {
         // Arrange
         var userId = await CreateUserAsync(roles: [UserRoles.Renter]);
-        await AuthenticateUserAsync(userId);
-        
         var renter = await CreateRenterAsync(userId);
         
-        var request = Requests.Renter.GetRenterProfile();
+        await AuthenticateUserAsync(userId);
+        
+        var request = Requests.Renter.GetProfile();
         
         // Act
         var response = await Client.SendAsync(request);
@@ -32,10 +31,10 @@ public sealed class GetRenterProfileTests(WebApplicationFactory api) : WebApplic
     }
     
     [Fact]
-    public async Task GetRenterProfile_WhenUnauthenticated_ShouldReturnUnauthorized()
+    public async Task GetProfile_WhenUnauthenticated_ShouldReturnUnauthorized()
     {
         // Arrange
-        var request = Requests.Renter.GetRenterProfile();
+        var request = Requests.Renter.GetProfile();
         
         // Act
         var response = await Client.SendAsync(request);
@@ -45,28 +44,18 @@ public sealed class GetRenterProfileTests(WebApplicationFactory api) : WebApplic
     }
     
     [Fact]
-    public async Task GetRenterProfile_WhenRequestedByNonRenter_ShouldReturnForbidden()
+    public async Task GetProfile_WhenRequestedByNonRenter_ShouldReturnForbidden()
     {
         // Arrange
         var userId = await CreateUserAsync(roles: [UserRoles.Admin]);
         await AuthenticateUserAsync(userId);
         
-        var request = Requests.Renter.GetRenterProfile();
+        var request = Requests.Renter.GetProfile();
         
         // Act
         var response = await Client.SendAsync(request);
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
-    }
-    
-    private async Task<Renter> CreateRenterAsync(string userId)
-    {
-        var renter = (await Factories.Renter.CreateAsync(userId: userId)).Value;
-        
-        DataContext.Renters.Add(renter);
-        await DataContext.SaveChangesAsync();
-        
-        return renter;
     }
 }

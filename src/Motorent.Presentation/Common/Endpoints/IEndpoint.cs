@@ -1,4 +1,4 @@
-namespace Motorent.Presentation;
+namespace Motorent.Presentation.Common.Endpoints;
 
 internal interface IEndpoint
 {

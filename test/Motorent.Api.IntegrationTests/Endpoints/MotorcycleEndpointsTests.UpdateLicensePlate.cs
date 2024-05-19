@@ -1,20 +1,19 @@
-using Motorent.Domain.Motorcycles.ValueObjects;
-using Motorent.Presentation.Motorcycles;
+using Motorent.Presentation.Endpoints;
 
-namespace Motorent.Api.IntegrationTests.Motorcycles;
+namespace Motorent.Api.IntegrationTests.Endpoints;
 
-[TestSubject(typeof(UpdateLicensePlate))]
-public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(MotorcycleEndpoints))]
+public sealed partial class MotorcycleEndpointsTests
 {
     [Fact]
-    public async Task ChangeLicensePlate_WhenMotorcycleExists_ShouldReturnNoContent()
+    public async Task UpdateLicensePlate_WhenMotorcycleExists_ShouldReturnNoContent()
     {
         // Arrange
         await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
 
         var motorcycleId = await CreateMotorcycleAsync();
         var request = Requests.Motorcycle.UpdateLicensePlate(motorcycleId.ToString());
-        
+
         // Act
         var result = await Client.SendAsync(request);
 
@@ -23,7 +22,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
     }
 
     [Fact]
-    public async Task ChangeLicensePlate_WhenUserIsNotAuthenticated_ShouldReturnUnauthorized()
+    public async Task UpdateLicensePlate_WhenUserIsNotAuthenticated_ShouldReturnUnauthorized()
     {
         // Arrange
         var motorcycleId = await CreateMotorcycleAsync();
@@ -53,7 +52,7 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
     }
 
     [Fact]
-    public async Task ChangeLicensePlate_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
+    public async Task UpdateLicensePlate_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
     {
         // Arrange
         await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
@@ -65,14 +64,5 @@ public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebAppl
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.NotFound);
-    }
-
-    private async Task<MotorcycleId> CreateMotorcycleAsync()
-    {
-        var motorcycle = await Factories.Motorcycle.CreateAsync();
-        await DataContext.Motorcycles.AddAsync(motorcycle.Value);
-        await DataContext.SaveChangesAsync();
-
-        return motorcycle.Value.Id;
     }
 }

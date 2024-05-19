@@ -2,12 +2,12 @@ using System.Text.Json;
 using Microsoft.Extensions.Configuration;
 using Motorent.Contracts.Auth.Responses;
 using Motorent.Infrastructure.Common.Security;
-using Motorent.Presentation.Auth;
+using Motorent.Presentation.Endpoints;
 
-namespace Motorent.Api.IntegrationTests.Auth;
+namespace Motorent.Api.IntegrationTests.Endpoints;
 
-[TestSubject(typeof(Register))]
-public sealed class RegisterTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(AuthEndpoints))]
+public sealed partial class AuthEndpointsTests
 {
     [Fact]
     public async Task Register_WhenRequestIsValid_ShouldCreateUsers()
@@ -20,17 +20,17 @@ public sealed class RegisterTests(WebApplicationFactory api) : WebApplicationFix
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
-        
+
         var user = await DataContext.Users.SingleOrDefaultAsync(
             u => u.Email == Requests.Auth.RegisterRequest.Email);
 
         user.Should().NotBeNull();
 
         var renter = await DataContext.Renters.SingleOrDefaultAsync(r => r.UserId == user!.Id);
-        
+
         renter.Should().NotBeNull();
     }
-    
+
     [Fact]
     public async Task Register_WhenRequestIsValid_ShouldReturnTokenResponse()
     {

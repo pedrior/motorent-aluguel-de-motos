@@ -1,19 +1,18 @@
-using Motorent.Domain.Motorcycles.ValueObjects;
-using Motorent.Presentation.Motorcycles;
+using Motorent.Presentation.Endpoints;
 
-namespace Motorent.Api.IntegrationTests.Motorcycles;
+namespace Motorent.Api.IntegrationTests.Endpoints;
 
-[TestSubject(typeof(RemoveMotorcycle))]
-public class RemoveMotorcycleTests(WebApplicationFactory api) : WebApplicationFixture(api)
+[TestSubject(typeof(MotorcycleEndpoints))]
+public sealed partial class MotorcycleEndpointsTests
 {
     [Fact]
-    public async Task RemoveMotorcycle_WhenRequestIsValid_ShouldRemoveMotorcycle()
+    public async Task DeleteMotorcycle_WhenRequestIsValid_ShouldDeleteMotorcycle()
     {
         // Arrange
         await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
 
         var motorcycleId = await CreateMotorcycleAsync();
-        var request = Requests.Motorcycle.RemoveMotorcycle(motorcycleId.Value);
+        var request = Requests.Motorcycle.DeleteMotorcycle(motorcycleId.Value);
 
         // Act
         var result = await Client.SendAsync(request);
@@ -28,11 +27,11 @@ public class RemoveMotorcycleTests(WebApplicationFactory api) : WebApplicationFi
     }
     
     [Fact]
-    public async Task RemoveMotorcycle_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
+    public async Task DeleteMotorcycle_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
     {
         // Arrange
         await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Admin]));
-        var request = Requests.Motorcycle.RemoveMotorcycle(Ulid.NewUlid());
+        var request = Requests.Motorcycle.DeleteMotorcycle(Ulid.NewUlid());
 
         // Act
         var result = await Client.SendAsync(request);
@@ -42,11 +41,11 @@ public class RemoveMotorcycleTests(WebApplicationFactory api) : WebApplicationFi
     }
     
     [Fact]
-    public async Task RemoveMotorcycle_WhenUserIsNotAuthenticated_ShouldReturnUnauthorized()
+    public async Task DeleteMotorcycle_WhenUserIsNotAuthenticated_ShouldReturnUnauthorized()
     {
         // Arrange
         var motorcycleId = await CreateMotorcycleAsync();
-        var request = Requests.Motorcycle.RemoveMotorcycle(motorcycleId.Value);
+        var request = Requests.Motorcycle.DeleteMotorcycle(motorcycleId.Value);
 
         // Act
         var result = await Client.SendAsync(request);
@@ -56,27 +55,18 @@ public class RemoveMotorcycleTests(WebApplicationFactory api) : WebApplicationFi
     }
 
     [Fact]
-    public async Task RemoveMotorcycle_WhenUserIsNotAuthorized_ShouldReturnForbidden()
+    public async Task DeleteMotorcycle_WhenUserIsNotAuthorized_ShouldReturnForbidden()
     {
         // Arrange
         await AuthenticateUserAsync(await CreateUserAsync(roles: [UserRoles.Renter]));
 
         var motorcycleId = await CreateMotorcycleAsync();
-        var request = Requests.Motorcycle.RemoveMotorcycle(motorcycleId.Value);
+        var request = Requests.Motorcycle.DeleteMotorcycle(motorcycleId.Value);
 
         // Act
         var result = await Client.SendAsync(request);
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.Forbidden);
-    }
-    
-    private async Task<MotorcycleId> CreateMotorcycleAsync()
-    {
-        var motorcycle = await Factories.Motorcycle.CreateAsync();
-        await DataContext.Motorcycles.AddAsync(motorcycle.Value);
-        await DataContext.SaveChangesAsync();
-
-        return motorcycle.Value.Id;
     }
 }

@@ -19,11 +19,11 @@ public static partial class Constants
 
         public static readonly Birthdate Birthdate = Birthdate.Create(new DateOnly(2000, 09, 05)).Value;
         
-        public static readonly CNH CNH = CNH.Create(
+        public static readonly DriverLicense DriverLicense = DriverLicense.Create(
             "94171421375",
-            CNHCategory.AB,
+            DriverLicenseCategory.AB,
             new DateOnly(DateTime.Today.Year + 1, 01, 01)).Value;
 
-        public static readonly Uri CNHImage = new($"https://motorent-images.s3.amazonaws.com/renters/{Id}/cnh.jpg");
+        public static readonly Uri DriverLicenseImage = new($"https://motorent-images.s3.amazonaws.com/renters/{Id}/driverLicense.jpg");
     }
 }

@@ -21,12 +21,12 @@ internal sealed class RenterMappings : IRegister
             .ConstructUsing(src => src.Value);
 
         config.NewConfig<Renter, RenterProfileResponse>()
-            .Map(dest => dest.CNH.Status, src => src.CNHStatus.Name)
-            .Map(dest => dest.CNH.Number, src => src.CNH.Number)
-            .Map(dest => dest.CNH.Category, src => src.CNH.Category.Name)
-            .Map(dest => dest.CNH.ExpirationDate, src => src.CNH.ExpirationDate)
-            .Map(dest => dest.CNH.ImageUrl, src => src.CNHImageUrl == null 
+            .Map(dest => dest.DriverLicense.Status, src => src.DriverLicenseStatus.Name)
+            .Map(dest => dest.DriverLicense.Number, src => src.DriverLicense.Number)
+            .Map(dest => dest.DriverLicense.Category, src => src.DriverLicense.Category.Name)
+            .Map(dest => dest.DriverLicense.Expiry, src => src.DriverLicense.Expiry)
+            .Map(dest => dest.DriverLicense.ImageUrl, src => src.DriverLicenseImageUrl == null 
                 ? null 
-                : src.CNHImageUrl.ToString());
+                : src.DriverLicenseImageUrl.ToString());
     }
 }

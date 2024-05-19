@@ -75,22 +75,22 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("date")
                         .HasColumnName("birthdate");
 
-                    b.Property<string>("CNHImageUrl")
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)")
-                        .HasColumnName("cnh_image_url");
-
-                    b.Property<string>("CNHStatus")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("cnh_status");
-
                     b.Property<string>("Document")
                         .IsRequired()
                         .HasMaxLength(18)
                         .HasColumnType("character varying(18)")
                         .HasColumnName("document");
+
+                    b.Property<string>("DriverLicenseImageUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)")
+                        .HasColumnName("dl_image");
+
+                    b.Property<string>("DriverLicenseStatus")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("dl_status");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -157,10 +157,10 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "01HY9639QWNYNH3MPHEW9ENMJP",
+                            Id = "01HY97MDSBRYM243JNKN1PXGRE",
                             Claims = new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" },
                             Email = "john@admin.com",
-                            PasswordHash = "BCKPB28VW+3pCeUGvDbp7RMsHSDX1PHaAMbPKhz9OI8=:cAvXcZgrXnxm+Epb2+ZZEA==:50000:SHA256",
+                            PasswordHash = "M9cfFSSW4EnIf2eL6fZ5iondWmxhaCQUtiDJDMUnYcI=:QbcIDCekSWdeCe00n9xXxQ==:50000:SHA256",
                             Roles = new[] { "admin" }
                         });
                 });
@@ -247,7 +247,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
 
             modelBuilder.Entity("Motorent.Domain.Renters.Renter", b =>
                 {
-                    b.OwnsOne("Motorent.Domain.Renters.ValueObjects.CNH", "CNH", b1 =>
+                    b.OwnsOne("Motorent.Domain.Renters.ValueObjects.DriverLicense", "DriverLicense", b1 =>
                         {
                             b1.Property<string>("RenterId")
                                 .HasColumnType("character varying(26)")
@@ -257,23 +257,23 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                                 .IsRequired()
                                 .HasMaxLength(5)
                                 .HasColumnType("character varying(5)")
-                                .HasColumnName("cnh_category");
+                                .HasColumnName("dl_category");
 
-                            b1.Property<DateOnly>("ExpirationDate")
+                            b1.Property<DateOnly>("Expiry")
                                 .HasColumnType("date")
-                                .HasColumnName("cnh_exp");
+                                .HasColumnName("dl_expiry");
 
                             b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasMaxLength(11)
                                 .HasColumnType("character varying(11)")
-                                .HasColumnName("cnh_number");
+                                .HasColumnName("dl_number");
 
                             b1.HasKey("RenterId");
 
                             b1.HasIndex("Number")
                                 .IsUnique()
-                                .HasDatabaseName("ix_renters_cnh_number");
+                                .HasDatabaseName("ix_renters_driver_license_number");
 
                             b1.ToTable("renters");
 
@@ -309,7 +309,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                                 .HasConstraintName("fk_renters_renters_id");
                         });
 
-                    b.Navigation("CNH")
+                    b.Navigation("DriverLicense")
                         .IsRequired();
 
                     b.Navigation("FullName")

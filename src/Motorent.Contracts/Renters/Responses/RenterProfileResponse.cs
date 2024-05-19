@@ -10,5 +10,5 @@ public sealed record RenterProfileResponse
     
     public DateOnly Birthdate { get; init; }
        
-    public RenterCNHResponse CNH { get; init; } = null!;
+    public RenterDriverLicenseResponse DriverLicense { get; init; } = null!;
 }

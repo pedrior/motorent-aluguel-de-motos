@@ -5,14 +5,14 @@ using Motorent.Application.Renters.Common.Storage;
 using Motorent.Domain.Renters.Repository;
 using Motorent.Domain.Renters.ValueObjects;
 
-namespace Motorent.Application.Renters.UploadCNHImage;
+namespace Motorent.Application.Renters.UploadDriverLicenseImage;
 
-internal sealed class UploadCNHImageCommandHandler(
+internal sealed class UploadDriverLicenseImageCommandHandler(
     IUserContext userContext,
     IRenterRepository renterRepository,
-    IStorageService storageService) : ICommandHandler<UploadCNHImageCommand>
+    IStorageService storageService) : ICommandHandler<UploadDriverLicenseImageCommand>
 {
-    public async Task<Result<Success>> Handle(UploadCNHImageCommand command,
+    public async Task<Result<Success>> Handle(UploadDriverLicenseImageCommand command,
         CancellationToken cancellationToken)
     {
         var renter = await renterRepository.FindByUserAsync(userContext.UserId, cancellationToken);
@@ -21,14 +21,17 @@ internal sealed class UploadCNHImageCommandHandler(
             throw new ApplicationException($"Renter not found for user {userContext.UserId}");
         }
 
-        var imageUrl = await UploadCNHImageAsync(renter.Id, command.Image, cancellationToken);
-        return await renter.SendCNHImage(imageUrl)
+        var imageUrl = await UploadDriverLicenseImageAsync(renter.Id, command.Image, cancellationToken);
+        return await renter.SendDriverLicenseImage(imageUrl)
             .ThenAsync(() => renterRepository.UpdateAsync(renter, cancellationToken));
     }
 
-    private async Task<Uri> UploadCNHImageAsync(RenterId renterId, IFile image, CancellationToken cancellationToken)
+    private async Task<Uri> UploadDriverLicenseImageAsync(
+        RenterId renterId,
+        IFile image,
+        CancellationToken cancellationToken)
     {
-        var imagePath = RenterStorageUtils.GetCNHImagePath(renterId, image.Extension);
+        var imagePath = RenterStorageUtils.GetDriverLicenseImagePath(renterId, image.Extension);
         await storageService.UploadAsync(imagePath, image, cancellationToken);
 
         return imagePath;

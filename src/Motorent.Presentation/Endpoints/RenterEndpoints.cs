@@ -1,7 +1,7 @@
 using Motorent.Application.Renters.GetRenterProfile;
-using Motorent.Application.Renters.UpdateCNH;
+using Motorent.Application.Renters.UpdateDriverLicense;
 using Motorent.Application.Renters.UpdatePersonalInfo;
-using Motorent.Application.Renters.UploadCNHImage;
+using Motorent.Application.Renters.UploadDriverLicenseImage;
 using Motorent.Contracts.Renters.Requests;
 using Motorent.Contracts.Renters.Responses;
 
@@ -31,8 +31,8 @@ internal sealed class RenterEndpoints : IEndpoint
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
-        group.MapPut("cnh", UpdateCNH)
-            .WithName(nameof(UpdateCNH))
+        group.MapPut("driver-license", UpdateDriverLicense)
+            .WithName(nameof(UpdateDriverLicense))
             .WithSummary("Atualiza a CNH do locatário")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
@@ -40,9 +40,9 @@ internal sealed class RenterEndpoints : IEndpoint
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status409Conflict);
 
-        group.MapPut("cnh-image", UploadCNHImage)
+        group.MapPut("driver-license-image", UploadDriverLicenseImage)
             .DisableAntiforgery()
-            .WithName(nameof(UploadCNHImage))
+            .WithName(nameof(UploadDriverLicenseImage))
             .WithSummary("Envia a imagem da CNH do locatário")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
@@ -66,21 +66,21 @@ internal sealed class RenterEndpoints : IEndpoint
             .ToResponseAsync(_ => Results.NoContent());
     }
 
-    private static Task<IResult> UpdateCNH(
-        UpdateCNHRequest request,
+    private static Task<IResult> UpdateDriverLicense(
+        UpdateDriverLicenseRequest request,
         ISender sender,
         CancellationToken cancellationToken)
     {
-        return sender.Send(request.Adapt<UpdateCNHCommand>(), cancellationToken)
+        return sender.Send(request.Adapt<UpdateDriverLicenseCommand>(), cancellationToken)
             .ToResponseAsync(_ => Results.NoContent());
     }
 
-    private static Task<IResult> UploadCNHImage(
+    private static Task<IResult> UploadDriverLicenseImage(
         IFormFile image,
         ISender sender,
         CancellationToken cancellationToken)
     {
-        return sender.Send(new UploadCNHImageCommand
+        return sender.Send(new UploadDriverLicenseImageCommand
             {
                 Image = new FormFileProxy(image)
             }, cancellationToken)

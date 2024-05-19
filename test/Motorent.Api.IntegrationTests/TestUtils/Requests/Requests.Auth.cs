@@ -20,9 +20,9 @@ internal static partial class Requests
             FamilyName = "Doe",
             Birthdate = new DateOnly(2000, 09, 05),
             Document = "18.864.014/0001-19",
-            CNHNumber = "92353762700",
-            CNHCategory = "ab",
-            CNHExpDate = new DateOnly(DateTime.Today.Year + 1, 01, 01)
+            DriverLicenseNumber = "92353762700",
+            DriverLicenseCategory = "ab",
+            DriverLicenseExpiry = new DateOnly(DateTime.Today.Year + 1, 01, 01)
         };
 
         public static HttpRequestMessage Login(LoginRequest? request = null) =>

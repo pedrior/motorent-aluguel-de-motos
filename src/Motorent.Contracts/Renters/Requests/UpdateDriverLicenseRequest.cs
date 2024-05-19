@@ -1,6 +1,6 @@
 namespace Motorent.Contracts.Renters.Requests;
 
-public sealed record UpdateCNHRequest
+public sealed record UpdateDriverLicenseRequest
 {
     public string Number { get; init; } = null!;
     

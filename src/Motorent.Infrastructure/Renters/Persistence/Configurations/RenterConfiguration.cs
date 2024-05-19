@@ -49,30 +49,37 @@ internal sealed class RenterConfiguration : IEntityTypeConfiguration<Renter>
         builder.Property(r => r.Birthdate)
             .HasConversion(v => v.Value, v => Birthdate.Create(v).Value);
 
-        builder.OwnsOne(v => v.CNH, b =>
+        builder.OwnsOne(v => v.DriverLicense, b =>
         {
             b.HasIndex(c => c.Number)
                 .IsUnique();
 
             b.Property(c => c.Number)
-                .HasMaxLength(11);
+                .HasMaxLength(11)
+                .HasColumnName("dl_number");
 
             b.Property(c => c.Category)
                 .HasMaxLength(5)
-                .HasConversion(v => v.Name, v => CNHCategory.FromName(v, true));
+                .HasColumnName("dl_category")
+                .HasConversion(
+                    v => v.Name,
+                    v => DriverLicenseCategory.FromName(v, true));
 
-            b.Property(c => c.ExpirationDate)
-                .HasColumnName("cnh_exp");
+            b.Property(c => c.Expiry)
+                .HasColumnName("dl_expiry");
         });
 
-        builder.Property(r => r.CNHStatus)
+        builder.Property(r => r.DriverLicenseStatus)
             .HasMaxLength(20)
-            .HasConversion(v => v.Name, v => CNHStatus.FromName(v, true));
+            .HasColumnName("dl_status")
+            .HasConversion(
+                v => v.Name,
+                v => DriverLicenseStatus.FromName(v, true));
 
-        builder.Property(r => r.CNHImageUrl)
+        builder.Property(r => r.DriverLicenseImageUrl)
             .HasMaxLength(2048)
-            .HasColumnName("cnh_image_url");
-        
+            .HasColumnName("dl_image");
+
         builder.ToTable("renters");
     }
 }

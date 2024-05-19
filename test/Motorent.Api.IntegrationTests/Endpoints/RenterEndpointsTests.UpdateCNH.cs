@@ -6,7 +6,7 @@ namespace Motorent.Api.IntegrationTests.Endpoints;
 public sealed partial class RenterEndpointsTests
 {
     [Fact]
-    public async Task UpdateCNH_WhenRequestIsValid_ShouldReturnNoContent()
+    public async Task UpdateDriverLicense_WhenRequestIsValid_ShouldReturnNoContent()
     {
         // Arrange
         var userId = await CreateUserAsync(roles: [UserRoles.Renter]);
@@ -14,7 +14,7 @@ public sealed partial class RenterEndpointsTests
 
         await CreateRenterAsync(userId);
 
-        var request = Requests.Renter.UpdateCNH();
+        var request = Requests.Renter.UpdateDriverLicense();
 
         // Act
         var response = await Client.SendAsync(request);
@@ -26,21 +26,21 @@ public sealed partial class RenterEndpointsTests
 
         var renter = await DataContext.Renters.SingleAsync(r => r.UserId == userId);
 
-        renter.CNH.Number.Should().Be(Requests.Renter.UpdateCNHRequest.Number);
-        renter.CNH.Category.Name.Should().BeEquivalentTo(Requests.Renter.UpdateCNHRequest.Category);
-        renter.CNH.ExpirationDate.Should().Be(Requests.Renter.UpdateCNHRequest.ExpDate);
+        renter.DriverLicense.Number.Should().Be(Requests.Renter.UpdateDriverLicenseRequest.Number);
+        renter.DriverLicense.Category.Name.Should().BeEquivalentTo(Requests.Renter.UpdateDriverLicenseRequest.Category);
+        renter.DriverLicense.Expiry.Should().Be(Requests.Renter.UpdateDriverLicenseRequest.ExpDate);
     }
 
     [Fact]
-    public async Task UpdateCNH_WhenCNHIsDuplicate_ShouldReturnConflict()
+    public async Task UpdateDriverLicense_WhenDriverLicenseIsDuplicate_ShouldReturnConflict()
     {
         // Arrange
         var userId = await CreateUserAsync(roles: [UserRoles.Renter]);
         await AuthenticateUserAsync(userId);
 
-        await CreateRenterAsync(userId, cnhNumber: Requests.Renter.UpdateCNHRequest.Number);
+        await CreateRenterAsync(userId, driverLicenseNumber: Requests.Renter.UpdateDriverLicenseRequest.Number);
 
-        var request = Requests.Renter.UpdateCNH();
+        var request = Requests.Renter.UpdateDriverLicense();
 
         // Act
         var response = await Client.SendAsync(request);
@@ -49,16 +49,16 @@ public sealed partial class RenterEndpointsTests
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
 
         var count = await DataContext.Renters.CountAsync(
-            r => r.CNH.Number == Requests.Renter.UpdateCNHRequest.Number);
+            r => r.DriverLicense.Number == Requests.Renter.UpdateDriverLicenseRequest.Number);
 
         count.Should().Be(1);
     }
 
     [Fact]
-    public async Task UpdateCNH_WhenUnauthenticated_ShouldReturnUnauthorized()
+    public async Task UpdateDriverLicense_WhenUnauthenticated_ShouldReturnUnauthorized()
     {
         // Arrange
-        var request = Requests.Renter.UpdateCNH();
+        var request = Requests.Renter.UpdateDriverLicense();
 
         // Act
         var response = await Client.SendAsync(request);
@@ -68,13 +68,13 @@ public sealed partial class RenterEndpointsTests
     }
 
     [Fact]
-    public async Task UpdateCNH_WhenRequestedByNonRenter_ShouldReturnForbidden()
+    public async Task UpdateDriverLicense_WhenRequestedByNonRenter_ShouldReturnForbidden()
     {
         // Arrange
         var userId = await CreateUserAsync(roles: [UserRoles.Admin]);
         await AuthenticateUserAsync(userId);
 
-        var request = Requests.Renter.UpdateCNH();
+        var request = Requests.Renter.UpdateDriverLicense();
 
         // Act
         var response = await Client.SendAsync(request);

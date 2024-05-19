@@ -23,11 +23,11 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
 
     public Birthdate Birthdate { get; private set; } = null!;
 
-    public CNH CNH { get; private set; } = null!;
+    public DriverLicense DriverLicense { get; private set; } = null!;
 
-    public CNHStatus CNHStatus { get; private set; } = null!;
-    
-    public Uri? CNHImageUrl { get; private set; }
+    public DriverLicenseStatus DriverLicenseStatus { get; private set; } = null!;
+
+    public Uri? DriverLicenseImageUrl { get; private set; }
 
     public static async Task<Result<Renter>> CreateAsync(
         RenterId id,
@@ -36,9 +36,9 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         EmailAddress email,
         FullName fullName,
         Birthdate birthdate,
-        CNH cnh,
+        DriverLicense driverLicense,
         IDocumentService documentService,
-        ICNHService cnhService,
+        IDriverLicenseService driverLicenseService,
         CancellationToken cancellationToken = default)
     {
         if (!await documentService.IsUniqueAsync(document, cancellationToken))
@@ -46,9 +46,9 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
             return RenterErrors.DocumentNotUnique(document);
         }
 
-        if (!await cnhService.IsUniqueAsync(cnh, cancellationToken))
+        if (!await driverLicenseService.IsUniqueAsync(driverLicense, cancellationToken))
         {
-            return RenterErrors.CNHNotUnique(cnh);
+            return RenterErrors.DriverLicenseNotUnique(driverLicense);
         }
 
         return new Renter(id)
@@ -58,8 +58,8 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
             Email = email,
             FullName = fullName,
             Birthdate = birthdate,
-            CNH = cnh,
-            CNHStatus = CNHStatus.PendingValidation
+            DriverLicense = driverLicense,
+            DriverLicenseStatus = DriverLicenseStatus.PendingValidation
         };
     }
 
@@ -69,66 +69,66 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         Birthdate = birthdate;
     }
 
-    public async Task<Result<Success>> ChangeCNHAsync(
-        CNH cnh,
-        ICNHService cnhService,
+    public async Task<Result<Success>> ChangeDriverLicenseAsync(
+        DriverLicense driverLicense,
+        IDriverLicenseService driverLicenseService,
         CancellationToken cancellationToken = default)
     {
-        if (!IsCNHPendingValidation())
+        if (!IsDriverLicensePendingValidation())
         {
-            return RenterErrors.CNHIsNotPendingValidation;
-        }
-        
-        if (!await cnhService.IsUniqueAsync(cnh, cancellationToken))
-        {
-            return RenterErrors.CNHNotUnique(cnh);
+            return RenterErrors.DriverLicenseNotPendingValidation;
         }
 
-        CNH = cnh;
+        if (!await driverLicenseService.IsUniqueAsync(driverLicense, cancellationToken))
+        {
+            return RenterErrors.DriverLicenseNotUnique(driverLicense);
+        }
+
+        DriverLicense = driverLicense;
 
         return Success.Value;
     }
 
-    public Result<Success> SendCNHImage(Uri imageUrl)
+    public Result<Success> SendDriverLicenseImage(Uri driverLicenseImageUrl)
     {
-        if (!IsCNHPendingValidation())
+        if (!IsDriverLicensePendingValidation())
         {
-            return RenterErrors.CNHIsNotPendingValidation;
+            return RenterErrors.DriverLicenseNotPendingValidation;
         }
 
-        CNHStatus = CNHStatus.WaitingApproval;
-        CNHImageUrl = imageUrl;
+        DriverLicenseStatus = DriverLicenseStatus.WaitingApproval;
+        DriverLicenseImageUrl = driverLicenseImageUrl;
 
-        RaiseEvent(new CNHImageSent(Id, CNHImageUrl));
-        
+        RaiseEvent(new DriverLicenseImageSent(Id, DriverLicenseImageUrl));
+
         return Success.Value;
     }
 
-    public Result<Success> ApproveCNH()
+    public Result<Success> ApproveDriverLicense()
     {
-        if (CNHStatus != CNHStatus.WaitingApproval)
+        if (DriverLicenseStatus != DriverLicenseStatus.WaitingApproval)
         {
-            return RenterErrors.CNHIsNotWaitingApproval;
+            return RenterErrors.DriverLicenseNotWaitingApproval;
         }
-        
-        CNHStatus = CNHStatus.Approved;
-        
-        return Success.Value;
-    }
-    
-    public Result<Success> RejectCNH()
-    {
-        if (CNHStatus != CNHStatus.WaitingApproval)
-        {
-            return RenterErrors.CNHIsNotWaitingApproval;
-        }
-        
-        CNHStatus = CNHStatus.Rejected;
-        CNHImageUrl = null;
+
+        DriverLicenseStatus = DriverLicenseStatus.Approved;
 
         return Success.Value;
     }
-    
-    private bool IsCNHPendingValidation() => CNHStatus == CNHStatus.PendingValidation 
-                                             || CNHStatus == CNHStatus.Rejected;
+
+    public Result<Success> RejectDriverLicense()
+    {
+        if (DriverLicenseStatus != DriverLicenseStatus.WaitingApproval)
+        {
+            return RenterErrors.DriverLicenseNotWaitingApproval;
+        }
+
+        DriverLicenseStatus = DriverLicenseStatus.Rejected;
+        DriverLicenseImageUrl = null;
+
+        return Success.Value;
+    }
+
+    private bool IsDriverLicensePendingValidation() => DriverLicenseStatus == DriverLicenseStatus.PendingValidation
+                                                       || DriverLicenseStatus == DriverLicenseStatus.Rejected;
 }

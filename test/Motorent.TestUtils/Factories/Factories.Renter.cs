@@ -14,12 +14,12 @@ public static partial class Factories
             EmailAddress? email = null,
             FullName? fullName = null,
             Birthdate? birthdate = null,
-            CNH? cnh = null,
+            DriverLicense? driverLicense = null,
             IDocumentService? documentService = null,
-            ICNHService? cnhService = null)
+            IDriverLicenseService? driverLicenseService = null)
         {
             document ??= Constants.Constants.Renter.Document;
-            cnh ??= Constants.Constants.Renter.CNH;
+            driverLicense ??= Constants.Constants.Renter.DriverLicense;
 
             if (documentService is null)
             {
@@ -28,10 +28,10 @@ public static partial class Factories
                     .Returns(true);
             }
 
-            if (cnhService is null)
+            if (driverLicenseService is null)
             {
-                cnhService = A.Fake<ICNHService>();
-                A.CallTo(() => cnhService.IsUniqueAsync(cnh, A<CancellationToken>.Ignored))
+                driverLicenseService = A.Fake<IDriverLicenseService>();
+                A.CallTo(() => driverLicenseService.IsUniqueAsync(driverLicense, A<CancellationToken>.Ignored))
                     .Returns(true);
             }
 
@@ -42,9 +42,9 @@ public static partial class Factories
                 email: email ?? Constants.Constants.Renter.Email,
                 fullName: fullName ?? Constants.Constants.Renter.FullName,
                 birthdate: birthdate ?? Constants.Constants.Renter.Birthdate,
-                cnh: cnh,
+                driverLicense: driverLicense,
                 documentService: documentService,
-                cnhService: cnhService);
+                driverLicenseService: driverLicenseService);
         }
     }
 }

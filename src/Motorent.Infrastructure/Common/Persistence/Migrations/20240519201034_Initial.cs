@@ -72,11 +72,11 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     given_name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     family_name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     birthdate = table.Column<DateOnly>(type: "date", nullable: false),
-                    cnh_number = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
-                    cnh_category = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
-                    cnh_exp = table.Column<DateOnly>(type: "date", nullable: false),
-                    cnh_status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    cnh_image_url = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true)
+                    dl_number = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
+                    dl_category = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
+                    dl_expiry = table.Column<DateOnly>(type: "date", nullable: false),
+                    dl_status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    dl_image = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,7 +101,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "id", "claims", "email", "password_hash", "roles" },
-                values: new object[] { "01HY9639QWNYNH3MPHEW9ENMJP", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "BCKPB28VW+3pCeUGvDbp7RMsHSDX1PHaAMbPKhz9OI8=:cAvXcZgrXnxm+Epb2+ZZEA==:50000:SHA256", new[] { "admin" } });
+                values: new object[] { "01HY97MDSBRYM243JNKN1PXGRE", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "M9cfFSSW4EnIf2eL6fZ5iondWmxhaCQUtiDJDMUnYcI=:QbcIDCekSWdeCe00n9xXxQ==:50000:SHA256", new[] { "admin" } });
 
             migrationBuilder.CreateIndex(
                 name: "ix_motorcycles_license_plate",
@@ -110,9 +110,9 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ix_renters_cnh_number",
+                name: "ix_renters_driver_license_number",
                 table: "renters",
-                column: "cnh_number",
+                column: "dl_number",
                 unique: true);
 
             migrationBuilder.CreateIndex(

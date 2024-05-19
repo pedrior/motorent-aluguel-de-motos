@@ -3,14 +3,14 @@ using Motorent.Domain.Renters.ValueObjects;
 
 namespace Motorent.Domain.UnitTests.Renters.ValueObjects;
 
-[TestSubject(typeof(CNH))]
-public sealed class CNHTests
+[TestSubject(typeof(DriverLicense))]
+public sealed class DriverLicenseTests
 {
     private const string Number = "83907030608";
-    private static readonly DateOnly ExpirationDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-    private static readonly CNHCategory Category = CNHCategory.AB;
+    private static readonly DateOnly Expiry = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
+    private static readonly DriverLicenseCategory Category = DriverLicenseCategory.AB;
     
-    public static readonly IEnumerable<object[]> ValidCNHNumbers = new List<object[]>
+    public static readonly IEnumerable<object[]> ValidDriverLicenseNumbers = new List<object[]>
     {
         new object[] { "83907030608" },
         new object[] { "50542712396" },
@@ -19,7 +19,7 @@ public sealed class CNHTests
         new object[] { "00351664298" }
     };
 
-    public static readonly IEnumerable<object[]> InvalidCNHNumbers = new List<object[]>
+    public static readonly IEnumerable<object[]> InvalidDriverLicenseNumbers = new List<object[]>
     {
         new object[] { "2677549060" },
         new object[] { "00351864298" },
@@ -27,40 +27,40 @@ public sealed class CNHTests
     };
     
     [Fact]
-    public void Create_WhenValuesAreValid_ShouldReturnCnh()
+    public void Create_WhenValuesAreValid_ShouldReturnDriverLicense()
     {
         // Arrange
         // Act
-        var result = CNH.Create(Number, Category, ExpirationDate);
+        var result = DriverLicense.Create(Number, Category, Expiry);
 
         // Assert
         result.Should().BeSuccess();
         
         result.Value.Number.Should().Be(Number);
-        result.Value.ExpirationDate.Should().Be(ExpirationDate);
+        result.Value.Expiry.Should().Be(Expiry);
         result.Value.Category.Should().Be(Category);
     }
 
-    [Theory, MemberData(nameof(ValidCNHNumbers))]
-    public void Create_WhenNumberIsValid_ShouldReturnCnhNumber(string number)
+    [Theory, MemberData(nameof(ValidDriverLicenseNumbers))]
+    public void Create_WhenNumberIsValid_ShouldReturnDriverLicense(string number)
     {
         // Arrange
         // Act
-        var result = CNH.Create(number, Category, ExpirationDate);
+        var result = DriverLicense.Create(number, Category, Expiry);
 
         // Assert
         result.Should().BeSuccess(number);
     }
 
-    [Theory, MemberData(nameof(InvalidCNHNumbers))]
+    [Theory, MemberData(nameof(InvalidDriverLicenseNumbers))]
     public void Create_WhenNumberIsInvalid_ShouldReturnInvalid(string number)
     {
         // Arrange
         // Act
-        var result = CNH.Create(number, Category, ExpirationDate);
+        var result = DriverLicense.Create(number, Category, Expiry);
 
         // Assert
-        result.Should().BeFailure(CNH.Invalid);
+        result.Should().BeFailure(DriverLicense.Invalid);
     }
 
     [Fact]
@@ -70,9 +70,9 @@ public sealed class CNHTests
         var expirationDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
 
         // Act
-        var result = CNH.Create(Number, Category, expirationDate);
+        var result = DriverLicense.Create(Number, Category, expirationDate);
 
         // Assert
-        result.Should().BeFailure(CNH.Expired);
+        result.Should().BeFailure(DriverLicense.Expired);
     }
 }

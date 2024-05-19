@@ -1,38 +1,38 @@
 using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Common.Abstractions.Storage;
-using Motorent.Application.Renters.UploadCNHImage;
+using Motorent.Application.Renters.UploadDriverLicenseImage;
 using Motorent.Domain.Renters;
 using Motorent.Domain.Renters.Repository;
 using Motorent.TestUtils.Factories;
 
-namespace Motorent.Application.UnitTests.Renters.UploadCNHImage;
+namespace Motorent.Application.UnitTests.Renters.UploadDriverLicenseImage;
 
-[TestSubject(typeof(UploadCNHImageCommandHandler))]
-public sealed class UploadCNHImageCommandHandlerTests
+[TestSubject(typeof(UploadDriverLicenseImageCommandHandler))]
+public sealed class UploadDriverLicenseImageCommandHandlerTests
 {
     private readonly IUserContext userContext = A.Fake<IUserContext>();
     private readonly IRenterRepository renterRepository = A.Fake<IRenterRepository>();
     private readonly IStorageService storageService = A.Fake<IStorageService>();
 
-    private readonly UploadCNHImageCommandHandler sut;
+    private readonly UploadDriverLicenseImageCommandHandler sut;
 
-    private readonly UploadCNHImageCommand command = new()
+    private readonly UploadDriverLicenseImageCommand command = new()
     {
         Image = A.Fake<IFile>()
     };
 
     private readonly string userId = Ulid.NewUlid().ToString();
 
-    public UploadCNHImageCommandHandlerTests()
+    public UploadDriverLicenseImageCommandHandlerTests()
     {
-        sut = new UploadCNHImageCommandHandler(userContext, renterRepository, storageService);
+        sut = new UploadDriverLicenseImageCommandHandler(userContext, renterRepository, storageService);
 
         A.CallTo(() => userContext.UserId)
             .Returns(userId);
     }
 
     [Fact]
-    public async Task Handle_WhenCommandIsValid_ShouldSendCNHValidationImages()
+    public async Task Handle_WhenCommandIsValid_ShouldUploadDriverLicenseImage()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync(userId: userId)).Value;
@@ -45,7 +45,7 @@ public sealed class UploadCNHImageCommandHandlerTests
 
         // Assert
         result.Should().BeSuccess();
-        renter.CNHImageUrl.Should().NotBeNull();
+        renter.DriverLicenseImageUrl.Should().NotBeNull();
     }
 
     [Fact]

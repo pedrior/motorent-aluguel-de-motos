@@ -4,6 +4,6 @@ namespace Motorent.Application.Renters.Common.Storage;
 
 internal static class RenterStorageUtils
 {
-    public static Uri GetCNHImagePath(RenterId renterId, string extension) => 
-        new($@"renters\{renterId}\cnh{extension}", UriKind.Relative);
+    public static Uri GetDriverLicenseImagePath(RenterId renterId, string extension) => 
+        new($@"renters\{renterId}\driver-license{extension}", UriKind.Relative);
 }

@@ -36,7 +36,7 @@ internal static class CommonValidations
             .WithMessage("Deve conter apenas números, pontos, barras e hífenes.");
     }
     
-    public static IRuleBuilderOptions<T, string> CNHNumber<T>(this IRuleBuilder<T, string> builder)
+    public static IRuleBuilderOptions<T, string> DriverLicenseNumber<T>(this IRuleBuilder<T, string> builder)
     {
         return builder
             .NotEmpty()
@@ -47,16 +47,16 @@ internal static class CommonValidations
             .WithMessage("Deve conter apenas números.");
     }
 
-    public static IRuleBuilderOptions<T, string> CNHCategory<T>(this IRuleBuilder<T, string> builder)
+    public static IRuleBuilderOptions<T, string> DriverLicenseCategory<T>(this IRuleBuilder<T, string> builder)
     {
         return builder
             .NotEmpty()
             .WithMessage("Não deve estar vazio.")
-            .Must(v => Domain.Renters.Enums.CNHCategory.IsDefined(v, ignoreCase: true))
-            .WithMessage($"Deve ser um dos seguintes: {string.Join(", ", Domain.Renters.Enums.CNHCategory.List)}");
+            .Must(v => Domain.Renters.Enums.DriverLicenseCategory.IsDefined(v, ignoreCase: true))
+            .WithMessage($"Deve ser um dos seguintes: {string.Join(", ", Domain.Renters.Enums.DriverLicenseCategory.List)}");
     }
     
-    public static IRuleBuilderOptions<T, DateOnly> CNHExpDate<T>(this IRuleBuilder<T, DateOnly> builder)
+    public static IRuleBuilderOptions<T, DateOnly> DriverLicenseExpiry<T>(this IRuleBuilder<T, DateOnly> builder)
     {
         return builder
             .NotEmpty()

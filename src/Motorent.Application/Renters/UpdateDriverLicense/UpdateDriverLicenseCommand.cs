@@ -1,8 +1,8 @@
 using Motorent.Application.Common.Abstractions.Requests;
 
-namespace Motorent.Application.Renters.UpdateCNH;
+namespace Motorent.Application.Renters.UpdateDriverLicense;
 
-public sealed record UpdateCNHCommand : ICommand, ITransactional
+public sealed record UpdateDriverLicenseCommand : ICommand, ITransactional
 {
     public required string Number { get; init; }
     

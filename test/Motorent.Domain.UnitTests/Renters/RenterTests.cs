@@ -11,10 +11,10 @@ namespace Motorent.Domain.UnitTests.Renters;
 public sealed class RenterTests
 {
     private readonly IDocumentService documentService = A.Fake<IDocumentService>();
-    private readonly ICNHService cnhService = A.Fake<ICNHService>();
+    private readonly IDriverLicenseService driverLicenseService = A.Fake<IDriverLicenseService>();
 
     [Fact]
-    public async Task CreateAsync_WhenCalled_ShouldCreateRenterWithPendingCNHValidationStatus()
+    public async Task CreateAsync_WhenCalled_ShouldCreateRenterWithPendingDriverLicenseValidationStatus()
     {
         // Arrange
         // Act
@@ -22,7 +22,7 @@ public sealed class RenterTests
 
         // Assert
         result.Should().BeSuccess();
-        result.Value.CNHStatus.Should().Be(CNHStatus.PendingValidation);
+        result.Value.DriverLicenseStatus.Should().Be(DriverLicenseStatus.PendingValidation);
     }
 
     [Fact]
@@ -41,18 +41,18 @@ public sealed class RenterTests
     }
 
     [Fact]
-    public async Task CreateAsync_WhenCNHIsNotUnique_ShouldReturnCNHIsNotUnique()
+    public async Task CreateAsync_WhenDriverLicenseIsNotUnique_ShouldReturnDriverLicenseIsNotUnique()
     {
         // Arrange
-        var cnh = Constants.Renter.CNH;
-        A.CallTo(() => cnhService.IsUniqueAsync(cnh, A<CancellationToken>._))
+        var driverLicense = Constants.Renter.DriverLicense;
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(driverLicense, A<CancellationToken>._))
             .Returns(false);
 
         // Act
-        var result = await Factories.Renter.CreateAsync(cnhService: cnhService);
+        var result = await Factories.Renter.CreateAsync(driverLicenseService: driverLicenseService);
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHNotUnique(cnh));
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotUnique(driverLicense));
     }
 
     [Fact]
@@ -72,279 +72,279 @@ public sealed class RenterTests
     }
 
     [Fact]
-    public async Task ChangeCNHAsync_WhenCNHStatusIsPendingValidation_ShouldChangeCNH()
+    public async Task ChangeDriverLicenseAsync_WhenDriverLicenseStatusIsPendingValidation_ShouldChangeDriverLicense()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        var newCNH = CNH.Create(
+        var newDriverLicense = DriverLicense.Create(
             "42147507644",
-            CNHCategory.A,
+            DriverLicenseCategory.A,
             new DateOnly(DateTime.Today.Year + 2, 01, 01)).Value;
 
-        A.CallTo(() => cnhService.IsUniqueAsync(newCNH, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(newDriverLicense, A<CancellationToken>._))
             .Returns(true);
 
         // Act
-        var result = await renter.ChangeCNHAsync(newCNH, cnhService);
+        var result = await renter.ChangeDriverLicenseAsync(newDriverLicense, driverLicenseService);
 
         // Assert
         result.Should().BeSuccess();
-        renter.CNH.Should().Be(newCNH);
+        renter.DriverLicense.Should().Be(newDriverLicense);
     }
 
     [Fact]
-    public async Task ChangeCNHAsync_WhenCNHStatusIsRejected_ShouldChangeCNH()
+    public async Task ChangeDriverLicenseAsync_WhenDriverLicenseStatusIsRejected_ShouldChangeDriverLicense()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
-        renter.RejectCNH();
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
+        renter.RejectDriverLicense();
 
-        var newCNH = CNH.Create(
+        var newDriverLicense = DriverLicense.Create(
             "42147507644",
-            CNHCategory.A,
+            DriverLicenseCategory.A,
             new DateOnly(DateTime.Today.Year + 2, 01, 01)).Value;
 
-        A.CallTo(() => cnhService.IsUniqueAsync(newCNH, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(newDriverLicense, A<CancellationToken>._))
             .Returns(true);
 
         // Act
-        var result = await renter.ChangeCNHAsync(newCNH, cnhService);
+        var result = await renter.ChangeDriverLicenseAsync(newDriverLicense, driverLicenseService);
 
         // Assert
         result.Should().BeSuccess();
-        renter.CNH.Should().Be(newCNH);
+        renter.DriverLicense.Should().Be(newDriverLicense);
     }
 
     [Fact]
-    public async Task ChangeCNHAsync_WhenCNHStatusIsWaitingApproval_ShouldReturnCNHIsNotPendingValidation()
+    public async Task ChangeDriverLicenseAsync_WhenDriverLicenseStatusIsWaitingApproval_ShouldReturnDriverLicenseIsNotPendingValidation()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
-        var newCNH = CNH.Create(
+        var newDriverLicense = DriverLicense.Create(
             "42147507644",
-            CNHCategory.A,
+            DriverLicenseCategory.A,
             new DateOnly(DateTime.Today.Year + 2, 01, 01)).Value;
 
-        A.CallTo(() => cnhService.IsUniqueAsync(newCNH, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(newDriverLicense, A<CancellationToken>._))
             .Returns(true);
 
         // Act
-        var result = await renter.ChangeCNHAsync(newCNH, cnhService);
+        var result = await renter.ChangeDriverLicenseAsync(newDriverLicense, driverLicenseService);
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHIsNotPendingValidation);
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotPendingValidation);
     }
 
     [Fact]
-    public async Task ChangeCNHAsync_WhenCNHStatusIsApproved_ShouldReturnCNHIsNotPendingValidation()
+    public async Task ChangeDriverLicenseAsync_WhenDriverLicenseStatusIsApproved_ShouldReturnDriverLicenseIsNotPendingValidation()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
-        renter.ApproveCNH();
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
+        renter.ApproveDriverLicense();
 
-        var newCNH = CNH.Create(
+        var newDriverLicense = DriverLicense.Create(
             "42147507644",
-            CNHCategory.A,
+            DriverLicenseCategory.A,
             new DateOnly(DateTime.Today.Year + 2, 01, 01)).Value;
 
-        A.CallTo(() => cnhService.IsUniqueAsync(newCNH, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(newDriverLicense, A<CancellationToken>._))
             .Returns(true);
 
         // Act
-        var result = await renter.ChangeCNHAsync(newCNH, cnhService);
+        var result = await renter.ChangeDriverLicenseAsync(newDriverLicense, driverLicenseService);
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHIsNotPendingValidation);
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotPendingValidation);
     }
 
     [Fact]
-    public async Task ChangeCNHAsync_WhenCNHIsNotUnique_ShouldReturnCNHNotUnique()
+    public async Task ChangeDriverLicenseAsync_WhenDriverLicenseIsNotUnique_ShouldReturnDriverLicenseNotUnique()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        var newCNH = CNH.Create(
+        var newDriverLicense = DriverLicense.Create(
             "42147507644",
-            CNHCategory.A,
+            DriverLicenseCategory.A,
             new DateOnly(DateTime.Today.Year + 2, 01, 01)).Value;
 
-        A.CallTo(() => cnhService.IsUniqueAsync(newCNH, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(newDriverLicense, A<CancellationToken>._))
             .Returns(false);
 
         // Act
-        var result = await renter.ChangeCNHAsync(newCNH, cnhService);
+        var result = await renter.ChangeDriverLicenseAsync(newDriverLicense, driverLicenseService);
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHNotUnique(newCNH));
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotUnique(newDriverLicense));
     }
 
     [Fact]
-    public async Task SendCNHImage_WhenCNHStatusIsPendingValidation_ShouldSendCNHImage()
+    public async Task SendDriverLicenseImage_WhenDriverLicenseStatusIsPendingValidation_ShouldSendDriverLicenseImage()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
 
         // Act
-        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
+        var result = renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
         // Assert
         result.Should().BeSuccess();
-        renter.CNHStatus.Should().Be(CNHStatus.WaitingApproval);
-        renter.CNHImageUrl.Should().Be(Constants.Renter.CNHImage);
+        renter.DriverLicenseStatus.Should().Be(DriverLicenseStatus.WaitingApproval);
+        renter.DriverLicenseImageUrl.Should().Be(Constants.Renter.DriverLicenseImage);
     }
 
     [Fact]
-    public async Task SendCNHImage_WhenCNHStatusIsRejected_ShouldSendCNHImage()
+    public async Task SendDriverLicenseImage_WhenDriverLicenseStatusIsRejected_ShouldSendDriverLicenseImage()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
-        renter.RejectCNH();
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
+        renter.RejectDriverLicense();
 
         // Act
-        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
+        var result = renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
         // Assert
         result.Should().BeSuccess();
-        renter.CNHStatus.Should().Be(CNHStatus.WaitingApproval);
-        renter.CNHImageUrl.Should().Be(Constants.Renter.CNHImage);
+        renter.DriverLicenseStatus.Should().Be(DriverLicenseStatus.WaitingApproval);
+        renter.DriverLicenseImageUrl.Should().Be(Constants.Renter.DriverLicenseImage);
     }
 
     [Fact]
-    public async Task SendCNHImage_WhenCalled_ShouldRaiseCNHImageSent()
+    public async Task SendDriverLicenseImage_WhenCalled_ShouldRaiseDriverLicenseImageSent()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
 
         // Act
-        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
+        var result = renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
         // Assert
         result.Should().BeSuccess();
-        renter.Events.Should().ContainSingle(e => e is CNHImageSent)
-            .Which.As<CNHImageSent>().Should().BeEquivalentTo(new
+        renter.Events.Should().ContainSingle(e => e is DriverLicenseImageSent)
+            .Which.As<DriverLicenseImageSent>().Should().BeEquivalentTo(new
             {
-                RenterId = renter.Id,
-                renter.CNHImageUrl
+                RenterId = renter.Id, 
+                renter.DriverLicenseImageUrl
             });
     }
 
     [Fact]
-    public async Task SendCNHImage_WhenCNHStatusIsWaitingApproval_ShouldReturnCNHIsNotPendingValidation()
+    public async Task SendDriverLicenseImage_WhenDriverLicenseStatusIsWaitingApproval_ShouldReturnDriverLicenseIsNotPendingValidation()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
         // Act
-        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
+        var result = renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHIsNotPendingValidation);
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotPendingValidation);
     }
 
     [Fact]
-    public async Task SendCNHImage_WhenCNHStatusIsApproved_ShouldReturnCNHIsNotPendingValidation()
+    public async Task SendDriverLicenseImage_WhenDriverLicenseStatusIsApproved_ShouldReturnDriverLicenseIsNotPendingValidation()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
-        renter.ApproveCNH();
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
+        renter.ApproveDriverLicense();
 
         // Act
-        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
+        var result = renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHIsNotPendingValidation);
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotPendingValidation);
     }
     
     [Fact]
-    public async Task ApproveCNH_WhenCNHStatusIsWaitingApproval_ShouldSetApproveStatus()
+    public async Task ApproveDriverLicense_WhenDriverLicenseStatusIsWaitingApproval_ShouldSetApproveStatus()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
         // Act
-        var result = renter.ApproveCNH();
+        var result = renter.ApproveDriverLicense();
 
         // Assert
         result.Should().BeSuccess();
-        renter.CNHStatus.Should().Be(CNHStatus.Approved);
+        renter.DriverLicenseStatus.Should().Be(DriverLicenseStatus.Approved);
     }
     
     [Fact]
-    public async Task ApproveCNH_WhenCNHStatusIsPendingValidation_ShouldReturnCNHIsNotWaitingApproval()
+    public async Task ApproveDriverLicense_WhenDriverLicenseStatusIsPendingValidation_ShouldReturnDriverLicenseIsNotWaitingApproval()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
 
         // Act
-        var result = renter.ApproveCNH();
+        var result = renter.ApproveDriverLicense();
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHIsNotWaitingApproval);
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotWaitingApproval);
     }
     
     [Fact]
-    public async Task ApproveCNH_WhenCNHStatusIsRejected_ShouldReturnCNHIsNotWaitingApproval()
+    public async Task ApproveDriverLicense_WhenDriverLicenseStatusIsRejected_ShouldReturnDriverLicenseIsNotWaitingApproval()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
-        renter.RejectCNH();
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
+        renter.RejectDriverLicense();
 
         // Act
-        var result = renter.ApproveCNH();
+        var result = renter.ApproveDriverLicense();
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHIsNotWaitingApproval);
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotWaitingApproval);
     }
     
     [Fact]
-    public async Task RejectCNH_WhenCNHStatusIsWaitingApproval_ShouldSetRejectedStatus()
+    public async Task RejectDriverLicense_WhenDriverLicenseStatusIsWaitingApproval_ShouldSetRejectedStatus()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
 
         // Act
-        var result = renter.RejectCNH();
+        var result = renter.RejectDriverLicense();
 
         // Assert
         result.Should().BeSuccess();
-        renter.CNHStatus.Should().Be(CNHStatus.Rejected);
-        renter.CNHImageUrl.Should().BeNull();
+        renter.DriverLicenseStatus.Should().Be(DriverLicenseStatus.Rejected);
+        renter.DriverLicenseImageUrl.Should().BeNull();
     }
 
     [Fact]
-    public async Task RejectCNH_WhenCNHStatusIsPendingValidation_ShouldReturnCNHIsNotWaitingApproval()
+    public async Task RejectDriverLicense_WhenDriverLicenseStatusIsPendingValidation_ShouldReturnDriverLicenseIsNotWaitingApproval()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
 
         // Act
-        var result = renter.RejectCNH();
+        var result = renter.RejectDriverLicense();
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHIsNotWaitingApproval);
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotWaitingApproval);
     }
     
     [Fact]
-    public async Task RejectCNH_WhenCNHStatusIsApproved_ShouldReturnCNHIsNotWaitingApproval()
+    public async Task RejectDriverLicense_WhenDriverLicenseStatusIsApproved_ShouldReturnDriverLicenseIsNotWaitingApproval()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImage(Constants.Renter.CNHImage);
-        renter.ApproveCNH();
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
+        renter.ApproveDriverLicense();
 
         // Act
-        var result = renter.RejectCNH();
+        var result = renter.RejectDriverLicense();
 
         // Assert
-        result.Should().BeFailure(RenterErrors.CNHIsNotWaitingApproval);
+        result.Should().BeFailure(RenterErrors.DriverLicenseNotWaitingApproval);
     }
 }

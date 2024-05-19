@@ -5,23 +5,23 @@ using Motorent.Domain.Renters.Repository;
 using Motorent.Domain.Renters.Services;
 using Motorent.Domain.Renters.ValueObjects;
 
-namespace Motorent.Application.Renters.UpdateCNH;
+namespace Motorent.Application.Renters.UpdateDriverLicense;
 
-internal sealed class UpdateCNHCommandHandler(
+internal sealed class UpdateDriverLicenseCommandHandler(
     IUserContext userContext,
     IRenterRepository renterRepository,
-    ICNHService cnhService) : ICommandHandler<UpdateCNHCommand>
+    IDriverLicenseService driverLicenseService) : ICommandHandler<UpdateDriverLicenseCommand>
 {
-    public async Task<Result<Success>> Handle(UpdateCNHCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Success>> Handle(UpdateDriverLicenseCommand command, CancellationToken cancellationToken)
     {
-        var cnh = CNH.Create(
+        var driverLicense = DriverLicense.Create(
             number: command.Number,
-            category: CNHCategory.FromName(command.Category, ignoreCase: true),
-            expirationDate: command.ExpDate);
+            category: DriverLicenseCategory.FromName(command.Category, ignoreCase: true),
+            expiry: command.ExpDate);
 
-        if (cnh.IsFailure)
+        if (driverLicense.IsFailure)
         {
-            return cnh.Errors;
+            return driverLicense.Errors;
         }
 
         var renter = await renterRepository.FindByUserAsync(userContext.UserId, cancellationToken);
@@ -30,7 +30,7 @@ internal sealed class UpdateCNHCommandHandler(
             throw new ApplicationException($"Renter not found for user {userContext.UserId}");
         }
 
-        return await renter.ChangeCNHAsync(cnh.Value, cnhService, cancellationToken)
+        return await renter.ChangeDriverLicenseAsync(driverLicense.Value, driverLicenseService, cancellationToken)
             .ThenAsync(() => renterRepository.UpdateAsync(renter, cancellationToken));
     }
 }

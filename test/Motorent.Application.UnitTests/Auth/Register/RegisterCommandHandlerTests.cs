@@ -18,7 +18,7 @@ public sealed class RegisterCommandHandlerTests
     private readonly ISecurityTokenProvider securityTokenProvider = A.Fake<ISecurityTokenProvider>();
     private readonly IRenterRepository renterRepository = A.Fake<IRenterRepository>();
     private readonly IDocumentService documentService = A.Fake<IDocumentService>();
-    private readonly ICNHService cnhService = A.Fake<ICNHService>();
+    private readonly IDriverLicenseService driverLicenseService = A.Fake<IDriverLicenseService>();
 
     private readonly RegisterCommandHandler sut;
 
@@ -30,9 +30,9 @@ public sealed class RegisterCommandHandlerTests
         FamilyName = "Doe",
         Birthdate = new DateOnly(2000, 09, 05),
         Document = "18.864.014/0001-19",
-        CNHNumber = "92353762700",
-        CNHCategory = "ab",
-        CNHExpDate = new DateOnly(DateTime.Today.Year + 1, 01, 01)
+        DriverLicenseNumber = "92353762700",
+        DriverLicenseCategory = "ab",
+        DriverLicenseExpiry = new DateOnly(DateTime.Today.Year + 1, 01, 01)
     };
 
     private readonly string userId = Ulid.NewUlid().ToString();
@@ -44,7 +44,7 @@ public sealed class RegisterCommandHandlerTests
             securityTokenProvider,
             renterRepository,
             documentService,
-            cnhService);
+            driverLicenseService);
 
         A.CallTo(() => userService.CreateUserAsync(
                 A<string>._,
@@ -57,7 +57,7 @@ public sealed class RegisterCommandHandlerTests
         A.CallTo(() => documentService.IsUniqueAsync(A<Document>._, A<CancellationToken>._))
             .Returns(true);
 
-        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(A<DriverLicense>._, A<CancellationToken>._))
             .Returns(true);
     }
 
@@ -101,10 +101,10 @@ public sealed class RegisterCommandHandlerTests
                 document: Document.Create(command.Document).Value,
                 fullName: new FullName(command.GivenName, command.FamilyName),
                 birthdate: Birthdate.Create(command.Birthdate).Value,
-                cnh: CNH.Create(
-                    command.CNHNumber,
-                    CNHCategory.FromName(command.CNHCategory, ignoreCase: true),
-                    command.CNHExpDate).Value))
+                driverLicense: DriverLicense.Create(
+                    command.DriverLicenseNumber,
+                    DriverLicenseCategory.FromName(command.DriverLicenseCategory, ignoreCase: true),
+                    command.DriverLicenseExpiry).Value))
             .Value;
 
         // Act
@@ -118,7 +118,7 @@ public sealed class RegisterCommandHandlerTests
                          && r.Email == renter.Email
                          && r.FullName == renter.FullName
                          && r.Birthdate == renter.Birthdate
-                         && r.CNH == renter.CNH),
+                         && r.DriverLicense == renter.DriverLicense),
                 A<CancellationToken>._))
             .MustHaveHappenedOnceExactly();
     }
@@ -188,7 +188,7 @@ public sealed class RegisterCommandHandlerTests
     public async Task Handle_WhenCreateRenterFails_ShouldReturnFailure()
     {
         // Arrange
-        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(A<DriverLicense>._, A<CancellationToken>._))
             .Returns(false); // Faz com que a criação do Renter falhe
 
         // Act
@@ -202,7 +202,7 @@ public sealed class RegisterCommandHandlerTests
     public async Task Handle_WhenCreateRenterFails_ShouldNotGenerateSecurityToken()
     {
         // Arrange
-        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(A<DriverLicense>._, A<CancellationToken>._))
             .Returns(false); // Faz com que a criação do Renter falhe
 
         // Act

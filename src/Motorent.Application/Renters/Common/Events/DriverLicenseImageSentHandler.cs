@@ -3,9 +3,10 @@ using Motorent.Domain.Renters.Repository;
 
 namespace Motorent.Application.Renters.Common.Events;
 
-internal sealed class CNHImageSentHandler(IRenterRepository renterRepository) : IEventHandler<CNHImageSent>
+internal sealed class DriverLicenseImageSentHandler(IRenterRepository renterRepository) 
+    : IEventHandler<DriverLicenseImageSent>
 {
-    public async Task Handle(CNHImageSent e, CancellationToken cancellationToken)
+    public async Task Handle(DriverLicenseImageSent e, CancellationToken cancellationToken)
     {
         var renter = await renterRepository.FindAsync(e.RenterId, cancellationToken);
         if (renter is null)
@@ -21,8 +22,8 @@ internal sealed class CNHImageSentHandler(IRenterRepository renterRepository) : 
         };
 
         var result = shouldApprove
-            ? renter.ApproveCNH()
-            : renter.RejectCNH();
+            ? renter.ApproveDriverLicense()
+            : renter.RejectDriverLicense();
 
         await result.ThenAsync(() => renterRepository.UpdateAsync(renter, cancellationToken))
             .Else(error => throw new ApplicationException(error.First().ToString()));

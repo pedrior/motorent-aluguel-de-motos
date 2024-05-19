@@ -15,7 +15,7 @@ internal sealed class RegisterCommandHandler(
     ISecurityTokenProvider securityTokenProvider,
     IRenterRepository renterRepository,
     IDocumentService documentService,
-    ICNHService cnhService)
+    IDriverLicenseService driverLicenseService)
     : ICommandHandler<RegisterCommand, TokenResponse>
 {
     public async Task<Result<TokenResponse>> Handle(RegisterCommand command, CancellationToken cancellationToken)
@@ -24,12 +24,12 @@ internal sealed class RegisterCommandHandler(
         var email = EmailAddress.Create(command.Email);
         var fullName = new FullName(command.GivenName, command.FamilyName);
         var birthdate = Birthdate.Create(command.Birthdate);
-        var cnh = CNH.Create(
-            command.CNHNumber,
-            CNHCategory.FromName(command.CNHCategory, ignoreCase: true),
-            command.CNHExpDate);
+        var driverLicense = DriverLicense.Create(
+            command.DriverLicenseNumber,
+            DriverLicenseCategory.FromName(command.DriverLicenseCategory, ignoreCase: true),
+            command.DriverLicenseExpiry);
 
-        var errors = ErrorCombiner.Combine(document, email, birthdate, cnh);
+        var errors = ErrorCombiner.Combine(document, email, birthdate, driverLicense);
         if (errors.Any())
         {
             return errors;
@@ -54,7 +54,7 @@ internal sealed class RegisterCommandHandler(
                 email.Value,
                 fullName,
                 birthdate.Value,
-                cnh.Value,
+                driverLicense.Value,
                 cancellationToken))
             .ThenAsync(renter => GenerateSecurityTokenAsync(renter.UserId, cancellationToken))
             .Then(securityToken => securityToken.Adapt<TokenResponse>());
@@ -66,7 +66,7 @@ internal sealed class RegisterCommandHandler(
         EmailAddress email,
         FullName fullName,
         Birthdate birthdate,
-        CNH cnh,
+        DriverLicense driverLicense,
         CancellationToken cancellationToken)
     {
         var result = Renter.CreateAsync(
@@ -76,9 +76,9 @@ internal sealed class RegisterCommandHandler(
             email: email,
             fullName: fullName,
             birthdate: birthdate,
-            cnh: cnh,
+            driverLicense: driverLicense,
             documentService: documentService,
-            cnhService: cnhService,
+            driverLicenseService: driverLicenseService,
             cancellationToken: cancellationToken);
 
         return result.ThenAsync(renter => renterRepository.AddAsync(renter, cancellationToken));

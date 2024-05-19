@@ -3,51 +3,51 @@ using Motorent.Domain.Renters.Enums;
 
 namespace Motorent.Domain.Renters.ValueObjects;
 
-public sealed class CNH : ValueObject
+public sealed class DriverLicense : ValueObject
 {
     internal static readonly Error Expired = Error.Validation("A CNH está expirada.");
 
     internal static readonly Error Invalid = Error.Validation("Número de CNH é inválido.");
 
-    private const string CNHOnes = "11111111111";
+    private const string Ones = "11111111111";
 
-    private CNH()
+    private DriverLicense()
     {
     }
 
     public string Number { get; private init; } = null!;
 
-    public CNHCategory Category { get; private init; } = null!;
+    public DriverLicenseCategory Category { get; private init; } = null!;
 
-    public DateOnly ExpirationDate { get; private init; }
+    public DateOnly Expiry { get; private init; }
 
-    public static Result<CNH> Create(string number, CNHCategory category, DateOnly expirationDate)
+    public static Result<DriverLicense> Create(string number, DriverLicenseCategory category, DateOnly expiry)
     {
-        if (IsExpired(expirationDate))
+        if (IsExpired(expiry))
         {
             return Expired;
         }
 
-        if (IsCNHNumberInvalid(number))
+        if (IsNumberInvalid(number))
         {
             return Invalid;
         }
 
-        return new CNH
+        return new DriverLicense
         {
             Number = number,
             Category = category,
-            ExpirationDate = expirationDate
+            Expiry = expiry
         };
     }
 
-    public override string ToString() => $"{Number} - {Category} - {ExpirationDate}";
+    public override string ToString() => $"{Number} - {Category} - {Expiry}";
 
     private static bool IsExpired(DateOnly date) => date < DateOnly.FromDateTime(DateTime.UtcNow);
 
-    private static bool IsCNHNumberInvalid(ReadOnlySpan<char> number)
+    private static bool IsNumberInvalid(ReadOnlySpan<char> number)
     {
-        if (number.Length is not 11 || number.SequenceEqual(CNHOnes))
+        if (number.Length is not 11 || number.SequenceEqual(Ones))
         {
             return true;
         }
@@ -77,6 +77,6 @@ public sealed class CNH : ValueObject
     {
         yield return Category;
         yield return Number;
-        yield return ExpirationDate;
+        yield return Expiry;
     }
 }

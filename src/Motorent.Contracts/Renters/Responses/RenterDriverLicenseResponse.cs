@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Motorent.Contracts.Renters.Responses;
 
-public sealed record RenterCNHResponse
+public sealed record RenterDriverLicenseResponse
 {
     public string Status { get; init; } = null!;
     
@@ -10,8 +10,7 @@ public sealed record RenterCNHResponse
 
     public string Category { get; init; } = null!;
     
-    [JsonPropertyName("exp")]
-    public DateOnly ExpirationDate { get; init; }
+    public DateOnly Expiry { get; init; }
     
     public string? ImageUrl { get; init; }
 }

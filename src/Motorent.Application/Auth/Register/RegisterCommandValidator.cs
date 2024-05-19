@@ -25,13 +25,13 @@ internal sealed class RegisterCommandValidator : AbstractValidator<RegisterComma
         RuleFor(x => x.Document)
             .Document();
 
-        RuleFor(x => x.CNHNumber)
-            .CNHNumber();
+        RuleFor(x => x.DriverLicenseNumber)
+            .DriverLicenseNumber();
 
-        RuleFor(x => x.CNHCategory)
-            .CNHCategory();
+        RuleFor(x => x.DriverLicenseCategory)
+            .DriverLicenseCategory();
         
-        RuleFor(x => x.CNHExpDate)
-            .CNHExpDate();
+        RuleFor(x => x.DriverLicenseExpiry)
+            .DriverLicenseExpiry();
     }
 }

@@ -1,23 +1,23 @@
 using Motorent.Application.Common.Abstractions.Identity;
-using Motorent.Application.Renters.UpdateCNH;
+using Motorent.Application.Renters.UpdateDriverLicense;
 using Motorent.Domain.Renters;
 using Motorent.Domain.Renters.Repository;
 using Motorent.Domain.Renters.Services;
 using Motorent.Domain.Renters.ValueObjects;
 using Motorent.TestUtils.Factories;
 
-namespace Motorent.Application.UnitTests.Renters.UpdateCNH;
+namespace Motorent.Application.UnitTests.Renters.UpdateDriverLicense;
 
-[TestSubject(typeof(UpdateCNHCommandHandler))]
-public sealed class UpdateCNHCommandHandlerTests
+[TestSubject(typeof(UpdateDriverLicenseCommandHandler))]
+public sealed class UpdateDriverLicenseCommandHandlerTests
 {
     private readonly IUserContext userContext = A.Fake<IUserContext>();
     private readonly IRenterRepository renterRepository = A.Fake<IRenterRepository>();
-    private readonly ICNHService cnhService = A.Fake<ICNHService>();
+    private readonly IDriverLicenseService driverLicenseService = A.Fake<IDriverLicenseService>();
 
-    private readonly UpdateCNHCommandHandler sut;
+    private readonly UpdateDriverLicenseCommandHandler sut;
 
-    private readonly UpdateCNHCommand command = new()
+    private readonly UpdateDriverLicenseCommand command = new()
     {
         Number = "92353762700",
         Category = "ab",
@@ -26,16 +26,16 @@ public sealed class UpdateCNHCommandHandlerTests
 
     private readonly string userId = Ulid.NewUlid().ToString();
 
-    public UpdateCNHCommandHandlerTests()
+    public UpdateDriverLicenseCommandHandlerTests()
     {
-        sut = new UpdateCNHCommandHandler(userContext, renterRepository, cnhService);
+        sut = new UpdateDriverLicenseCommandHandler(userContext, renterRepository, driverLicenseService);
 
         A.CallTo(() => userContext.UserId)
             .Returns(userId);
     }
 
     [Fact]
-    public async Task Handle_WhenCommandIsValid_ShouldChangeCNH()
+    public async Task Handle_WhenCommandIsValid_ShouldChangeDriverLicense()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync(userId: userId)).Value;
@@ -43,16 +43,16 @@ public sealed class UpdateCNHCommandHandlerTests
         A.CallTo(() => renterRepository.FindByUserAsync(userId, A<CancellationToken>._))
             .Returns(renter);
 
-        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(A<DriverLicense>._, A<CancellationToken>._))
             .Returns(true);
 
         // Act
         await sut.Handle(command, CancellationToken.None);
 
         // Assert
-        renter.CNH.Number.Should().Be(command.Number);
-        renter.CNH.Category.Name.Should().BeEquivalentTo(command.Category);
-        renter.CNH.ExpirationDate.Should().Be(command.ExpDate);
+        renter.DriverLicense.Number.Should().Be(command.Number);
+        renter.DriverLicense.Category.Name.Should().BeEquivalentTo(command.Category);
+        renter.DriverLicense.Expiry.Should().Be(command.ExpDate);
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public sealed class UpdateCNHCommandHandlerTests
         A.CallTo(() => renterRepository.FindByUserAsync(userId, A<CancellationToken>._))
             .Returns(renter);
 
-        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(A<DriverLicense>._, A<CancellationToken>._))
             .Returns(true);
 
         // Act
@@ -76,7 +76,7 @@ public sealed class UpdateCNHCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenCNHIsInvalid_ShouldReturnFailure()
+    public async Task Handle_WhenDriverLicenseIsInvalid_ShouldReturnFailure()
     {
         // Arrange
         var newCommand = command with
@@ -90,7 +90,7 @@ public sealed class UpdateCNHCommandHandlerTests
         // Assert
         result.Should().BeFailure();
         
-        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(A<DriverLicense>._, A<CancellationToken>._))
             .MustNotHaveHappened();
         
         A.CallTo(() => renterRepository.FindByUserAsync(A<string>._, A<CancellationToken>._))
@@ -116,7 +116,7 @@ public sealed class UpdateCNHCommandHandlerTests
     }
     
     [Fact]
-    public async Task Handle_WhenCNHIsNotUnique_ShouldReturnFailure()
+    public async Task Handle_WhenDriverLicenseIsNotUnique_ShouldReturnFailure()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync(userId: userId)).Value;
@@ -124,7 +124,7 @@ public sealed class UpdateCNHCommandHandlerTests
         A.CallTo(() => renterRepository.FindByUserAsync(userId, A<CancellationToken>._))
             .Returns(renter);
 
-        A.CallTo(() => cnhService.IsUniqueAsync(A<CNH>._, A<CancellationToken>._))
+        A.CallTo(() => driverLicenseService.IsUniqueAsync(A<DriverLicense>._, A<CancellationToken>._))
             .Returns(false);
 
         // Act

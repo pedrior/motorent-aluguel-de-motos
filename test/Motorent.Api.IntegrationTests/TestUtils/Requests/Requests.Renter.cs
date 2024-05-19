@@ -13,7 +13,7 @@ internal static partial class Requests
             Birthdate = new DateOnly(1990, 1, 1)
         };
         
-        public static readonly UpdateCNHRequest UpdateCNHRequest = new()
+        public static readonly UpdateDriverLicenseRequest UpdateDriverLicenseRequest = new()
         {
             Number = "19452106448",
             Category = "B",
@@ -25,7 +25,7 @@ internal static partial class Requests
         public static HttpRequestMessage UpdatePersonalInfo(UpdatePersonalInfoRequest? request = null) =>
             Put("v1/renters", request ?? UpdatePersonalInfoRequest);
         
-        public static HttpRequestMessage UpdateCNH(UpdateCNHRequest? request = null) =>
-            Put("v1/renters/cnh", request ?? UpdateCNHRequest);
+        public static HttpRequestMessage UpdateDriverLicense(UpdateDriverLicenseRequest? request = null) =>
+            Put("v1/renters/driver-license", request ?? UpdateDriverLicenseRequest);
     }
 }

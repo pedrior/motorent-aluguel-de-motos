@@ -122,11 +122,6 @@ A API é versionada via URL. Por padrão, todos os endpoints usam a versão `v1`
 https://localhost:8081/api/v1
 ```
 
-### Limitação de Taxa
-
-A maioria dos endpoints possui limitação de taxa para evitar abusos. Se esse limite for atingido em uma determinada
-janela de tempo, você receberá uma resposta `429 Too Many Requests`.
-
 ### Autenticação
 
 A API implementa autenticação via JWT para proteção de endpoints. Ao fazer solicitações autenticadas, é necessário

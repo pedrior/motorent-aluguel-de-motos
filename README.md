@@ -157,7 +157,7 @@ descrição mais detalhada do erro.
   "errors": [
     {
       "code": "motorcycle.license_plate_not_unique",
-      "message": "There is already a motorcycle with the same license plate in the system.",
+      "message": "Já existe uma moto com a mesma placa no sistema.",
       "details": {
         "license_plate": "KPA7A55"
       }

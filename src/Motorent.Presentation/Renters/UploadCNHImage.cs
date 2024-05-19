@@ -1,33 +1,31 @@
-using Motorent.Application.Renters.UploadCNHValidationImages;
+using Motorent.Application.Renters.UploadCNHImage;
 
 namespace Motorent.Presentation.Renters;
 
-internal sealed class UploadCNHValidationImages : IEndpoint
+internal sealed class UploadCNHImage : IEndpoint
 {
     public void MapEndpoints(IEndpointRouteBuilder app)
     {
         app.MapPost("renters/cnh-validation-images", (
-                IFormFile frontImage,
-                IFormFile backImage,
+                IFormFile image,
                 ISender sender,
                 CancellationToken cancellationToken) => sender.Send(
-                    new UploadCNHValidationImagesCommand
+                    new UploadCNHImageCommand
                     {
-                        FrontImage = new FormFileProxy(frontImage),
-                        BackImage = new FormFileProxy(backImage)
+                        Image = new FormFileProxy(image)
                     },
                     cancellationToken)
                 .ToResponseAsync(_ => Results.NoContent()))
             .DisableAntiforgery()
             .RequireAuthorization()
-            .WithName("UploadCNHValidationImages")
-            .WithSummary("Envia as imagens da CNH para validação do locatário autenticado")
+            .WithName("UploadCNHImage")
+            .WithSummary("Envia a imagem da CNH")
             .WithTags("Renters")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
-            .Produces(StatusCodes.Status503ServiceUnavailable);
-            // .WithOpenApi(); https://github.com/dotnet/aspnetcore/issues/53831
+            .Produces(StatusCodes.Status503ServiceUnavailable)
+            .WithOpenApi();
     }
 }

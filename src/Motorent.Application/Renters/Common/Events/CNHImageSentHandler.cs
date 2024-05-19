@@ -3,10 +3,9 @@ using Motorent.Domain.Renters.Repository;
 
 namespace Motorent.Application.Renters.Common.Events;
 
-internal sealed class CNHImagesSentForValidationEventHandler(IRenterRepository renterRepository)
-    : IEventHandler<CNHImagesSentForValidationEvent>
+internal sealed class CNHImageSentHandler(IRenterRepository renterRepository) : IEventHandler<CNHImageSent>
 {
-    public async Task Handle(CNHImagesSentForValidationEvent e, CancellationToken cancellationToken)
+    public async Task Handle(CNHImageSent e, CancellationToken cancellationToken)
     {
         var renter = await renterRepository.FindAsync(e.RenterId, cancellationToken);
         if (renter is null)
@@ -15,7 +14,6 @@ internal sealed class CNHImagesSentForValidationEventHandler(IRenterRepository r
         }
 
         // Apenas aprova ou rejeita aleatoriamente por enquanto
-        
         var shouldApprove = Random.Shared.Next(0, 11) switch
         {
             > 3 => true,
@@ -23,8 +21,8 @@ internal sealed class CNHImagesSentForValidationEventHandler(IRenterRepository r
         };
 
         var result = shouldApprove
-            ? renter.SetCNHApprovedStatus()
-            : renter.SetCNHRejectedStatus();
+            ? renter.ApproveCNH()
+            : renter.RejectCNH();
 
         await result.ThenAsync(() => renterRepository.UpdateAsync(renter, cancellationToken))
             .Else(error => throw new ApplicationException(error.First().ToString()));

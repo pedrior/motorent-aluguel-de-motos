@@ -13,7 +13,5 @@ public sealed record RenterCNHResponse
     [JsonPropertyName("exp")]
     public DateOnly ExpirationDate { get; init; }
     
-    public string? FrontImage { get; init; }
-    
-    public string? BackImage { get; init; }
+    public string? ImageUrl { get; init; }
 }

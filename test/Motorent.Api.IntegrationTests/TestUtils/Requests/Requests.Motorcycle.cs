@@ -9,9 +9,7 @@ internal static partial class Requests
         public static readonly RegisterMotorcycleRequest RegisterMotorcycleRequest = new()
         {
             Model = "Titan 160cc ABS",
-            Brand = "honda",
             Year = DateTime.Today.Year - 2,
-            DailyPrice = 38.99m,
             LicensePlate = "PIA2A91"
         };
 
@@ -27,11 +25,6 @@ internal static partial class Requests
         public static readonly UpdateLicensePlateRequest UpdateLicensePlateRequest = new()
         {
             LicensePlate = "KIL2H17"
-        };
-
-        public static readonly UpdateDailyPriceRequest UpdateDailyPriceRequest = new()
-        {
-            DailyPrice = 42.99m
         };
 
         public static HttpRequestMessage RegisterMotorcycle(RegisterMotorcycleRequest? request = null) =>
@@ -56,9 +49,6 @@ internal static partial class Requests
         {
             return Put($"v1/motorcycles/{idOrLicensePlate}/license-plate", request ?? UpdateLicensePlateRequest);
         }
-        
-        public static HttpRequestMessage UpdateDailyPrice(string id, UpdateDailyPriceRequest? request = null) =>
-            Put($"v1/motorcycles/{id}/daily-price", request ?? UpdateDailyPriceRequest);
 
         public static HttpRequestMessage RemoveMotorcycle(Ulid id) => Delete($"v1/motorcycles/{id}");
     }

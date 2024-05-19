@@ -30,19 +30,9 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("character varying(26)")
                         .HasColumnName("id");
 
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("brand");
-
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
-
-                    b.Property<decimal>("DailyPrice")
-                        .HasColumnType("numeric")
-                        .HasColumnName("daily_price");
 
                     b.Property<string>("LicensePlate")
                         .IsRequired()
@@ -84,6 +74,11 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.Property<DateOnly>("Birthdate")
                         .HasColumnType("date")
                         .HasColumnName("birthdate");
+
+                    b.Property<string>("CNHImageUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)")
+                        .HasColumnName("cnh_image_url");
 
                     b.Property<string>("CNHStatus")
                         .IsRequired()
@@ -162,10 +157,10 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "01HY4E9RZNNQ6T1RZ4KRFSBNJM",
+                            Id = "01HY89QQM2T5THZCM1KXDZ10G5",
                             Claims = new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" },
                             Email = "john@admin.com",
-                            PasswordHash = "bSgM8RqIft6Cj7o+zY9NCzKmRyKK0KwYuKi0LiP9w1E=:8jVDEfRE5J5BPerrhshZ9w==:50000:SHA256",
+                            PasswordHash = "tjwy+Xf1NuBHtFdh75cVsNtnfa9qwQJYZ+4BNYCgU+E=:1zaGX5TNm+4XWPwDIa4U6g==:50000:SHA256",
                             Roles = new[] { "admin" }
                         });
                 });
@@ -287,33 +282,6 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                                 .HasConstraintName("fk_renters_renters_id");
                         });
 
-                    b.OwnsOne("Motorent.Domain.Renters.ValueObjects.CNHValidationImages", "CNHValidationImages", b1 =>
-                        {
-                            b1.Property<string>("RenterId")
-                                .HasColumnType("character varying(26)")
-                                .HasColumnName("id");
-
-                            b1.Property<string>("BackImageUrl")
-                                .IsRequired()
-                                .HasMaxLength(2048)
-                                .HasColumnType("character varying(2048)")
-                                .HasColumnName("cnh_back_img_url");
-
-                            b1.Property<string>("FrontImageUrl")
-                                .IsRequired()
-                                .HasMaxLength(2048)
-                                .HasColumnType("character varying(2048)")
-                                .HasColumnName("cnh_front_img_url");
-
-                            b1.HasKey("RenterId");
-
-                            b1.ToTable("renters");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RenterId")
-                                .HasConstraintName("fk_renters_renters_id");
-                        });
-
                     b.OwnsOne("Motorent.Domain.Renters.ValueObjects.FullName", "FullName", b1 =>
                         {
                             b1.Property<string>("RenterId")
@@ -343,8 +311,6 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
 
                     b.Navigation("CNH")
                         .IsRequired();
-
-                    b.Navigation("CNHValidationImages");
 
                     b.Navigation("FullName")
                         .IsRequired();

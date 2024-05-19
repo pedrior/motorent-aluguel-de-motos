@@ -1,32 +1,31 @@
 using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Common.Abstractions.Storage;
-using Motorent.Application.Renters.UploadCNHValidationImages;
+using Motorent.Application.Renters.UploadCNHImage;
 using Motorent.Domain.Renters;
 using Motorent.Domain.Renters.Repository;
 using Motorent.TestUtils.Factories;
 
-namespace Motorent.Application.UnitTests.Renters.UploadCNHValidationImages;
+namespace Motorent.Application.UnitTests.Renters.UploadCNHImage;
 
-[TestSubject(typeof(UploadCNHValidationImagesCommandHandler))]
-public sealed class UploadCNHValidationImagesCommandHandlerTests
+[TestSubject(typeof(UploadCNHImageCommandHandler))]
+public sealed class UploadCNHImageCommandHandlerTests
 {
     private readonly IUserContext userContext = A.Fake<IUserContext>();
     private readonly IRenterRepository renterRepository = A.Fake<IRenterRepository>();
     private readonly IStorageService storageService = A.Fake<IStorageService>();
 
-    private readonly UploadCNHValidationImagesCommandHandler sut;
+    private readonly UploadCNHImageCommandHandler sut;
 
-    private readonly UploadCNHValidationImagesCommand command = new()
+    private readonly UploadCNHImageCommand command = new()
     {
-        FrontImage = A.Fake<IFile>(),
-        BackImage = A.Fake<IFile>()
+        Image = A.Fake<IFile>()
     };
 
     private readonly string userId = Ulid.NewUlid().ToString();
 
-    public UploadCNHValidationImagesCommandHandlerTests()
+    public UploadCNHImageCommandHandlerTests()
     {
-        sut = new UploadCNHValidationImagesCommandHandler(userContext, renterRepository, storageService);
+        sut = new UploadCNHImageCommandHandler(userContext, renterRepository, storageService);
 
         A.CallTo(() => userContext.UserId)
             .Returns(userId);
@@ -46,7 +45,7 @@ public sealed class UploadCNHValidationImagesCommandHandlerTests
 
         // Assert
         result.Should().BeSuccess();
-        renter.CNHValidationImages.Should().NotBeNull();
+        renter.CNHImageUrl.Should().NotBeNull();
     }
 
     [Fact]

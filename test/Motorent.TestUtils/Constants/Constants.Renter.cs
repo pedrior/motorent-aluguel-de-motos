@@ -24,8 +24,6 @@ public static partial class Constants
             CNHCategory.AB,
             new DateOnly(DateTime.Today.Year + 1, 01, 01)).Value;
 
-        public static readonly CNHValidationImages CNHValidationImages = new(
-            frontImageUrl: new Uri($"https://motorent-images.s3.amazonaws.com/renters/{Id}/cnh-front.jpg"),
-            backImageUrl: new Uri($"https://motorent-images.s3.amazonaws.com/renters/{Id}/cnh-back.jpg"));
+        public static readonly Uri CNHImage = new($"https://motorent-images.s3.amazonaws.com/renters/{Id}/cnh.jpg");
     }
 }

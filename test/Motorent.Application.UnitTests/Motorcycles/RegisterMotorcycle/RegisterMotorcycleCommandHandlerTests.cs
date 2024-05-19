@@ -24,16 +24,13 @@ public sealed class RegisterMotorcycleCommandHandlerTests
     private static readonly RegisterMotorcycleCommand Command = new()
     {
         Model = Constants.Motorcycle.Model,
-        Brand = Constants.Motorcycle.Brand.Name,
         Year = Constants.Motorcycle.Year.Value,
-        DailyPrice = Constants.Motorcycle.DailyPrice.Value,
         LicensePlate = Constants.Motorcycle.LicensePlate.Value
     };
 
     public static readonly IEnumerable<object[]> FailedCommands =
     [
         [Command with { Year = 0 }],
-        [Command with { DailyPrice = -8m }],
         [Command with { LicensePlate = "ABC1234" }]
     ];
 

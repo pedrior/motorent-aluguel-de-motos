@@ -1,4 +1,3 @@
-using Motorent.Domain.Common.ValueObjects;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Errors;
 using Motorent.Domain.Motorcycles.Services;
@@ -35,20 +34,6 @@ public sealed class MotorcycleTests
 
         // Assert
         result.Should().BeFailure(MotorcycleErrors.LicensePlateNotUnique(licensePlate));
-    }
-
-    [Fact]
-    public async Task ChangeDailyPrice_ShouldUpdateDailyPrice()
-    {
-        // Arrange
-        var newDailyPrice = Money.Create(35.50m).Value;
-        var motorcycle = (await Factories.Motorcycle.CreateAsync()).Value;
-
-        // Act
-        motorcycle.ChangeDailyPrice(newDailyPrice);
-
-        // Assert
-        motorcycle.DailyPrice.Should().Be(newDailyPrice);
     }
 
     [Fact]

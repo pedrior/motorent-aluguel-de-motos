@@ -13,14 +13,28 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "message_logs",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
+                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    identifier = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false),
+                    data = table.Column<string>(type: "character varying(65536)", maxLength: 65536, nullable: false),
+                    sent_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    received_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_message_logs", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "motorcycles",
                 columns: table => new
                 {
                     id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
                     model = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    brand = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     year = table.Column<int>(type: "integer", nullable: false),
-                    daily_price = table.Column<decimal>(type: "numeric", nullable: false),
                     license_plate = table.Column<string>(type: "character varying(7)", maxLength: 7, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
@@ -36,8 +50,8 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     type = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    data = table.Column<string>(type: "character", maxLength: 8192, nullable: false),
-                    error = table.Column<string>(type: "character", maxLength: 2048, nullable: true),
+                    data = table.Column<string>(type: "text", nullable: false),
+                    error = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     processed_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
@@ -62,8 +76,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     cnh_category = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
                     cnh_exp = table.Column<DateOnly>(type: "date", nullable: false),
                     cnh_status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    cnh_front_img_url = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
-                    cnh_back_img_url = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true)
+                    cnh_image_url = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -88,7 +101,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "id", "claims", "email", "password_hash", "roles" },
-                values: new object[] { "01HXJ32R78AMGH0CGPKPZRA0WB", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "0p9n6E8pTwcJOjVe1IXdBw5nLkzwAii7N9eupIqm8vo=:fMaufrO/TnCt5h3ChfffUw==:50000:SHA256", new[] { "admin" } });
+                values: new object[] { "01HY89QQM2T5THZCM1KXDZ10G5", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "tjwy+Xf1NuBHtFdh75cVsNtnfa9qwQJYZ+4BNYCgU+E=:1zaGX5TNm+4XWPwDIa4U6g==:50000:SHA256", new[] { "admin" } });
 
             migrationBuilder.CreateIndex(
                 name: "ix_motorcycles_license_plate",
@@ -124,6 +137,9 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "message_logs");
+
             migrationBuilder.DropTable(
                 name: "motorcycles");
 

@@ -27,7 +27,7 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
 
     public CNHStatus CNHStatus { get; private set; } = null!;
     
-    public CNHValidationImages? CNHValidationImages { get; private set; }
+    public Uri? CNHImageUrl { get; private set; }
 
     public static async Task<Result<Renter>> CreateAsync(
         RenterId id,
@@ -89,7 +89,7 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         return Success.Value;
     }
 
-    public Result<Success> SendCNHImagesForValidation(CNHValidationImages cnhValidationImages)
+    public Result<Success> SendCNHImage(Uri imageUrl)
     {
         if (!IsCNHPendingValidation())
         {
@@ -97,14 +97,14 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         }
 
         CNHStatus = CNHStatus.WaitingApproval;
-        CNHValidationImages = cnhValidationImages;
+        CNHImageUrl = imageUrl;
 
-        RaiseEvent(new CNHImagesSentForValidationEvent(Id, CNHValidationImages));
+        RaiseEvent(new CNHImageSent(Id, CNHImageUrl));
         
         return Success.Value;
     }
 
-    public Result<Success> SetCNHApprovedStatus()
+    public Result<Success> ApproveCNH()
     {
         if (CNHStatus != CNHStatus.WaitingApproval)
         {
@@ -113,12 +113,10 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         
         CNHStatus = CNHStatus.Approved;
         
-        RaiseEvent(new CNHStatusChangedToApprovedEvent(Id));
-        
         return Success.Value;
     }
     
-    public Result<Success> SetCNHRejectedStatus()
+    public Result<Success> RejectCNH()
     {
         if (CNHStatus != CNHStatus.WaitingApproval)
         {
@@ -126,10 +124,8 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         }
         
         CNHStatus = CNHStatus.Rejected;
-        CNHValidationImages = null;
-        
-        RaiseEvent(new CNHStatusChangedToRejectedEvent(Id));
-        
+        CNHImageUrl = null;
+
         return Success.Value;
     }
     

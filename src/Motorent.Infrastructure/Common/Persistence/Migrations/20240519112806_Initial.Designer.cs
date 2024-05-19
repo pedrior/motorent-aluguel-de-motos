@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Motorent.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240510202829_Initial")]
+    [Migration("20240519112806_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -33,19 +33,9 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("character varying(26)")
                         .HasColumnName("id");
 
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasColumnName("brand");
-
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
-
-                    b.Property<decimal>("DailyPrice")
-                        .HasColumnType("numeric")
-                        .HasColumnName("daily_price");
 
                     b.Property<string>("LicensePlate")
                         .IsRequired()
@@ -87,6 +77,11 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.Property<DateOnly>("Birthdate")
                         .HasColumnType("date")
                         .HasColumnName("birthdate");
+
+                    b.Property<string>("CNHImageUrl")
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)")
+                        .HasColumnName("cnh_image_url");
 
                     b.Property<string>("CNHStatus")
                         .IsRequired()
@@ -165,12 +160,51 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "01HXJ32R78AMGH0CGPKPZRA0WB",
+                            Id = "01HY89QQM2T5THZCM1KXDZ10G5",
                             Claims = new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" },
                             Email = "john@admin.com",
-                            PasswordHash = "0p9n6E8pTwcJOjVe1IXdBw5nLkzwAii7N9eupIqm8vo=:fMaufrO/TnCt5h3ChfffUw==:50000:SHA256",
+                            PasswordHash = "tjwy+Xf1NuBHtFdh75cVsNtnfa9qwQJYZ+4BNYCgU+E=:1zaGX5TNm+4XWPwDIa4U6g==:50000:SHA256",
                             Roles = new[] { "admin" }
                         });
+                });
+
+            modelBuilder.Entity("Motorent.Infrastructure.Common.Messaging.MessageLog", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(26)
+                        .HasColumnType("character varying(26)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasMaxLength(65536)
+                        .HasColumnType("character varying(65536)")
+                        .HasColumnName("data");
+
+                    b.Property<string>("Identifier")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)")
+                        .HasColumnName("identifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTimeOffset>("ReceivedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("received_at");
+
+                    b.Property<DateTimeOffset?>("SentAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("sent_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_message_logs");
+
+                    b.ToTable("message_logs", (string)null);
                 });
 
             modelBuilder.Entity("Motorent.Infrastructure.Common.Outbox.OutboxMessage", b =>
@@ -185,11 +219,11 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
 
                     b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("character")
+                        .HasColumnType("text")
                         .HasColumnName("data");
 
                     b.Property<string>("Error")
-                        .HasColumnType("character")
+                        .HasColumnType("text")
                         .HasColumnName("error");
 
                     b.Property<DateTimeOffset?>("ProcessedAt")
@@ -251,33 +285,6 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                                 .HasConstraintName("fk_renters_renters_id");
                         });
 
-                    b.OwnsOne("Motorent.Domain.Renters.ValueObjects.CNHValidationImages", "CNHValidationImages", b1 =>
-                        {
-                            b1.Property<string>("RenterId")
-                                .HasColumnType("character varying(26)")
-                                .HasColumnName("id");
-
-                            b1.Property<string>("BackImageUrl")
-                                .IsRequired()
-                                .HasMaxLength(2048)
-                                .HasColumnType("character varying(2048)")
-                                .HasColumnName("cnh_back_img_url");
-
-                            b1.Property<string>("FrontImageUrl")
-                                .IsRequired()
-                                .HasMaxLength(2048)
-                                .HasColumnType("character varying(2048)")
-                                .HasColumnName("cnh_front_img_url");
-
-                            b1.HasKey("RenterId");
-
-                            b1.ToTable("renters");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RenterId")
-                                .HasConstraintName("fk_renters_renters_id");
-                        });
-
                     b.OwnsOne("Motorent.Domain.Renters.ValueObjects.FullName", "FullName", b1 =>
                         {
                             b1.Property<string>("RenterId")
@@ -307,8 +314,6 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
 
                     b.Navigation("CNH")
                         .IsRequired();
-
-                    b.Navigation("CNHValidationImages");
 
                     b.Navigation("FullName")
                         .IsRequired();

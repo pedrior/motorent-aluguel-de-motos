@@ -97,8 +97,8 @@ public sealed class RenterTests
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
-        renter.SetCNHRejectedStatus();
+        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.RejectCNH();
 
         var newCNH = CNH.Create(
             "42147507644",
@@ -121,7 +121,7 @@ public sealed class RenterTests
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        renter.SendCNHImage(Constants.Renter.CNHImage);
 
         var newCNH = CNH.Create(
             "42147507644",
@@ -143,8 +143,8 @@ public sealed class RenterTests
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
-        renter.SetCNHApprovedStatus();
+        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.ApproveCNH();
 
         var newCNH = CNH.Create(
             "42147507644",
@@ -182,94 +182,94 @@ public sealed class RenterTests
     }
 
     [Fact]
-    public async Task SendCNHImagesForValidation_WhenCNHStatusIsPendingValidation_ShouldSendCNHImagesForValidation()
+    public async Task SendCNHImage_WhenCNHStatusIsPendingValidation_ShouldSendCNHImage()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
 
         // Act
-        var result = renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
 
         // Assert
         result.Should().BeSuccess();
         renter.CNHStatus.Should().Be(CNHStatus.WaitingApproval);
-        renter.CNHValidationImages.Should().Be(Constants.Renter.CNHValidationImages);
+        renter.CNHImageUrl.Should().Be(Constants.Renter.CNHImage);
     }
 
     [Fact]
-    public async Task SendCNHImagesForValidation_WhenCNHStatusIsRejected_ShouldSendCNHImagesForValidation()
+    public async Task SendCNHImage_WhenCNHStatusIsRejected_ShouldSendCNHImage()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
-        renter.SetCNHRejectedStatus();
+        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.RejectCNH();
 
         // Act
-        var result = renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
 
         // Assert
         result.Should().BeSuccess();
         renter.CNHStatus.Should().Be(CNHStatus.WaitingApproval);
-        renter.CNHValidationImages.Should().Be(Constants.Renter.CNHValidationImages);
+        renter.CNHImageUrl.Should().Be(Constants.Renter.CNHImage);
     }
 
     [Fact]
-    public async Task SendCNHImagesForValidation_WhenCalled_ShouldRaiseCNHImagesSentForValidationEvent()
+    public async Task SendCNHImage_WhenCalled_ShouldRaiseCNHImageSent()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
 
         // Act
-        var result = renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
 
         // Assert
         result.Should().BeSuccess();
-        renter.Events.Should().ContainSingle(e => e is CNHImagesSentForValidationEvent)
-            .Which.As<CNHImagesSentForValidationEvent>().Should().BeEquivalentTo(new
+        renter.Events.Should().ContainSingle(e => e is CNHImageSent)
+            .Which.As<CNHImageSent>().Should().BeEquivalentTo(new
             {
                 RenterId = renter.Id,
-                renter.CNHValidationImages
+                renter.CNHImageUrl
             });
     }
 
     [Fact]
-    public async Task SendCNHImagesForValidation_WhenCNHStatusIsWaitingApproval_ShouldReturnCNHIsNotPendingValidation()
+    public async Task SendCNHImage_WhenCNHStatusIsWaitingApproval_ShouldReturnCNHIsNotPendingValidation()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        renter.SendCNHImage(Constants.Renter.CNHImage);
 
         // Act
-        var result = renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
 
         // Assert
         result.Should().BeFailure(RenterErrors.CNHIsNotPendingValidation);
     }
 
     [Fact]
-    public async Task SendCNHImagesForValidation_WhenCNHStatusIsApproved_ShouldReturnCNHIsNotPendingValidation()
+    public async Task SendCNHImage_WhenCNHStatusIsApproved_ShouldReturnCNHIsNotPendingValidation()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
-        renter.SetCNHApprovedStatus();
+        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.ApproveCNH();
 
         // Act
-        var result = renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        var result = renter.SendCNHImage(Constants.Renter.CNHImage);
 
         // Assert
         result.Should().BeFailure(RenterErrors.CNHIsNotPendingValidation);
     }
     
     [Fact]
-    public async Task SetCNHApprovedStatus_WhenCNHStatusIsWaitingApproval_ShouldSetCNHApprovedStatus()
+    public async Task ApproveCNH_WhenCNHStatusIsWaitingApproval_ShouldSetApproveStatus()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        renter.SendCNHImage(Constants.Renter.CNHImage);
 
         // Act
-        var result = renter.SetCNHApprovedStatus();
+        var result = renter.ApproveCNH();
 
         // Assert
         result.Should().BeSuccess();
@@ -277,110 +277,72 @@ public sealed class RenterTests
     }
     
     [Fact]
-    public async Task SetCNHApprovedStatus_WhenCalled_ShouldRaiseCNHStatusChangedToApprovedEvent()
-    {
-        // Arrange
-        var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
-
-        // Act
-        var result = renter.SetCNHApprovedStatus();
-
-        // Assert
-        result.Should().BeSuccess();
-        renter.Events.Should().ContainSingle(e => e is CNHStatusChangedToApprovedEvent)
-            .Which.As<CNHStatusChangedToApprovedEvent>().Should().BeEquivalentTo(new
-            {
-                RenterId = renter.Id
-            });
-    }
-    
-    [Fact]
-    public async Task SetCNHApprovedStatus_WhenCNHStatusIsPendingValidation_ShouldReturnCNHIsNotWaitingApproval()
+    public async Task ApproveCNH_WhenCNHStatusIsPendingValidation_ShouldReturnCNHIsNotWaitingApproval()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
 
         // Act
-        var result = renter.SetCNHApprovedStatus();
+        var result = renter.ApproveCNH();
 
         // Assert
         result.Should().BeFailure(RenterErrors.CNHIsNotWaitingApproval);
     }
     
     [Fact]
-    public async Task SetCNHApprovedStatus_WhenCNHStatusIsRejected_ShouldReturnCNHIsNotWaitingApproval()
+    public async Task ApproveCNH_WhenCNHStatusIsRejected_ShouldReturnCNHIsNotWaitingApproval()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
-        renter.SetCNHRejectedStatus();
+        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.RejectCNH();
 
         // Act
-        var result = renter.SetCNHApprovedStatus();
+        var result = renter.ApproveCNH();
 
         // Assert
         result.Should().BeFailure(RenterErrors.CNHIsNotWaitingApproval);
     }
     
     [Fact]
-    public async Task SetCNHRejectedStatus_WhenCNHStatusIsWaitingApproval_ShouldSetCNHRejectedStatus()
+    public async Task RejectCNH_WhenCNHStatusIsWaitingApproval_ShouldSetRejectedStatus()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
+        renter.SendCNHImage(Constants.Renter.CNHImage);
 
         // Act
-        var result = renter.SetCNHRejectedStatus();
+        var result = renter.RejectCNH();
 
         // Assert
         result.Should().BeSuccess();
         renter.CNHStatus.Should().Be(CNHStatus.Rejected);
-        renter.CNHValidationImages.Should().BeNull();
+        renter.CNHImageUrl.Should().BeNull();
     }
-    
-    [Fact]
-    public async Task SetCNHRejectedStatus_WhenCalled_ShouldRaiseCNHStatusChangedToRejectedEvent()
-    {
-        // Arrange
-        var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
 
-        // Act
-        var result = renter.SetCNHRejectedStatus();
-
-        // Assert
-        result.Should().BeSuccess();
-        renter.Events.Should().ContainSingle(e => e is CNHStatusChangedToRejectedEvent)
-            .Which.As<CNHStatusChangedToRejectedEvent>().Should().BeEquivalentTo(new
-            {
-                RenterId = renter.Id
-            });
-    }
-    
     [Fact]
-    public async Task SetCNHRejectedStatus_WhenCNHStatusIsPendingValidation_ShouldReturnCNHIsNotWaitingApproval()
+    public async Task RejectCNH_WhenCNHStatusIsPendingValidation_ShouldReturnCNHIsNotWaitingApproval()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
 
         // Act
-        var result = renter.SetCNHRejectedStatus();
+        var result = renter.RejectCNH();
 
         // Assert
         result.Should().BeFailure(RenterErrors.CNHIsNotWaitingApproval);
     }
     
     [Fact]
-    public async Task SetCNHRejectedStatus_WhenCNHStatusIsApproved_ShouldReturnCNHIsNotWaitingApproval()
+    public async Task RejectCNH_WhenCNHStatusIsApproved_ShouldReturnCNHIsNotWaitingApproval()
     {
         // Arrange
         var renter = (await Factories.Renter.CreateAsync()).Value;
-        renter.SendCNHImagesForValidation(Constants.Renter.CNHValidationImages);
-        renter.SetCNHApprovedStatus();
+        renter.SendCNHImage(Constants.Renter.CNHImage);
+        renter.ApproveCNH();
 
         // Act
-        var result = renter.SetCNHRejectedStatus();
+        var result = renter.RejectCNH();
 
         // Assert
         result.Should().BeFailure(RenterErrors.CNHIsNotWaitingApproval);

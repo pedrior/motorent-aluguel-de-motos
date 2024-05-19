@@ -1,60 +1,49 @@
 # Projeto: Motorent - Aluguel de Motos
 
-Uma API para gerenciar aluguel de motos. Este projeto está sendo desenvolvido com ASP.NET Core, EF Core, PostgreSQL,
-Docker/Docker Compose, RabbitMQ, MassTransit, Arquitetura Limpa, DDD, CQRS, Testes de Unidade, Testes de Integração,
-boas práticas de programação e outras tecnologias.
+Uma API para gerenciar aluguel de motos e entregadores. Este projeto está sendo desenvolvido com ASP.NET Core,
+EF Core, PostgreSQL, Docker/Docker Compose, RabbitMQ, MassTransit, Arquitetura Limpa, DDD, CQRS, Testes de
+Unidade, Testes de Integração, boas práticas de programação e outras tecnologias e padrões.
 
-> Este projeto está sendo inspirado no [desafio backend da Mottu](https://github.com/Mottu-ops/Desafio-BackEnd), porém
-> foi desenvolvido por interesse próprio, não estou participando ou participei de algum processo seletivo da empresa.
-> Sendo assim, ainda é importante ressaltar que esse projeto não segue por completo a sua proposta original. Há casos
-> uso modificados e adicionados.
+> Este projeto é inspirado no [desafio backend da Mottu](https://github.com/Mottu-ops/Desafio-BackEnd), porém está
+> sendo desenvolvido por interesse próprio, não estou participando ou participei de algum processo seletivo da empresa.
 
-Este é um projeto feito por hobby. Se tiver alguma pergunta, recomendação ou qualquer outra questão, por favor abra uma
-issue ou entre em contato.
+## 🚩 Casos de uso
 
-## 🚩 Proposta Original
-
-Seu objetivo é criar uma aplicação para gerenciar aluguel de motos e entregadores.
-
-#### Casos de uso
-- ✅ Eu como usuário admin quero cadastrar uma nova moto.
-  - ✅ Os dados obrigatórios da moto são Identificador, Ano, Modelo e Placa
+- ✅ Eu, como usuário administrador, desejo cadastrar uma nova moto.
+  - ✅ Os dados obrigatórios da moto são: ID, Ano, Modelo e Placa.
   - ✅ A placa é um dado único e não pode se repetir.
-  - ✅ Quando a moto for cadastrada a aplicação deverá gerar um evento de moto cadastrada
-    - ✅ A notificação deverá ser publicada por mensageria.
-    - ✅ Criar um consumidor para notificar quando o ano da moto for "2024"
-    - ✅ Assim que a mensagem for recebida, deverá ser armazenada no banco de dados para consulta futura.
-- ✅ Eu como usuário admin quero consultar as motos existentes na plataforma e conseguir filtrar pela placa.
-- ✅ Eu como usuário admin quero modificar uma moto alterando apenas sua placa que foi cadastrado indevidamente
-- ✅ Eu como usuário admin quero remover uma moto que foi cadastrado incorretamente, desde que não tenha registro de
-locações.
-- ✅ Eu como usuário entregador quero me cadastrar na plataforma para alugar motos.
-    - ✅ Os dados do entregador são( identificador, nome, cnpj, data de nascimento, número da CNHh, tipo da CNH,
-    imagemCNH)
-    - ✅ Os tipos de cnh válidos são A, B ou ambas A+B.
-    - ✅ O cnpj é único e não pode se repetir.
-    - ✅ O número da CNH é único e não pode se repetir.
-- ✅ Eu como entregador quero enviar a foto de minha cnh para atualizar meu cadastro.
-    - ✅ O formato do arquivo deve ser png ou bmp.
-    - ✅ A foto não poderá ser armazenada no banco de dados, você pode utilizar um serviço de storage (disco local,
-    amazon s3, minIO ou outros).
+  - ✅ Ao cadastrar a moto, a aplicação deve gerar um evento de moto cadastrada.
+    - ✅ A notificação deve ser publicada por mensageria.
+    - ✅ Criar um consumidor para notificar quando o ano da moto for nova (ano atual).
+    - ✅ Assim que a mensagem for recebida, deve ser armazenada no banco de dados para consulta futura.
+- ✅ Eu, como usuário administrador, desejo consultar as motos existentes na plataforma e conseguir filtrar pela placa.
+- ✅ Eu, como usuário administrador, desejo modificar uma moto alterando apenas sua placa que foi cadastrada 
+indevidamente.
+- ✅ Eu, como usuário administrador, desejo remover uma moto cadastrada incorretamente, desde que não haja 
+registro de locações.
+- ✅ Eu, como entregador, desejo me cadastrar na plataforma para alugar motos.
+  - ✅ Os dados do entregador são: ID, Nome, CNPJ, Data de Nascimento, Número da CNH, Tipo da CNH, Imagem da CNH.
+  - ✅ Os tipos de CNH válidos são A, B ou ambos A+B.
+  - ✅ O CNPJ é único e não pode se repetir.
+  - ✅ O número da CNH é único e não pode se repetir.
+- ✅ Eu, como entregador, desejo enviar a foto da minha CNH para atualizar meu cadastro.
+  - ✅ O formato do arquivo deve ser PNG ou BMP.
+  - ✅ A foto não deve ser armazenada no banco de dados; você pode utilizar um serviço de armazenamento.
 - ⬜ Eu como entregador quero alugar uma moto por um período.
-    - ⬜ Os planos disponíveis para locação são:
-        - ⬜ 7 dias com um custo de R$30,00 por dia
-        - ⬜ 15 dias com um custo de R$28,00 por dia
-        - ⬜ 30 dias com um custo de R$22,00 por dia
-        - ⬜ 45 dias com um custo de R$20,00 por dia
-        - ⬜ 50 dias com um custo de R$18,00 por dia
-    - ⬜ A locação obrigatóriamente tem que ter uma data de inicio e uma data de término e outra data de previsão de 
+  - ⬜ Os planos disponíveis para locação são:
+    - ⬜ 7 dias com um custo de R$30,00 por dia
+    - ⬜ 15 dias com um custo de R$28,00 por dia
+    - ⬜ 30 dias com um custo de R$22,00 por dia
+    - ⬜ 45 dias com um custo de R$20,00 por dia
+    - ⬜ 50 dias com um custo de R$18,00 por dia
+  - ⬜ A locação obrigatóriamente tem que ter uma data de início e uma data de término e outra data de previsão de
     término.
-    - ⬜ O inicio da locação obrigatóriamente é o primeiro dia após a data de criação.
-    - ⬜Somente entregadores habilitados na categoria A podem efetuar uma locação
+  - ⬜ O início da locação obrigatóriamente é o primeiro dia após a data de criação.
+  - ⬜ Somente entregadores habilitados na categoria A podem efetuar uma locação
 - ⬜ Eu como entregador quero informar a data que irei devolver a moto e consultar o valor total da locação.
-    - ⬜ Quando a data informada for inferior a data prevista do término, será cobrado o valor das diárias e uma multa
-    adicional
-        - ⬜ Para plano de 7 dias o valor da multa é de 20% sobre o valor das diárias não efetivadas.
-        - ⬜ Para plano de 15 dias o valor da multa é de 40% sobre o valor das diárias não efetivadas.
-    - ⬜ Quando a data informada for superior a data prevista do término, será cobrado um valor adicional de R$50,00 por
+  - ⬜ Quando a data informada for inferior à data prevista do término, será cobrado o valor das diárias e uma multa
+    adicional de 40% sobre o valor das diárias não efetivadas.
+  - ⬜ Quando a data informada for superior à data prevista do término, será cobrado um valor adicional de R$ 50,00 por
     diária adicional.
 
 ## 🔰 Guia de Execução
@@ -66,7 +55,7 @@ locações.
 - [AWS S3](https://aws.amazon.com/pt/s3/)
 - [EF Core CLI](https://docs.microsoft.com/pt-br/ef/core/cli/dotnet)
 
-### Executando o Projeto
+### Execução
 
 1. Clone o repositório:
 
@@ -89,7 +78,7 @@ cd motorent-aluguel-de-motos
 }
 ```
 
-3. Crie um certificado para permitir a execução da API via HTTPS em contêineres Docker:
+3. Crie um certificado para permitir a execução da API via HTTPS no Docker:
 
 ```bash
 dotnet dev-certs https -ep ${HOME}/.aspnet/https/motorent.pfx -p password

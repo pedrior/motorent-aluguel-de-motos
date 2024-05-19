@@ -25,11 +25,8 @@ internal sealed class RenterMappings : IRegister
             .Map(dest => dest.CNH.Number, src => src.CNH.Number)
             .Map(dest => dest.CNH.Category, src => src.CNH.Category.Name)
             .Map(dest => dest.CNH.ExpirationDate, src => src.CNH.ExpirationDate)
-            .Map(dest => dest.CNH.FrontImage, src => src.CNHValidationImages == null 
+            .Map(dest => dest.CNH.ImageUrl, src => src.CNHImageUrl == null 
                 ? null 
-                : src.CNHValidationImages.FrontImageUrl)
-            .Map(dest => dest.CNH.BackImage, src => src.CNHValidationImages == null 
-                ? null 
-                : src.CNHValidationImages.BackImageUrl);
+                : src.CNHImageUrl.ToString());
     }
 }

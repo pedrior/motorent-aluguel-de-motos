@@ -8,13 +8,7 @@ internal sealed class RegisterMotorcycleCommandValidator : AbstractValidator<Reg
     {
         RuleFor(x => x.Model)
             .MotorcycleModel();
-
-        RuleFor(x => x.Brand)
-            .MotorcycleBrand();
-
-        RuleFor(x => x.DailyPrice)
-            .MotorcycleDailyPrice();
-
+        
         RuleFor(x => x.Year)
             .MotorcycleYear();
 

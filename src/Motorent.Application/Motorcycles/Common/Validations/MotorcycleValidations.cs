@@ -1,5 +1,3 @@
-using Motorent.Domain.Motorcycles.Enums;
-
 namespace Motorent.Application.Motorcycles.Common.Validations;
 
 internal static class MotorcycleValidations
@@ -12,16 +10,7 @@ internal static class MotorcycleValidations
             .Length(min: 2, max: 30)
             .WithMessage("Deve ter entre 2 e 30 caracteres.");
     }
-
-    public static IRuleBuilderOptions<T, string> MotorcycleBrand<T>(this IRuleBuilder<T, string> rule)
-    {
-        return rule
-            .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
-            .Must(v => Brand.IsDefined(v, ignoreCase: true))
-            .WithMessage($"Deve ser um dos seguintes: {string.Join(", ", Brand.List)}.");
-    }
-
+    
     public static IRuleBuilderOptions<T, decimal> MotorcycleDailyPrice<T>(this IRuleBuilder<T, decimal> rule)
     {
         return rule

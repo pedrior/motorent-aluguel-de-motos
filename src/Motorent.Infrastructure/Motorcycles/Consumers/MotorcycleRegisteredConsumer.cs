@@ -18,8 +18,8 @@ internal sealed class MotorcycleRegisteredConsumer(ILogger<MotorcycleRegisteredC
         {
             // TODO: Implementar notificação de novo veículo registrado por e-mail depois
             
-            logger.LogInformation("New motorcycle registered: {Brand} {Model} {Year}",
-                message.Brand, message.Model, message.Year);
+            logger.LogInformation("New motorcycle registered: {Id} {Model} {Year}",
+                message.MotorcycleId.ToString(), message.Model, message.Year);
         }
         
         return Task.CompletedTask;

@@ -69,17 +69,10 @@ internal sealed class RenterConfiguration : IEntityTypeConfiguration<Renter>
             .HasMaxLength(20)
             .HasConversion(v => v.Name, v => CNHStatus.FromName(v, true));
 
-        builder.OwnsOne(r => r.CNHValidationImages, b =>
-        {
-            b.Property(i => i.FrontImageUrl)
-                .HasMaxLength(2048)
-                .HasColumnName("cnh_front_img_url");
-
-            b.Property(i => i.BackImageUrl)
-                .HasMaxLength(2048)
-                .HasColumnName("cnh_back_img_url");
-        });
-
+        builder.Property(r => r.CNHImageUrl)
+            .HasMaxLength(2048)
+            .HasColumnName("cnh_image_url");
+        
         builder.ToTable("renters");
     }
 }

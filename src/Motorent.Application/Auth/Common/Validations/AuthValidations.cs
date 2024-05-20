@@ -19,6 +19,6 @@ internal static class AuthValidations
             .MinimumLength(8)
             .WithMessage("Deve ter pelo menos 8 caracteres.")
             .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).*$")
-            .WithMessage("Deve conter pelo menos uma letra maiúscula, uma letra minúscula e um algarismo.");
+            .WithMessage("Deve conter pelo menos uma letra maiúscula, uma letra minúscula e um número.");
     }
 }

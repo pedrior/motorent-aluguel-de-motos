@@ -10,7 +10,7 @@ internal static class CommonValidations
         return builder
             .NotEmpty()
             .WithMessage("Não deve estar vazio.")
-            .Length(min: 2, max: 50)
+            .Length(2, 50)
             .WithMessage("Deve ter entre 2 e 50 caracteres.")
             .Matches(@"^(?!.*['.]$)[\p{L}'. }]+$")
             .WithMessage("Deve conter apenas letras e espaços, pontos e apóstrofos seguidos de letras.");
@@ -41,9 +41,9 @@ internal static class CommonValidations
         return builder
             .NotEmpty()
             .WithMessage("Não deve estar vazio.")
-            .Length(11, 11)
+            .Length(11)
             .WithMessage("Deve ter 11 caracteres.")
-            .Matches(@"^\d{11}$")
+            .Matches(@"^\p{N}+")
             .WithMessage("Deve conter apenas números.");
     }
 
@@ -69,6 +69,6 @@ internal static class CommonValidations
     {
         return rule
             .Must(x => x.Stream.IsImage())
-            .WithMessage("Deve ser uma imagem PNG ou BMP válida.");
+            .WithMessage("Deve ser uma imagem PNG ou BMP.");
     }
 }

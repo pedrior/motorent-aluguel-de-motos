@@ -7,7 +7,7 @@ internal static class MotorcycleValidations
         return rule
             .NotEmpty()
             .WithMessage("Não deve estar vazio.")
-            .Length(min: 2, max: 30)
+            .Length(2, 30)
             .WithMessage("Deve ter entre 2 e 30 caracteres.");
     }
     
@@ -21,8 +21,8 @@ internal static class MotorcycleValidations
     public static IRuleBuilderOptions<T, int> MotorcycleYear<T>(this IRuleBuilder<T, int> rule)
     {
         return rule
-            .InclusiveBetween(2010, DateTime.UtcNow.Year + 1)
-            .WithMessage($"Deve situar-se entre 2010 e {DateTime.UtcNow.Year + 1}.");
+            .LessThanOrEqualTo(DateTime.UtcNow.Year)
+            .WithMessage($"Deve ser menor ou igual a {DateTime.UtcNow.Year}");
     }
 
     public static IRuleBuilderOptions<T, string> MotorcycleLicensePlate<T>(this IRuleBuilder<T, string> rule)

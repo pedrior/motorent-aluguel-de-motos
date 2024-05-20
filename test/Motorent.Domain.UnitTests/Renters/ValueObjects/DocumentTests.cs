@@ -9,15 +9,16 @@ public sealed class DocumentTests
     {
         new object[] { "27137033000134" },
         new object[] { "97877245000133" },
-        new object[] { "96.657.097/0001-89" },
-        new object[] { "72.302.462/0001-74" }
+        new object[] { "81018729000197" },
+        new object[] { "89734734000108" }
     };
 
     public static readonly IEnumerable<object[]> InvalidDocuments = new List<object[]>
     {
-        new object[] { "2713703300013" },
-        new object[] { "96.657.09780001-89" },
-        new object[] { "74798886000161" }
+        new object[] { "1903929700012" },
+        new object[] { "43947303000116" },
+        new object[] { "76337515123143" },
+        new object[] { "81.927.272/0001-33" }
     };
 
     [Theory, MemberData(nameof(ValidDocuments))]

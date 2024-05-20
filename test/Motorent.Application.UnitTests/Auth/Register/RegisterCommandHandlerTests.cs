@@ -29,7 +29,7 @@ public sealed class RegisterCommandHandlerTests
         GivenName = "John",
         FamilyName = "Doe",
         Birthdate = new DateOnly(2000, 09, 05),
-        Document = "18.864.014/0001-19",
+        Document = "18864014000119",
         DriverLicenseNumber = "92353762700",
         DriverLicenseCategory = "ab",
         DriverLicenseExpiry = new DateOnly(DateTime.Today.Year + 1, 01, 01)

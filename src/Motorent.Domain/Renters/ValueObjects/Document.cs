@@ -6,9 +6,6 @@ public sealed class Document : ValueObject
 {
     internal static readonly Error Invalid = Error.Validation("Documento CNPJ inválido.");
 
-    private const int Length = 14;
-    private const int MaxLength = 18;
-
     private static readonly int[] Multipliers1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
     private static readonly int[] Multipliers2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 
@@ -18,12 +15,8 @@ public sealed class Document : ValueObject
 
     public string Value { get; private init; } = null!;
 
-    public static Result<Document> Create(string value)
-    {
-        return IsDocumentInvalid(value) 
-            ? Invalid 
-            : new Document { Value = value };
-    }
+    public static Result<Document> Create(string value) =>
+        Validate(value) ? new Document { Value = value } : Invalid;
 
     public override string ToString() => Value;
 
@@ -32,33 +25,17 @@ public sealed class Document : ValueObject
         yield return Value;
     }
 
-    private static bool IsDocumentInvalid(string value)
+    private static bool Validate(string value)
     {
-        if (value.Length is < Length or > MaxLength)
+        if (value.Length is not 14)
         {
-            return true;
-        }
-
-        var index = 0;
-        Span<char> number = stackalloc char[Length];
-        foreach (var digit in value.Where(char.IsDigit))
-        {
-            number[index++] = digit;
-            if (index is Length)
-            {
-                break;
-            }
-        }
-
-        if (number.Length is not Length)
-        {
-            return true;
+            return false;
         }
 
         var sum1 = 0;
         for (var i = 0; i < 12; i++)
         {
-            sum1 += (number[i] - '0') * Multipliers1[i];
+            sum1 += (value[i] - '0') * Multipliers1[i];
         }
 
         var rem1 = sum1 % 11;
@@ -67,12 +44,12 @@ public sealed class Document : ValueObject
         var sum2 = 0;
         for (var i = 0; i < 13; i++)
         {
-            sum2 += (number[i] - '0') * Multipliers2[i];
+            sum2 += (value[i] - '0') * Multipliers2[i];
         }
 
         var rem2 = sum2 % 11;
         var vd2 = rem2 < 2 ? 0 : 11 - rem2;
 
-        return vd1 != number[12] - '0' || vd2 != number[13] - '0';
+        return vd1 == value[12] - '0' && vd2 == value[13] - '0';
     }
 }

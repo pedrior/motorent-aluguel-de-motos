@@ -11,7 +11,7 @@ public static partial class Constants
 
         public static readonly string UserId = Ulid.NewUlid().ToString();
 
-        public static readonly Document Document = Document.Create("92.411.039/0001-10").Value;
+        public static readonly Document Document = Document.Create("92411039000110").Value;
 
         public static readonly EmailAddress Email = EmailAddress.Create("john@doe.com").Value;
 

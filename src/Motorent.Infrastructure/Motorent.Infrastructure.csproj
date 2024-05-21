@@ -36,13 +36,4 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Common\Persistence\Migrations\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Common\Persistence\Migrations\20240521110851_Initial.Designer.cs" />
-      <Compile Remove="Common\Persistence\Migrations\20240521111011_Initial.Designer.cs" />
-    </ItemGroup>
 </Project>

@@ -22,6 +22,9 @@ internal abstract class Repository<TEntity, TId>(DataContext context) : IReposit
         return items.AsReadOnly();
     }
 
+    public Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken = default) =>
+        Set.AnyAsync(e => e.Id.Equals(id), cancellationToken);
+
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await Set.AddAsync(entity, cancellationToken);

@@ -29,17 +29,17 @@ registro de locações.
 - ✅ Eu, como entregador, desejo enviar a foto da minha CNH para atualizar meu cadastro.
   - ✅ O formato do arquivo deve ser PNG ou BMP.
   - ✅ A foto não deve ser armazenada no banco de dados; você pode utilizar um serviço de armazenamento.
-- ⬜ Eu como entregador quero alugar uma moto por um período.
-  - ⬜ Os planos disponíveis para locação são:
-    - ⬜ 7 dias com um custo de R$30,00 por dia
-    - ⬜ 15 dias com um custo de R$28,00 por dia
-    - ⬜ 30 dias com um custo de R$22,00 por dia
-    - ⬜ 45 dias com um custo de R$20,00 por dia
-    - ⬜ 50 dias com um custo de R$18,00 por dia
-  - ⬜ A locação obrigatóriamente tem que ter uma data de início e uma data de término e outra data de previsão de
+- ✅ Eu como entregador quero alugar uma moto por um período.
+  - ✅ Os planos disponíveis para locação são:
+    - ✅ 7 dias com um custo de R$30,00 por dia
+    - ✅ 15 dias com um custo de R$28,00 por dia
+    - ✅ 30 dias com um custo de R$22,00 por dia
+    - ✅ 45 dias com um custo de R$20,00 por dia
+    - ✅ 50 dias com um custo de R$18,00 por dia
+  - ✅ A locação obrigatóriamente tem que ter uma data de início e uma data de término e outra data de previsão de
     término.
-  - ⬜ O início da locação obrigatóriamente é o primeiro dia após a data de criação.
-  - ⬜ Somente entregadores habilitados na categoria A podem efetuar uma locação
+  - ✅ O início da locação obrigatóriamente é o primeiro dia após a data de criação.
+  - ✅ Somente entregadores habilitados na categoria A podem efetuar uma locação
 - ⬜ Eu como entregador quero informar a data que irei devolver a moto e consultar o valor total da locação.
   - ⬜ Quando a data informada for inferior à data prevista do término, será cobrado o valor das diárias e uma multa
     adicional de 40% sobre o valor das diárias não efetivadas.

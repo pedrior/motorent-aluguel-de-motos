@@ -8,6 +8,8 @@ public interface IRepository<TEntity, in TId> where TEntity : class, IEntity<TId
     
     Task<IReadOnlyCollection<TEntity>> ListAsync(CancellationToken cancellationToken = default);
     
+    Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken = default);
+    
     Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     
     Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);

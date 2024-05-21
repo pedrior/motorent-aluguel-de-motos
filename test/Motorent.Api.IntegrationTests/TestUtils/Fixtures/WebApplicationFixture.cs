@@ -25,9 +25,9 @@ public abstract class WebApplicationFixture(WebApplicationFactory api)
 
     internal DataContext DataContext => dataContext ??= GetRequiredService<DataContext>();
 
-    public Task InitializeAsync() => Task.CompletedTask;
+    public virtual Task InitializeAsync() => Task.CompletedTask;
 
-    public async Task DisposeAsync()
+    public virtual async Task DisposeAsync()
     {
         if (client is not null)
         {
@@ -74,4 +74,6 @@ public abstract class WebApplicationFixture(WebApplicationFactory api)
         Client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", securityToken.AccessToken);
     }
+    
+    protected void ClearAuthentication() => Client.DefaultRequestHeaders.Authorization = null;
 }

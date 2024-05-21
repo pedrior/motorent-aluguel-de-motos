@@ -17,6 +17,8 @@ using Motorent.Application.Common.Abstractions.Security;
 using Motorent.Application.Common.Abstractions.Storage;
 using Motorent.Domain.Motorcycles.Repository;
 using Motorent.Domain.Motorcycles.Services;
+using Motorent.Domain.Rentals.Repository;
+using Motorent.Domain.Rentals.Services;
 using Motorent.Domain.Renters.Repository;
 using Motorent.Domain.Renters.Services;
 using Motorent.Infrastructure.Common.Identity;
@@ -29,6 +31,7 @@ using Motorent.Infrastructure.Common.Storage;
 using Motorent.Infrastructure.Motorcycles;
 using Motorent.Infrastructure.Motorcycles.Consumers;
 using Motorent.Infrastructure.Motorcycles.Persistence;
+using Motorent.Infrastructure.Rentals.Persistence;
 using Motorent.Infrastructure.Renters;
 using Motorent.Infrastructure.Renters.Persistence;
 using Npgsql;
@@ -65,6 +68,8 @@ public static class ServiceExtensions
 
         services.AddScoped<ILicensePlateService, LicensePlateService>();
 
+        services.AddScoped<IRentalFactory, RentalFactory>();
+        
         services.AddScoped<IDocumentService, DocumentService>();
         services.AddScoped<IDriverLicenseService, DriverLicenseService>();
 
@@ -78,6 +83,7 @@ public static class ServiceExtensions
         services.AddScoped<PersistOutboxDomainEventsOnSaveChangesInterceptor>();
 
         services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
+        services.AddScoped<IRentalRepository, RentalRepository>();
         services.AddScoped<IRenterRepository, RenterRepository>();
 
         services.AddNpgsqlDataSource(configuration.GetConnectionString("DefaultConnection")!,

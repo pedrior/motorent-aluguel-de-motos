@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Motorent.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240519201034_Initial")]
+    [Migration("20240521111109_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -65,6 +65,49 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                         .HasDatabaseName("ix_motorcycles_license_plate");
 
                     b.ToTable("motorcycles", (string)null);
+                });
+
+            modelBuilder.Entity("Motorent.Domain.Rentals.Rental", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(26)
+                        .HasColumnType("character varying(26)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("MotorcycleId")
+                        .IsRequired()
+                        .HasMaxLength(26)
+                        .HasColumnType("character varying(26)")
+                        .HasColumnName("motorcycle_id");
+
+                    b.Property<string>("Plan")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("plan");
+
+                    b.Property<string>("RenterId")
+                        .IsRequired()
+                        .HasMaxLength(26)
+                        .HasColumnType("character varying(26)")
+                        .HasColumnName("renter_id");
+
+                    b.Property<DateOnly>("ReturnDate")
+                        .HasColumnType("date")
+                        .HasColumnName("return_date");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_rentals");
+
+                    b.ToTable("rentals", (string)null);
                 });
 
             modelBuilder.Entity("Motorent.Domain.Renters.Renter", b =>
@@ -160,10 +203,10 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "01HY97MDSBRYM243JNKN1PXGRE",
+                            Id = "01HYDDJ52JKHGMQ7H9JZKG5DB9",
                             Claims = new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" },
                             Email = "john@admin.com",
-                            PasswordHash = "M9cfFSSW4EnIf2eL6fZ5iondWmxhaCQUtiDJDMUnYcI=:QbcIDCekSWdeCe00n9xXxQ==:50000:SHA256",
+                            PasswordHash = "mXrwOm3VlihFeekUCV4288yIpYORJlHGKg/D8cuaRpM=:vo7+jhu2uGxqXyTQXPFAsg==:50000:SHA256",
                             Roles = new[] { "admin" }
                         });
                 });
@@ -246,6 +289,35 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                         .HasName("pk_outbox_messages");
 
                     b.ToTable("outbox_messages", (string)null);
+                });
+
+            modelBuilder.Entity("Motorent.Domain.Rentals.Rental", b =>
+                {
+                    b.OwnsOne("Motorent.Domain.Rentals.ValueObjects.Period", "Period", b1 =>
+                        {
+                            b1.Property<string>("RentalId")
+                                .HasColumnType("character varying(26)")
+                                .HasColumnName("id");
+
+                            b1.Property<DateOnly>("End")
+                                .HasColumnType("date")
+                                .HasColumnName("end");
+
+                            b1.Property<DateOnly>("Start")
+                                .HasColumnType("date")
+                                .HasColumnName("start");
+
+                            b1.HasKey("RentalId");
+
+                            b1.ToTable("rentals");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RentalId")
+                                .HasConstraintName("fk_rentals_rentals_id");
+                        });
+
+                    b.Navigation("Period")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Motorent.Domain.Renters.Renter", b =>

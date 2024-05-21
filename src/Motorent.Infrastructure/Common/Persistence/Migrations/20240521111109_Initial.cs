@@ -62,6 +62,25 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "rentals",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
+                    renter_id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
+                    motorcycle_id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
+                    plan = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    start = table.Column<DateOnly>(type: "date", nullable: false),
+                    end = table.Column<DateOnly>(type: "date", nullable: false),
+                    return_date = table.Column<DateOnly>(type: "date", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_rentals", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "renters",
                 columns: table => new
                 {
@@ -101,7 +120,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "id", "claims", "email", "password_hash", "roles" },
-                values: new object[] { "01HY97MDSBRYM243JNKN1PXGRE", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "M9cfFSSW4EnIf2eL6fZ5iondWmxhaCQUtiDJDMUnYcI=:QbcIDCekSWdeCe00n9xXxQ==:50000:SHA256", new[] { "admin" } });
+                values: new object[] { "01HYDDJ52JKHGMQ7H9JZKG5DB9", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "mXrwOm3VlihFeekUCV4288yIpYORJlHGKg/D8cuaRpM=:vo7+jhu2uGxqXyTQXPFAsg==:50000:SHA256", new[] { "admin" } });
 
             migrationBuilder.CreateIndex(
                 name: "ix_motorcycles_license_plate",
@@ -145,6 +164,9 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "outbox_messages");
+
+            migrationBuilder.DropTable(
+                name: "rentals");
 
             migrationBuilder.DropTable(
                 name: "renters");

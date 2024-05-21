@@ -40,6 +40,9 @@ public sealed class DriverLicense : ValueObject
             Expiry = expiry
         };
     }
+    
+    public bool CanDrive(DriverLicenseCategory category) => 
+        Category.Name.Contains(category.Name, StringComparison.Ordinal);
 
     public override string ToString() => $"{Number} - {Category} - {Expiry}";
 

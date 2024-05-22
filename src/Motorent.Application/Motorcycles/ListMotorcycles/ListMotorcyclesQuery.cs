@@ -2,7 +2,7 @@ using Motorent.Application.Common.Abstractions.Requests;
 using Motorent.Contracts.Common.Responses;
 using Motorent.Contracts.Motorcycles.Responses;
 
-namespace Motorent.Application.Motorcycles.ListMotorcycle;
+namespace Motorent.Application.Motorcycles.ListMotorcycles;
 
 public sealed record ListMotorcyclesQuery : IQuery<PageResponse<MotorcycleSummaryResponse>>
 {

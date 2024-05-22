@@ -1,4 +1,4 @@
-namespace Motorent.Application.Motorcycles.ListMotorcycle;
+namespace Motorent.Application.Motorcycles.ListMotorcycles;
 
 internal sealed class ListMotorcyclesQueryValidator : AbstractValidator<ListMotorcyclesQuery>
 {

@@ -3,7 +3,7 @@ using Motorent.Contracts.Common.Responses;
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles.Repository;
 
-namespace Motorent.Application.Motorcycles.ListMotorcycle;
+namespace Motorent.Application.Motorcycles.ListMotorcycles;
 
 internal sealed class ListMotorcyclesQueryHandler(IMotorcycleRepository motorcycleRepository)
     : IQueryHandler<ListMotorcyclesQuery, PageResponse<MotorcycleSummaryResponse>>

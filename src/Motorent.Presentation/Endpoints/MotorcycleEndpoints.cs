@@ -1,5 +1,5 @@
 using Motorent.Application.Motorcycles.GetMotorcycle;
-using Motorent.Application.Motorcycles.ListMotorcycle;
+using Motorent.Application.Motorcycles.ListMotorcycles;
 using Motorent.Application.Motorcycles.RegisterMotorcycle;
 using Motorent.Application.Motorcycles.RemoveMotorcycle;
 using Motorent.Application.Motorcycles.UpdateLicensePlate;

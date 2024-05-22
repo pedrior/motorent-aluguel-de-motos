@@ -24,8 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motorent.Domain.UnitTests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motorent.Application.UnitTests", "test\Motorent.Application.UnitTests\Motorent.Application.UnitTests.csproj", "{DC27CDB2-D6B5-4B27-8E4B-6D5277CD4316}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motorent.Infrastructure.UnitTests", "test\Motorent.Infrastructure.UnitTests\Motorent.Infrastructure.UnitTests.csproj", "{1BA139F0-C6F8-422A-8C77-878ECDB019B3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motorent.Api.IntegrationTests", "test\Motorent.Api.IntegrationTests\Motorent.Api.IntegrationTests.csproj", "{9E49B75B-1F52-458D-9DF0-824D0CD708F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motorent.TestUtils", "test\Motorent.TestUtils\Motorent.TestUtils.csproj", "{2833E646-3E47-42CE-9988-C1CEF9A9794C}"
@@ -68,10 +66,6 @@ Global
 		{DC27CDB2-D6B5-4B27-8E4B-6D5277CD4316}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC27CDB2-D6B5-4B27-8E4B-6D5277CD4316}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC27CDB2-D6B5-4B27-8E4B-6D5277CD4316}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1BA139F0-C6F8-422A-8C77-878ECDB019B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BA139F0-C6F8-422A-8C77-878ECDB019B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BA139F0-C6F8-422A-8C77-878ECDB019B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1BA139F0-C6F8-422A-8C77-878ECDB019B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E49B75B-1F52-458D-9DF0-824D0CD708F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E49B75B-1F52-458D-9DF0-824D0CD708F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E49B75B-1F52-458D-9DF0-824D0CD708F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -84,7 +78,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3051FA0E-87DD-45C9-8908-78273565B892} = {FA206EBB-7262-4CB0-BA18-921EBE1D1E67}
 		{DC27CDB2-D6B5-4B27-8E4B-6D5277CD4316} = {FA206EBB-7262-4CB0-BA18-921EBE1D1E67}
-		{1BA139F0-C6F8-422A-8C77-878ECDB019B3} = {FA206EBB-7262-4CB0-BA18-921EBE1D1E67}
 		{9E49B75B-1F52-458D-9DF0-824D0CD708F7} = {FA206EBB-7262-4CB0-BA18-921EBE1D1E67}
 		{2833E646-3E47-42CE-9988-C1CEF9A9794C} = {FA206EBB-7262-4CB0-BA18-921EBE1D1E67}
 	EndGlobalSection

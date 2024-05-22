@@ -6,36 +6,14 @@ internal static partial class Requests
 {
     public static class Motorcycle
     {
-        public static readonly RegisterMotorcycleRequest RegisterMotorcycleRequest = new()
-        {
-            Model = "Titan 160cc ABS",
-            Year = DateTime.Today.Year - 2,
-            LicensePlate = "PIA2A91"
-        };
-
-        public static readonly ListMotorcyclesRequest ListMotorcyclesRequest = new()
-        {
-            Page = 1,
-            Limit = 10,
-            Sort = "asc",
-            Order = null,
-            Search = null
-        };
-
-        public static readonly UpdateLicensePlateRequest UpdateLicensePlateRequest = new()
-        {
-            LicensePlate = "KIL2H17"
-        };
-
-        public static HttpRequestMessage RegisterMotorcycle(RegisterMotorcycleRequest? request = null) =>
-            Post("v1/motorcycles", request ?? RegisterMotorcycleRequest);
+        public static HttpRequestMessage RegisterMotorcycle(RegisterMotorcycleRequest request) => 
+            Post("v1/motorcycles", request);
 
         public static HttpRequestMessage GetMotorcycle(string idOrLicensePlate) =>
             Get($"v1/motorcycles/{idOrLicensePlate}");
 
-        public static HttpRequestMessage ListMotorcycles(ListMotorcyclesRequest? request = null)
+        public static HttpRequestMessage ListMotorcycles(ListMotorcyclesRequest request)
         {
-            request ??= ListMotorcyclesRequest;
             return Get($"v1/motorcycles" +
                        $"?page={request.Page}" +
                        $"&limit={request.Limit}" +
@@ -44,10 +22,10 @@ internal static partial class Requests
                        $"&search={request.Search}");
         }
         
-        public static HttpRequestMessage UpdateLicensePlate(string idOrLicensePlate,
-            UpdateLicensePlateRequest? request = null)
+        public static HttpRequestMessage UpdateLicensePlate(
+            string idOrLicensePlate, UpdateLicensePlateRequest request)
         {
-            return Put($"v1/motorcycles/{idOrLicensePlate}/license-plate", request ?? UpdateLicensePlateRequest);
+            return Put($"v1/motorcycles/{idOrLicensePlate}/license-plate", request);
         }
 
         public static HttpRequestMessage DeleteMotorcycle(Ulid id) => Delete($"v1/motorcycles/{id}");

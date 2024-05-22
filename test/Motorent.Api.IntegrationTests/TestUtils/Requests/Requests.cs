@@ -10,17 +10,23 @@ internal static partial class Requests
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
     };
     
-    private static HttpRequestMessage Post(string path, object request) => new(HttpMethod.Post, $"/api/{path}")
+    private static HttpRequestMessage Post(string path, object request)
     {
-        Content = ToContent(request)
-    };
+        return new HttpRequestMessage(HttpMethod.Post, $"/api/{path}")
+        {
+            Content = ToContent(request)
+        };
+    }
 
     private static HttpRequestMessage Get(string path) => new(HttpMethod.Get, $"/api/{path}");
 
-    private static HttpRequestMessage Put(string path, object request) => new(HttpMethod.Put, $"/api/{path}")
+    private static HttpRequestMessage Put(string path, object request)
     {
-        Content = ToContent(request)
-    };
+        return new HttpRequestMessage(HttpMethod.Put, $"/api/{path}")
+        {
+            Content = ToContent(request)
+        };
+    }
 
     private static HttpRequestMessage Delete(string path) => new(HttpMethod.Delete, $"/api/{path}");
     

@@ -11,6 +11,9 @@ namespace Motorent.Api.IntegrationTests.TestUtils.Fixtures;
 public abstract class WebApplicationFixture(WebApplicationFactory api)
     : IClassFixture<WebApplicationFactory>, IAsyncLifetime
 {
+    protected const string AdminUserRole = "admin";
+    protected const string RenterUserRole = "renter";
+    
     protected static readonly JsonSerializerOptions SerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
@@ -22,37 +25,36 @@ public abstract class WebApplicationFixture(WebApplicationFactory api)
     private DataContext? dataContext;
 
     protected HttpClient Client => client ??= api.CreateClient();
-
+    
     internal DataContext DataContext => dataContext ??= GetRequiredService<DataContext>();
 
     public virtual Task InitializeAsync() => Task.CompletedTask;
 
     public virtual async Task DisposeAsync()
     {
-        if (client is not null)
-        {
-            client.DefaultRequestHeaders.Authorization = null;
-        }
-
         DataContext.ChangeTracker.Clear();
+        
+        ClearAuthentication();
 
         serviceScope.Dispose();
 
         await api.ResetDatabaseAsync();
     }
 
-    protected T GetRequiredService<T>() where T : notnull => serviceScope.ServiceProvider.GetRequiredService<T>();
+    protected T GetRequiredService<T>() where T : notnull => 
+        serviceScope.ServiceProvider.GetRequiredService<T>();
 
     protected async Task<string> CreateUserAsync(
         string? email = null,
         string? password = null,
         string[]? roles = null,
-        Dictionary<string, string>? claims = null)
+        Dictionary<string, string>? claims = null,
+        bool authenticate = false)
     {
         var user = new User(
             email ?? "john@doe.com",
             PasswordHelper.Hash(password ?? "JohnDoe123"),
-            roles ?? [UserRoles.Admin],
+            roles ?? [AdminUserRole],
             claims ?? new Dictionary<string, string>
             {
                 [JwtRegisteredClaimNames.GivenName] = "John",
@@ -63,10 +65,23 @@ public abstract class WebApplicationFixture(WebApplicationFactory api)
         await DataContext.Users.AddAsync(user);
         await DataContext.SaveChangesAsync();
 
+        if (authenticate)
+        {
+            await AuthenticateAsync(user.Id);
+        }
+        
         return user.Id;
     }
 
-    protected async Task AuthenticateUserAsync(string userId)
+    protected void ClearAuthentication()
+    {
+        if (client is not null)
+        {
+            client.DefaultRequestHeaders.Authorization = null;
+        }
+    }
+    
+    private async Task AuthenticateAsync(string userId)
     {
         var securityTokenProvider = GetRequiredService<ISecurityTokenProvider>();
         var securityToken = await securityTokenProvider.GenerateSecurityTokenAsync(userId);
@@ -74,6 +89,4 @@ public abstract class WebApplicationFixture(WebApplicationFactory api)
         Client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", securityToken.AccessToken);
     }
-    
-    protected void ClearAuthentication() => Client.DefaultRequestHeaders.Authorization = null;
 }

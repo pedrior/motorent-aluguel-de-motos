@@ -6,11 +6,13 @@ internal static partial class Requests
 {
     public static class Rental
     {
-        public static HttpRequestMessage Rent(string plan, Ulid motorcycleId) =>
-            Post("v1/rentals", new RentRequest
+        public static HttpRequestMessage Rent(string plan, Ulid motorcycleId)
+        {
+            return Post("v1/rentals", new RentRequest
             {
                 Plan = plan,
                 MotorcycleId = motorcycleId
             });
+        }
     }
 }

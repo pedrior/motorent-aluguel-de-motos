@@ -1,20 +1,53 @@
 using System.Text.Json;
 using Motorent.Contracts.Common.Responses;
+using Motorent.Contracts.Motorcycles.Requests;
 using Motorent.Contracts.Motorcycles.Responses;
-using Motorent.Presentation.Endpoints;
+using Motorent.Domain.Motorcycles;
+using Motorent.Domain.Motorcycles.ValueObjects;
 
-namespace Motorent.Api.IntegrationTests.Endpoints;
+namespace Motorent.Api.IntegrationTests.Endpoints.Motorcycles;
 
 [TestSubject(typeof(MotorcycleEndpoints))]
-public sealed partial class MotorcycleEndpointsTests
+public sealed class ListMotorcyclesTests(WebApplicationFactory api) : WebApplicationFixture(api)
 {
+    private static readonly ListMotorcyclesRequest ListMotorcyclesRequest = new()
+    {
+        Page = 1,
+        Limit = 10,
+        Sort = "asc",
+        Order = null,
+        Search = null
+    };
+
+    public override async Task InitializeAsync()
+    {
+        await CreateMotorcyclesAsync();
+
+        await base.InitializeAsync();
+    }
+
+    private async Task CreateMotorcyclesAsync()
+    {
+        var motorcycles = new List<Motorcycle>();
+        
+        for (var i = 0; i < 5; i++)
+        {
+            var motorcycle = await Factories.Motorcycle.CreateAsync(
+                id: MotorcycleId.New(),
+                licensePlate: LicensePlate.Create($"KIL{i % 9}H{i + 1 % 9}{i + 2 % 9}").Value);
+            
+            motorcycles.Add(motorcycle.Value);
+        }
+
+        await DataContext.Motorcycles.AddRangeAsync(motorcycles);
+        await DataContext.SaveChangesAsync();
+    }
+
     [Fact]
     public async Task ListMotorcycles_WhenRequestIsValid_ShouldReturnOk()
     {
         // Arrange
-        await CreateMotorcyclesAsync(5);
-
-        var request = Requests.Motorcycle.ListMotorcycles();
+        var request = Requests.Motorcycle.ListMotorcycles(ListMotorcyclesRequest);
 
         // Act
         var response = await Client.SendAsync(request);
@@ -28,8 +61,8 @@ public sealed partial class MotorcycleEndpointsTests
 
         motorcycles.Should().BeEquivalentTo(new
         {
-            Requests.Motorcycle.ListMotorcyclesRequest.Page,
-            Requests.Motorcycle.ListMotorcyclesRequest.Limit,
+            ListMotorcyclesRequest.Page,
+            ListMotorcyclesRequest.Limit,
             TotalItems = 5,
             TotalPages = 1,
             HasNextPage = false,
@@ -49,9 +82,7 @@ public sealed partial class MotorcycleEndpointsTests
         string? sort)
     {
         // Arrange
-        await CreateMotorcyclesAsync(5);
-
-        var request = Requests.Motorcycle.ListMotorcycles(Requests.Motorcycle.ListMotorcyclesRequest with
+        var request = Requests.Motorcycle.ListMotorcycles(ListMotorcyclesRequest with
         {
             Page = page,
             Limit = limit,

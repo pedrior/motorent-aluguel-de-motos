@@ -47,6 +47,11 @@ public sealed class Motorcycle : Entity<MotorcycleId>, IAggregateRoot, IAuditabl
         ILicensePlateService licensePlateService,
         CancellationToken cancellationToken = default)
     {
+        if (licensePlate == LicensePlate)
+        {
+            return Success.Value;
+        }
+        
         if (!await licensePlateService.IsUniqueAsync(licensePlate, cancellationToken))
         {
             return MotorcycleErrors.LicensePlateNotUnique(licensePlate);

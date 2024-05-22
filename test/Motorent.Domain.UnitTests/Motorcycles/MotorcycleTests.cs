@@ -1,6 +1,7 @@
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Errors;
 using Motorent.Domain.Motorcycles.Services;
+using Motorent.Domain.Motorcycles.ValueObjects;
 
 namespace Motorent.Domain.UnitTests.Motorcycles;
 
@@ -62,7 +63,7 @@ public sealed class MotorcycleTests
     {
         // Arrange
         var motorcycle = (await Factories.Motorcycle.CreateAsync()).Value;
-        var licensePlate = Constants.Motorcycle.LicensePlate;
+        var licensePlate = LicensePlate.Create("PQA8I13").Value;
         var licensePlateService = A.Fake<ILicensePlateService>();
 
         A.CallTo(() => licensePlateService.IsUniqueAsync(licensePlate, A<CancellationToken>._))

@@ -28,10 +28,16 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
             .UntilCommandIsCompleted("pg_isready"))
         .Build();
 
-    private Respawner respawner = null!;
-    private DbConnection dbConnection = null!;
+    private Respawner? respawner;
+    private DbConnection? dbConnection;
     
-    public Task ResetDatabaseAsync() => respawner.ResetAsync(dbConnection);
+    public async Task ResetDatabaseAsync()
+    {
+        if (dbConnection is not null && respawner is not null)
+        {
+            await respawner.ResetAsync(dbConnection);
+        }
+    }
 
     public async Task InitializeAsync()
     {
@@ -44,7 +50,11 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
 
     public new async Task DisposeAsync()
     {
-        await dbConnection.CloseAsync();
+        if (dbConnection is not null)
+        {
+            await dbConnection.CloseAsync();
+        }
+        
         await dbContainer.StopAsync();
     }
     
@@ -63,6 +73,11 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
     
     private async Task InitializeRespawnerAsync()
     {
+        if (dbConnection is null)
+        {
+            return;
+        }
+        
         respawner = await Respawner.CreateAsync(dbConnection, new RespawnerOptions
         {
             DbAdapter = DbAdapter.Postgres,

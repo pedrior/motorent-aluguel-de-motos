@@ -14,6 +14,8 @@ internal static partial class Requests
                 MotorcycleId = motorcycleId
             });
         }
+        
+        public static HttpRequestMessage GetRental(Ulid rentalId) => Get($"v1/rentals/{rentalId}");
 
         public static HttpRequestMessage UpdateReturnDate(Ulid rentalId, DateOnly returnDate)
         {

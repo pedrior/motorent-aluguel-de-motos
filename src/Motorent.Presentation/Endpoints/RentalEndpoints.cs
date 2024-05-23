@@ -1,3 +1,4 @@
+using Motorent.Application.Rentals.GetRental;
 using Motorent.Application.Rentals.Rent;
 using Motorent.Application.Rentals.UpdateReturnDate;
 using Motorent.Contracts.Rentals.Requests;
@@ -24,6 +25,15 @@ internal sealed class RentalEndpoints : IEndpoint
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status422UnprocessableEntity);
 
+        group.MapGet("{id}", GetRental)
+            .WithName("GetRental")
+            .WithSummary("Obtém um aluguel pelo ID")
+            .Produces<RentalResponse>()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+
         group.MapPut("{id}/return-date", UpdateReturnDate)
             .WithName(nameof(UpdateReturnDate))
             .WithSummary("Atualiza a data de devolução do aluguel")
@@ -44,6 +54,12 @@ internal sealed class RentalEndpoints : IEndpoint
                 MotorcycleId = Ulid.TryParse(request.MotorcycleId, out var id) ? id : Ulid.Empty
             }, cancellationToken)
             .ToResponseAsync(response => Results.Created(uri: null as Uri, value: response));
+    }
+    
+    private static Task<IResult> GetRental(Ulid id, ISender sender, CancellationToken cancellationToken)
+    {
+        return sender.Send(new GetRentalQuery { Id = id }, cancellationToken)
+            .ToResponseAsync(Results.Ok);
     }
 
     private static Task<IResult> UpdateReturnDate(

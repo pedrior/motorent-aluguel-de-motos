@@ -165,6 +165,41 @@ A resposta pode conter campos adicionais para fornecer uma descrição mais deta
 }
 ```
 
+## :hammer_and_wrench: Tecnologias, Bibliotecas e Padrões Utilizados
+
+- ASP.NET Core 8
+- Entity Framework Core 8
+- PostgreSQL
+- Docker/Docker Compose
+- Amazon S3
+- xUnit
+- DDD
+- Arquitetura Limpa
+- Teste de Unidade
+- Teste de Integração
+- Swashbuckle
+- MediatR
+- FluentValidation
+- Mapster
+- Ulid
+- Serilog
+- Hangfire
+- MassTransit
+- RabbitMQ
+- FluentAssertion
+- FakeItEasy
+- Testcontainers
+- Respawn
+- JWT
+- Autenticação
+- Autorização
+- Versionamento
+- Padrão CQRS
+- Padrão Result
+- Padrão Repository
+- Padrão UnitOfWork
+
+
 ## Licença
 
 Este repositório está licenciado sob a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).

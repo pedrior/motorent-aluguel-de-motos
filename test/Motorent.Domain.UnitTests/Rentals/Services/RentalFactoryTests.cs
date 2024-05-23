@@ -36,6 +36,25 @@ public sealed class RentalFactoryTests
 
     [Fact]
     public async Task
+        Create_WhenRentesDoesNotHaveAnApprovedDriverLicense_ShouldReturnRenterMustHaveAnApprovedDriverLicense()
+    {
+        // Arrange
+        var factory = new RentalFactory();
+        var renter = await GetRenterAsync(DriverLicenseCategory.A, approveDriverLicense: false);
+
+        // Act
+        var result = factory.Create(
+            renter,
+            Constants.Rental.Id,
+            Constants.Motorcycle.Id,
+            Constants.Rental.Plan);
+
+        // Assert
+        result.Should().BeFailure(RentalErrors.RenterMustHaveAnApprovedDriverLicense);
+    }
+
+    [Fact]
+    public async Task
         Create_WhenRenterDoesNotHaveCategoryADrivingLicense_ShouldReturnRenterMustHaveCategoryADrivingLicense()
     {
         // Arrange
@@ -53,13 +72,23 @@ public sealed class RentalFactoryTests
         result.Should().BeFailure(RentalErrors.RenterMustHaveCategoryADrivingLicense);
     }
 
-    private static async Task<Renter> GetRenterAsync(DriverLicenseCategory driverLicenseCategory)
+    private static async Task<Renter> GetRenterAsync(
+        DriverLicenseCategory driverLicenseCategory,
+        bool approveDriverLicense = true)
     {
-        return (await Factories.Renter.CreateAsync(
+        var renter = (await Factories.Renter.CreateAsync(
                 driverLicense: DriverLicense.Create(
                     number: Constants.Renter.DriverLicense.Number,
                     expiry: Constants.Renter.DriverLicense.Expiry,
                     category: driverLicenseCategory).Value))
             .Value;
+
+        if (approveDriverLicense)
+        {
+            renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
+            renter.ApproveDriverLicense();
+        }
+
+        return renter;
     }
 }

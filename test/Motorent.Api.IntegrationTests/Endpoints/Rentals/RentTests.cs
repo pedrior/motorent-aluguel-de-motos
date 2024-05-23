@@ -27,6 +27,9 @@ public sealed class RentTests(WebApplicationFactory api) : WebApplicationFixture
         var renter = (await Factories.Renter.CreateAsync(userId: userId))
             .Value;
 
+        renter.SendDriverLicenseImage(Constants.Renter.DriverLicenseImage);
+        renter.ApproveDriverLicense();
+
         await DataContext.Renters.AddAsync(renter);
         await DataContext.SaveChangesAsync();
     }

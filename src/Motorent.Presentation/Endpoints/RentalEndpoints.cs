@@ -38,7 +38,11 @@ internal sealed class RentalEndpoints : IEndpoint
 
     private static Task<IResult> Rent(RentRequest request, ISender sender, CancellationToken cancellationToken)
     {
-        return sender.Send(request.Adapt<RentCommand>(), cancellationToken)
+        return sender.Send(new RentCommand
+            {
+                Plan = request.Plan.Trim(),
+                MotorcycleId = Ulid.TryParse(request.MotorcycleId, out var id) ? id : Ulid.Empty
+            }, cancellationToken)
             .ToResponseAsync(response => Results.Created(uri: null as Uri, value: response));
     }
 

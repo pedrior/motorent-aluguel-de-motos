@@ -6,7 +6,7 @@ internal static partial class Requests
 {
     public static class Rental
     {
-        public static HttpRequestMessage Rent(string plan, Ulid motorcycleId)
+        public static HttpRequestMessage Rent(string plan, string motorcycleId)
         {
             return Post("v1/rentals", new RentRequest
             {

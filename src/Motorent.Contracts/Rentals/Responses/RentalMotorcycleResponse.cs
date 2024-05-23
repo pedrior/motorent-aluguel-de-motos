@@ -2,7 +2,7 @@ namespace Motorent.Contracts.Rentals.Responses;
 
 public sealed record RentalMotorcycleResponse
 {
-    public Ulid Id { get; init; }
+    public string Id { get; init; } = null!;
     
     public string Model { get; init; } = null!;
     

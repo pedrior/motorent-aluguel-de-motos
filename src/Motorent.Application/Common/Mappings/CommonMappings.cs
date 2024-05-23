@@ -7,10 +7,10 @@ internal sealed class CommonMappings : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<MotorcycleId, Ulid>()
-            .ConstructUsing(src => src.Value);
+        config.NewConfig<MotorcycleId, string>()
+            .ConstructUsing(src => src.ToString());
         
-        config.NewConfig<RentalId, Ulid>()
-            .ConstructUsing(src => src.Value);
+        config.NewConfig<RentalId, string>()
+            .ConstructUsing(src => src.ToString());
     }
 }

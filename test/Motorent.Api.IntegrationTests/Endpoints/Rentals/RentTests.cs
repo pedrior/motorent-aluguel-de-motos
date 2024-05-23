@@ -9,7 +9,7 @@ namespace Motorent.Api.IntegrationTests.Endpoints.Rentals;
 public sealed class RentTests(WebApplicationFactory api) : WebApplicationFixture(api)
 {
     private static readonly string Plan = RentalPlan.FifteenDays.Name;
-    private static readonly Ulid MotorcycleId = Ulid.NewUlid();
+    private static readonly string MotorcycleId = Ulid.NewUlid().ToString();
 
     public override async Task InitializeAsync()
     {
@@ -34,7 +34,7 @@ public sealed class RentTests(WebApplicationFactory api) : WebApplicationFixture
     private async Task CreateMotorcycleAsync()
     {
         var motorcycle = (await Factories.Motorcycle.CreateAsync(
-                id: new MotorcycleId(MotorcycleId)))
+                id: new MotorcycleId(Ulid.Parse(MotorcycleId))))
             .Value;
 
         await DataContext.Motorcycles.AddAsync(motorcycle);
@@ -55,7 +55,9 @@ public sealed class RentTests(WebApplicationFactory api) : WebApplicationFixture
 
         var content = await response.DeserializeContentAsync<RentalResponse>();
 
-        var rental = DataContext.Rentals.SingleOrDefaultAsync(r => r.Id == new RentalId(content.Id));
+        var rental = DataContext.Rentals.SingleOrDefaultAsync(
+            r => r.Id == new RentalId(Ulid.Parse(content.Id)));
+        
         rental.Should().NotBeNull();
     }
 
@@ -96,7 +98,7 @@ public sealed class RentTests(WebApplicationFactory api) : WebApplicationFixture
     public async Task Rent_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
     {
         // Arrange
-        var request = Requests.Rental.Rent(Plan, Ulid.NewUlid());
+        var request = Requests.Rental.Rent(Plan, Ulid.NewUlid().ToString());
 
         // Act
         var response = await Client.SendAsync(request);

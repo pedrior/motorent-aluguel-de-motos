@@ -53,7 +53,7 @@ internal sealed class RentCommandHandler(
         {
             Motorcycle = new RentalMotorcycleResponse
             {
-                Id = motorcycle.Id.Value,
+                Id = motorcycle.Id.ToString(),
                 Model = motorcycle.Model,
                 Year = motorcycle.Year.Value,
                 LicensePlate = motorcycle.LicensePlate.ToString()

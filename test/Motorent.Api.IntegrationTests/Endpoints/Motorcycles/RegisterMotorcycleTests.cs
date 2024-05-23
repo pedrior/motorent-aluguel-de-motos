@@ -37,7 +37,7 @@ public sealed class RegisterMotorcycleTests(WebApplicationFactory api) : WebAppl
 
         var content = await response.DeserializeContentAsync<MotorcycleResponse>();
         var motorcycle = await DataContext.Motorcycles.SingleAsync(
-            m => m.Id == new MotorcycleId(content.Id));
+            m => m.Id == new MotorcycleId(Ulid.Parse(content.Id)));
 
         motorcycle.Should().NotBeNull();
     }

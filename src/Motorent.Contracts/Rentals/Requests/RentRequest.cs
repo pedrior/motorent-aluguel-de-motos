@@ -4,5 +4,5 @@ public sealed record RentRequest
 {
     public string Plan { get; init; } = null!;
 
-    public Ulid MotorcycleId { get; init; }
+    public string MotorcycleId { get; init; } = null!;
 }

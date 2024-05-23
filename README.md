@@ -7,7 +7,16 @@ Unidade, Testes de Integração, boas práticas de programação e outras tecnol
 > Este projeto é inspirado no [desafio backend da Mottu](https://github.com/Mottu-ops/Desafio-BackEnd), porém está
 > sendo desenvolvido por interesse próprio, não estou participando ou participei de algum processo seletivo da empresa.
 
-## 🚩 Casos de uso
+## :pushpin: Index
+
+- [Casos de Uso](#triangular_flag_on_post-casos-de-uso)
+- [Guia de Execução](#beginner-guia-de-execução)
+- [API](#globe_with_meridians-api)
+- [Tecnologias, Bibliotecas e Padrões Utilizados](#hammer_and_wrench-tecnologias-bibliotecas-e-padrões-utilizados)
+- [Licença](#page_with_curl-licença)
+
+
+## :triangular_flag_on_post: Casos de Uso
 
 - ✅ Eu, como usuário administrador, desejo cadastrar uma nova moto.
   - ✅ Os dados obrigatórios da moto são: ID, Ano, Modelo e Placa.
@@ -46,7 +55,7 @@ registro de locações.
   - ✅ Quando a data informada for superior à data prevista do término, será cobrado um valor adicional de R$ 50,00 por
     diária adicional.
 
-## 🔰 Guia de Execução
+## :beginner: Guia de Execução
 
 ### Pré-requisitos
 
@@ -97,7 +106,7 @@ dotnet ef database update -s src/Motorent.Api -p src/Motorent.Infrastructure
 docker compose up --build -d
 ```
 
-## 🌐 API
+## :globe_with_meridians: API
 
 > Alguns endpoints requerem um usuário administrador. Para isso, basta fazer login usando as credenciais:
 > email: john@admin.com\
@@ -200,6 +209,6 @@ A resposta pode conter campos adicionais para fornecer uma descrição mais deta
 - Padrão UnitOfWork
 
 
-## Licença
+## :page_with_curl: Licença
 
 Este repositório está licenciado sob a [Licença MIT](https://github.com/pedrior/motorent-aluguel-de-motos/blob/master/LICENSE).

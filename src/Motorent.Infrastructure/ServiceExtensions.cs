@@ -69,6 +69,7 @@ public static class ServiceExtensions
         services.AddScoped<ILicensePlateService, LicensePlateService>();
 
         services.AddScoped<IRentalFactory, RentalFactory>();
+        services.AddScoped<IRentalPenaltyService, RentalPenaltyService>();
         
         services.AddScoped<IDocumentService, DocumentService>();
         services.AddScoped<IDriverLicenseService, DriverLicenseService>();

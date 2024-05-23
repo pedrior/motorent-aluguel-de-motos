@@ -40,10 +40,10 @@ registro de locações.
     término.
   - ✅ O início da locação obrigatóriamente é o primeiro dia após a data de criação.
   - ✅ Somente entregadores habilitados na categoria A podem efetuar uma locação
-- ⬜ Eu como entregador quero informar a data que irei devolver a moto e consultar o valor total da locação.
-  - ⬜ Quando a data informada for inferior à data prevista do término, será cobrado o valor das diárias e uma multa
+- ✅ Eu como entregador quero informar a data que irei devolver a moto e consultar o valor total da locação.
+  - ✅ Quando a data informada for inferior à data prevista do término, será cobrado o valor das diárias e uma multa
     adicional de 40% sobre o valor das diárias não efetivadas.
-  - ⬜ Quando a data informada for superior à data prevista do término, será cobrado um valor adicional de R$ 50,00 por
+  - ✅ Quando a data informada for superior à data prevista do término, será cobrado um valor adicional de R$ 50,00 por
     diária adicional.
 
 ## 🔰 Guia de Execução

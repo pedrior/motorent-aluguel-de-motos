@@ -73,7 +73,8 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     end = table.Column<DateOnly>(type: "date", nullable: false),
                     return_date = table.Column<DateOnly>(type: "date", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    penalty = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,7 +121,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "id", "claims", "email", "password_hash", "roles" },
-                values: new object[] { "01HYDDJ52JKHGMQ7H9JZKG5DB9", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "mXrwOm3VlihFeekUCV4288yIpYORJlHGKg/D8cuaRpM=:vo7+jhu2uGxqXyTQXPFAsg==:50000:SHA256", new[] { "admin" } });
+                values: new object[] { "01HYJQV1JZP1JAXJP3FZ4HR6RC", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "fOE4S9Kzt6tOKkd08R/yafDygBksVkLIcMqWkLX1/qI=:13PvM8tQIJow8s6eQ83e0g==:50000:SHA256", new[] { "admin" } });
 
             migrationBuilder.CreateIndex(
                 name: "ix_motorcycles_license_plate",

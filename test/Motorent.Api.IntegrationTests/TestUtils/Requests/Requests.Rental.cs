@@ -14,5 +14,13 @@ internal static partial class Requests
                 MotorcycleId = motorcycleId
             });
         }
+
+        public static HttpRequestMessage UpdateReturnDate(Ulid rentalId, DateOnly returnDate)
+        {
+            return Put($"v1/rentals/{rentalId}/return-date", new UpdateReturnDateRequest
+            {
+                ReturnDate = returnDate
+            });
+        }
     }
 }

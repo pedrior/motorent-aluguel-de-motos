@@ -47,6 +47,11 @@ internal sealed class RentalConfiguration : IEntityTypeConfiguration<Rental>
                 .HasColumnName("end");
         });
 
+        builder.Property(r => r.Penalty)
+            .HasConversion(
+                v => v.Value,
+                d => new Money(d));
+
         builder.ToTable("rentals");
     }
 }

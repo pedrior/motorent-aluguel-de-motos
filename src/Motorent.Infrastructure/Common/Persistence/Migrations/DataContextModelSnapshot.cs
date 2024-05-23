@@ -81,6 +81,10 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                         .HasColumnType("character varying(26)")
                         .HasColumnName("motorcycle_id");
 
+                    b.Property<decimal>("Penalty")
+                        .HasColumnType("numeric")
+                        .HasColumnName("penalty");
+
                     b.Property<string>("Plan")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -200,10 +204,10 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "01HYDDJ52JKHGMQ7H9JZKG5DB9",
+                            Id = "01HYJQV1JZP1JAXJP3FZ4HR6RC",
                             Claims = new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" },
                             Email = "john@admin.com",
-                            PasswordHash = "mXrwOm3VlihFeekUCV4288yIpYORJlHGKg/D8cuaRpM=:vo7+jhu2uGxqXyTQXPFAsg==:50000:SHA256",
+                            PasswordHash = "fOE4S9Kzt6tOKkd08R/yafDygBksVkLIcMqWkLX1/qI=:13PvM8tQIJow8s6eQ83e0g==:50000:SHA256",
                             Roles = new[] { "admin" }
                         });
                 });

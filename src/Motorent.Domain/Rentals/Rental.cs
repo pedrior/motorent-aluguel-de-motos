@@ -1,7 +1,9 @@
 using Motorent.Domain.Common.Entities;
 using Motorent.Domain.Motorcycles.ValueObjects;
 using Motorent.Domain.Rentals.Enums;
+using Motorent.Domain.Rentals.Services;
 using Motorent.Domain.Rentals.ValueObjects;
+using Motorent.Domain.Renters.Errors;
 using Motorent.Domain.Renters.ValueObjects;
 
 namespace Motorent.Domain.Rentals;
@@ -27,10 +29,12 @@ public sealed class Rental : Entity<RentalId>, IAggregateRoot, IAuditable
     public DateTimeOffset? UpdatedAt { get; set; }
     
     public bool IsActive => !Period.IsPast;
+    
+    public Money Penalty { get; private set; } = null!;
 
     public Money DailyPrice => Plan.DailyPrice;
     
-    public Money TotalPrice => Plan.CalculateTotalPrice();
+    public Money TotalPrice => Plan.CalculateTotalPrice() + Penalty;
 
     internal static Rental Create(
         RentalId id,
@@ -45,10 +49,30 @@ public sealed class Rental : Entity<RentalId>, IAggregateRoot, IAuditable
             MotorcycleId = motorcycleId,
             Plan = plan,
             Period = period,
-            ReturnDate = period.End
+            ReturnDate = period.End,
+            Penalty = Money.Zero
         };
     }
-    
-    private static Period GetPeriodForPlan(RentalPlan plan) => 
+
+    public Result<Success> ChangeReturnDate(DateOnly newReturnDate,
+        IRentalPenaltyService rentalPenaltyService)
+    {
+        if (!IsActive)
+        {
+            return RenterErrors.RentalIsNotActive;
+        }
+
+        if (newReturnDate < Period.Start)
+        {
+            return RenterErrors.ReturnDateIsBeforeRentalStartDate;
+        }
+
+        Penalty = rentalPenaltyService.Calculate(ReturnDate, newReturnDate);
+        ReturnDate = newReturnDate;
+
+        return Success.Value;
+    }
+
+    private static Period GetPeriodForPlan(RentalPlan plan) =>
         new(DateOnly.FromDateTime(DateTime.UtcNow).AddDays(plan.Days + 1));
 }

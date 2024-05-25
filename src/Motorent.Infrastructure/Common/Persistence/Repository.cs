@@ -42,4 +42,10 @@ internal abstract class Repository<TEntity, TId>(DataContext context) : IReposit
         Set.Remove(entity);
         return context.SaveChangesAsync(cancellationToken);
     }
+
+    public Task DeleteAsync(TId id, CancellationToken cancellationToken = default)
+    {
+        return Set.Where(e => e.Id.Equals(id))
+            .ExecuteDeleteAsync(cancellationToken);
+    }
 }

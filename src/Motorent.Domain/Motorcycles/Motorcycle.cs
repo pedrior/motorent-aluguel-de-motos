@@ -1,5 +1,6 @@
 using Motorent.Domain.Common.Entities;
 using Motorent.Domain.Motorcycles.Errors;
+using Motorent.Domain.Motorcycles.Events;
 using Motorent.Domain.Motorcycles.Services;
 using Motorent.Domain.Motorcycles.ValueObjects;
 
@@ -61,4 +62,6 @@ public sealed class Motorcycle : Entity<MotorcycleId>, IAggregateRoot, IAuditabl
 
         return Success.Value;
     }
+
+    internal void Delete() => RaiseEvent(new DeleteMotorcycle(Id));
 }

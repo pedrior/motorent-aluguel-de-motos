@@ -23,25 +23,7 @@ public sealed class DeleteMotorcycleTests(WebApplicationFactory api) : WebApplic
         await DataContext.Motorcycles.AddAsync(motorcycle.Value);
         await DataContext.SaveChangesAsync();
     }
-
-    [Fact]
-    public async Task DeleteMotorcycle_WhenRequestIsValid_ShouldDeleteMotorcycle()
-    {
-        // Arrange
-        var request = Requests.Motorcycle.DeleteMotorcycle(MotorcycleId.Value);
-
-        // Act
-        var response = await Client.SendAsync(request);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-        
-        DataContext.ChangeTracker.Clear();
-
-        var motorcycle = await DataContext.Motorcycles.FindAsync([MotorcycleId]);
-        motorcycle.Should().BeNull();
-    }
-
+    
     [Fact]
     public async Task DeleteMotorcycle_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
     {

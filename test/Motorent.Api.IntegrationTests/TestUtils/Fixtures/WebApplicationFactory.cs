@@ -25,7 +25,7 @@ public sealed class WebApplicationFactory : WebApplicationFactory<Program>, IAsy
         .WithUsername("root")
         .WithPassword("password")
         .WithWaitStrategy(Wait.ForUnixContainer()
-            .UntilCommandIsCompleted("pg_isready"))
+            .UntilCommandIsCompleted("pg_isready -U root"))
         .Build();
 
     private Respawner? respawner;

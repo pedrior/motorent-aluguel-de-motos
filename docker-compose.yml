@@ -31,7 +31,7 @@ services:
     image: postgres
     container_name: motorent-db
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      test: [ "CMD", "pg_isready", "-U", "root" ]
       interval: 10s
       timeout: 30s
       retries: 5

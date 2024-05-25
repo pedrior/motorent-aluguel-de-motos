@@ -1,8 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-    </PropertyGroup>
-
     <ItemGroup>
         <ProjectReference Include="..\Motorent.Domain\Motorent.Domain.csproj"/>
         <ProjectReference Include="..\Motorent.Contracts\Motorent.Contracts.csproj"/>

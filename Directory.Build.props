@@ -1,8 +1,14 @@
 <Project>
     <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$(AssemblyName.EndsWith('Tests'))">
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
     <ItemGroup Condition="$(AssemblyName.EndsWith('Tests'))">

@@ -13,15 +13,15 @@ internal sealed class RenterEndpoints : IEndpoint
     {
         var group = app.MapGroup("renters")
             .WithTags("Renters")
-            .RequireAuthorization()
-            .WithOpenApi();
+            .RequireAuthorization();
 
         group.MapGet("", GetProfile)
             .WithName(nameof(GetProfile))
             .WithSummary("Obtém o perfil do locatário")
             .Produces<RenterProfileResponse>()
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status403Forbidden);
+            .Produces(StatusCodes.Status403Forbidden)
+            .WithOpenApi();
 
         group.MapPut("", UpdatePersonalInfo)
             .WithName(nameof(UpdatePersonalInfo))
@@ -29,7 +29,9 @@ internal sealed class RenterEndpoints : IEndpoint
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status403Forbidden);
+            .Produces(StatusCodes.Status403Forbidden)
+            .WithOpenApi();
+
 
         group.MapPut("driver-license", UpdateDriverLicense)
             .WithName(nameof(UpdateDriverLicense))
@@ -38,8 +40,9 @@ internal sealed class RenterEndpoints : IEndpoint
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden)
-            .Produces(StatusCodes.Status409Conflict);
-
+            .Produces(StatusCodes.Status409Conflict)
+            .WithOpenApi();
+ 
         group.MapPut("driver-license-image", UploadDriverLicenseImage)
             .DisableAntiforgery()
             .WithName(nameof(UploadDriverLicenseImage))

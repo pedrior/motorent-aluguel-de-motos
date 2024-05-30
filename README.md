@@ -179,6 +179,7 @@ A resposta pode conter campos adicionais para fornecer uma descrição mais deta
 - ASP.NET Core 8
 - Entity Framework Core 8
 - PostgreSQL
+- Dapper
 - Docker/Docker Compose
 - Amazon S3
 - xUnit

@@ -13,22 +13,6 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "message_logs",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
-                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    identifier = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false),
-                    data = table.Column<string>(type: "character varying(65536)", maxLength: 65536, nullable: false),
-                    sent_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    received_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_message_logs", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "motorcycles",
                 columns: table => new
                 {
@@ -121,7 +105,7 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "users",
                 columns: new[] { "id", "claims", "email", "password_hash", "roles" },
-                values: new object[] { "01HYJQV1JZP1JAXJP3FZ4HR6RC", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "fOE4S9Kzt6tOKkd08R/yafDygBksVkLIcMqWkLX1/qI=:13PvM8tQIJow8s6eQ83e0g==:50000:SHA256", new[] { "admin" } });
+                values: new object[] { "01HZ3H8RXGJMPPDJ0HGT1C0QHF", new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" }, "john@admin.com", "PHTA8RCw/S9FdQVK4oDfMR1N41ldki9sd0AtIMwZ1zE=:foQLiPZcUD3Sx8G16tuLow==:50000:SHA256", new[] { "admin" } });
 
             migrationBuilder.CreateIndex(
                 name: "ix_motorcycles_license_plate",
@@ -157,9 +141,6 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "message_logs");
-
             migrationBuilder.DropTable(
                 name: "motorcycles");
 

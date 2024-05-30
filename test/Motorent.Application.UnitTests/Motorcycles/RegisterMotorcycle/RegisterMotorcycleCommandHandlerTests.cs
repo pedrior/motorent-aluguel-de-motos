@@ -1,8 +1,8 @@
 using Motorent.Application.Common.Abstractions.Messaging;
 using Motorent.Application.Common.Mappings;
 using Motorent.Application.Motorcycles.Common.Mappings;
-using Motorent.Application.Motorcycles.Common.Messaging;
 using Motorent.Application.Motorcycles.RegisterMotorcycle;
+using Motorent.Contracts.Common.Messages;
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Repository;

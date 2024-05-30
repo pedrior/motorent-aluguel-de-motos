@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motorent.Api.IntegrationTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motorent.TestUtils", "test\Motorent.TestUtils\Motorent.TestUtils.csproj", "{2833E646-3E47-42CE-9988-C1CEF9A9794C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Motorent.NotificationsWorker", "src\Motorent.NotificationsWorker\Motorent.NotificationsWorker.csproj", "{A9A46ADE-144D-425A-9681-10FC2B856A0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{2833E646-3E47-42CE-9988-C1CEF9A9794C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2833E646-3E47-42CE-9988-C1CEF9A9794C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2833E646-3E47-42CE-9988-C1CEF9A9794C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A46ADE-144D-425A-9681-10FC2B856A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A46ADE-144D-425A-9681-10FC2B856A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A46ADE-144D-425A-9681-10FC2B856A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A46ADE-144D-425A-9681-10FC2B856A0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3051FA0E-87DD-45C9-8908-78273565B892} = {FA206EBB-7262-4CB0-BA18-921EBE1D1E67}

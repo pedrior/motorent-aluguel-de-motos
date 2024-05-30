@@ -11,9 +11,9 @@ services:
       - 8000:8080
       - 8001:8081
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
-      rabbitmq:
+      queue:
         condition: service_healthy
 
     environment:
@@ -21,15 +21,28 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_Kestrel__Certificates__Default__Password=password
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/motorent.pfx
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=motorent;Username=root;Password=password
+      - ConnectionStrings__DefaultConnection=Host=db;Database=motorent;Username=root;Password=password
     volumes:
       - ~/.aspnet/https:/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
       - ~/.aws:/root/.aws:ro
   
-  postgres:
+  worker-notifications:
+    image: app
+    build:
+      context: .
+      dockerfile: src/Motorent.NotificationsWorker/Dockerfile
+    container_name: motorent-worker-notifications
+    depends_on:
+      queue:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Database=motorent;Username=root;Password=password
+  
+  db:
     image: postgres
-    container_name: motorent-db
+    container_name: motorent-postgres
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "root" ]
       interval: 10s
@@ -44,9 +57,9 @@ services:
     volumes:
       - .data:/var/lib/postgresql/data
   
-  rabbitmq:
+  queue:
     image: rabbitmq:management
-    container_name: motorent-queue
+    container_name: motorent-rabbitmq
     hostname: motorent-queue
     healthcheck:
       test: rabbitmq-diagnostics check_port_connectivity

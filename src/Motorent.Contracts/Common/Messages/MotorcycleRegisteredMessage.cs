@@ -1,4 +1,4 @@
-namespace Motorent.Application.Motorcycles.Common.Messaging;
+namespace Motorent.Contracts.Common.Messages;
 
 public sealed record MotorcycleRegisteredMessage(
     Ulid MotorcycleId,

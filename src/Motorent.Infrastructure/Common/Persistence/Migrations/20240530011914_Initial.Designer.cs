@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Motorent.Infrastructure.Common.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240523124659_Initial")]
+    [Migration("20240530011914_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -207,51 +207,12 @@ namespace Motorent.Infrastructure.Common.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "01HYJQV1JZP1JAXJP3FZ4HR6RC",
+                            Id = "01HZ3H8RXGJMPPDJ0HGT1C0QHF",
                             Claims = new Dictionary<string, string> { ["given_name"] = "John", ["family_name"] = "Doe", ["birthdate"] = "2000-09-05" },
                             Email = "john@admin.com",
-                            PasswordHash = "fOE4S9Kzt6tOKkd08R/yafDygBksVkLIcMqWkLX1/qI=:13PvM8tQIJow8s6eQ83e0g==:50000:SHA256",
+                            PasswordHash = "PHTA8RCw/S9FdQVK4oDfMR1N41ldki9sd0AtIMwZ1zE=:foQLiPZcUD3Sx8G16tuLow==:50000:SHA256",
                             Roles = new[] { "admin" }
                         });
-                });
-
-            modelBuilder.Entity("Motorent.Infrastructure.Common.Messaging.MessageLog", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(26)
-                        .HasColumnType("character varying(26)")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Data")
-                        .IsRequired()
-                        .HasMaxLength(65536)
-                        .HasColumnType("character varying(65536)")
-                        .HasColumnName("data");
-
-                    b.Property<string>("Identifier")
-                        .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
-                        .HasColumnName("identifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("name");
-
-                    b.Property<DateTimeOffset>("ReceivedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("received_at");
-
-                    b.Property<DateTimeOffset?>("SentAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("sent_at");
-
-                    b.HasKey("Id")
-                        .HasName("pk_message_logs");
-
-                    b.ToTable("message_logs", (string)null);
                 });
 
             modelBuilder.Entity("Motorent.Infrastructure.Common.Outbox.OutboxMessage", b =>

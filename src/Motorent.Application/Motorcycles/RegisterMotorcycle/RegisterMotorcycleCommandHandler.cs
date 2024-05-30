@@ -1,6 +1,6 @@
 using Motorent.Application.Common.Abstractions.Messaging;
 using Motorent.Application.Common.Abstractions.Requests;
-using Motorent.Application.Motorcycles.Common.Messaging;
+using Motorent.Contracts.Common.Messages;
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Repository;

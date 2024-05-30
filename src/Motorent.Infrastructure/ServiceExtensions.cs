@@ -29,7 +29,6 @@ using Motorent.Infrastructure.Common.Persistence.Interceptors;
 using Motorent.Infrastructure.Common.Security;
 using Motorent.Infrastructure.Common.Storage;
 using Motorent.Infrastructure.Motorcycles;
-using Motorent.Infrastructure.Motorcycles.Consumers;
 using Motorent.Infrastructure.Motorcycles.Persistence;
 using Motorent.Infrastructure.Rentals.Persistence;
 using Motorent.Infrastructure.Renters;
@@ -174,12 +173,10 @@ public static class ServiceExtensions
 
         service.AddTransient<IMessageBus, MessageBus>();
 
-        service.AddReceiveObserver<MessageLogging>();
-        
         service.AddMassTransit(config =>
         {
             config.SetKebabCaseEndpointNameFormatter();
-            
+
             config.UsingRabbitMq((context, configurator) =>
             {
                 var options = context.GetRequiredService<IOptions<MessageBusOptions>>().Value;
@@ -188,11 +185,7 @@ public static class ServiceExtensions
                     hostConfigurator.Username(options.Username);
                     hostConfigurator.Password(options.Password);
                 });
-                
-                configurator.ConfigureEndpoints(context);
             });
-            
-            config.AddConsumer<MotorcycleRegisteredConsumer>();
         });
     }
 }

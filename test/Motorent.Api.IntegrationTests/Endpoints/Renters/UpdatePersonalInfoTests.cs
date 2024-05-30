@@ -1,10 +1,11 @@
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Contracts.Renters.Requests;
 using Motorent.Domain.Renters.ValueObjects;
 
 namespace Motorent.Api.IntegrationTests.Endpoints.Renters;
 
 [TestSubject(typeof(RenterEndpoints))]
-public sealed class UpdatePersonalInfoTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class UpdatePersonalInfoTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private static readonly UpdatePersonalInfoRequest UpdatePersonalInfoRequest = new()
     {

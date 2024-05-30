@@ -1,10 +1,11 @@
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Contracts.Renters.Requests;
 using Motorent.Domain.Renters.ValueObjects;
 
 namespace Motorent.Api.IntegrationTests.Endpoints.Renters;
 
 [TestSubject(typeof(RenterEndpoints))]
-public sealed class UpdateDriverLicenseTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class UpdateDriverLicenseTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private string userId = null!;
     private UpdateDriverLicenseRequest updateDriverLicenseRequest = null!;

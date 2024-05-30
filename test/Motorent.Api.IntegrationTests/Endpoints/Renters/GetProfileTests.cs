@@ -1,9 +1,10 @@
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Contracts.Renters.Responses;
 
 namespace Motorent.Api.IntegrationTests.Endpoints.Renters;
 
 [TestSubject(typeof(RenterEndpoints))]
-public sealed class GetProfileTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class GetProfileTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     public override async Task InitializeAsync()
     {

@@ -1,3 +1,4 @@
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Domain.Rentals.Enums;
 using Motorent.Domain.Rentals.ValueObjects;
 using Motorent.Domain.Renters.ValueObjects;
@@ -5,7 +6,7 @@ using Motorent.Domain.Renters.ValueObjects;
 namespace Motorent.Api.IntegrationTests.Endpoints.Rentals;
 
 [TestSubject(typeof(RentalEndpoints))]
-public sealed class GetRentalTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class GetRentalTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private static readonly RentalId RentalId = RentalId.New();
     private static readonly RentalPlan RentalPlan = RentalPlan.ThirtyDays;

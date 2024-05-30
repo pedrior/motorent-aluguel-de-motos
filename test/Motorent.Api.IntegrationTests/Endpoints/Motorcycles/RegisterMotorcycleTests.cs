@@ -1,3 +1,4 @@
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Contracts.Motorcycles.Requests;
 using Motorent.Contracts.Motorcycles.Responses;
 using Motorent.Domain.Motorcycles.ValueObjects;
@@ -5,7 +6,7 @@ using Motorent.Domain.Motorcycles.ValueObjects;
 namespace Motorent.Api.IntegrationTests.Endpoints.Motorcycles;
 
 [TestSubject(typeof(MotorcycleEndpoints))]
-public sealed class RegisterMotorcycleTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class RegisterMotorcycleTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private RegisterMotorcycleRequest registerMotorcycleRequest = null!;
 

@@ -1,10 +1,11 @@
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Contracts.Motorcycles.Requests;
 using Motorent.Domain.Motorcycles.ValueObjects;
 
 namespace Motorent.Api.IntegrationTests.Endpoints.Motorcycles;
 
 [TestSubject(typeof(MotorcycleEndpoints))]
-public sealed class UpdateLicensePlateTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class UpdateLicensePlateTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private static readonly MotorcycleId MotorcycleId = MotorcycleId.New();
     private static readonly LicensePlate LicensePlate = LicensePlate.Create("KIL2H17").Value;

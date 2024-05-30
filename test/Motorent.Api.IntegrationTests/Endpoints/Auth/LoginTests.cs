@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Contracts.Auth.Requests;
 using Motorent.Contracts.Auth.Responses;
 using Motorent.Infrastructure.Common.Security;
@@ -6,7 +7,7 @@ using Motorent.Infrastructure.Common.Security;
 namespace Motorent.Api.IntegrationTests.Endpoints.Auth;
 
 [TestSubject(typeof(AuthEndpoints))]
-public sealed class LoginTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class LoginTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private static readonly LoginRequest LoginRequest = new()
     {

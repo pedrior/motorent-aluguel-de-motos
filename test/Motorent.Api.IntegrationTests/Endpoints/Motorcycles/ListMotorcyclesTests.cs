@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Contracts.Common.Responses;
 using Motorent.Contracts.Motorcycles.Requests;
 using Motorent.Contracts.Motorcycles.Responses;
@@ -8,7 +9,7 @@ using Motorent.Domain.Motorcycles.ValueObjects;
 namespace Motorent.Api.IntegrationTests.Endpoints.Motorcycles;
 
 [TestSubject(typeof(MotorcycleEndpoints))]
-public sealed class ListMotorcyclesTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class ListMotorcyclesTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private static readonly ListMotorcyclesRequest ListMotorcyclesRequest = new()
     {

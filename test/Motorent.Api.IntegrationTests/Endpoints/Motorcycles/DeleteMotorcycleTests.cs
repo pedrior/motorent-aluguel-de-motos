@@ -1,9 +1,10 @@
+using Motorent.Api.IntegrationTests.TestUtils;
 using Motorent.Domain.Motorcycles.ValueObjects;
 
 namespace Motorent.Api.IntegrationTests.Endpoints.Motorcycles;
 
 [TestSubject(typeof(MotorcycleEndpoints))]
-public sealed class DeleteMotorcycleTests(WebApplicationFactory api) : WebApplicationFixture(api)
+public sealed class DeleteMotorcycleTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private static readonly MotorcycleId MotorcycleId = MotorcycleId.New();
 

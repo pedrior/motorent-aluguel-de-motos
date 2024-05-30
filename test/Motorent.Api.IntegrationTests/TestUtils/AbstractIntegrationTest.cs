@@ -6,42 +6,39 @@ using Motorent.Application.Common.Abstractions.Security;
 using Motorent.Infrastructure.Common.Identity;
 using Motorent.Infrastructure.Common.Persistence;
 
-namespace Motorent.Api.IntegrationTests.TestUtils.Fixtures;
+namespace Motorent.Api.IntegrationTests.TestUtils;
 
-public abstract class WebApplicationFixture(WebApplicationFactory api)
-    : IClassFixture<WebApplicationFactory>, IAsyncLifetime
+public abstract class AbstractIntegrationTest(IntegrationTestWebApplicationFactory api)
+    : IClassFixture<IntegrationTestWebApplicationFactory>, IAsyncLifetime
 {
     protected const string AdminUserRole = "admin";
     protected const string RenterUserRole = "renter";
-    
+
     protected static readonly JsonSerializerOptions SerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
     };
-    
+
     private readonly IServiceScope serviceScope = api.Services.CreateScope();
 
     private HttpClient? client;
-    private DataContext? dataContext;
 
     protected HttpClient Client => client ??= api.CreateClient();
-    
-    internal DataContext DataContext => dataContext ??= GetRequiredService<DataContext>();
+
+    internal DataContext DataContext => GetRequiredService<DataContext>();
 
     public virtual Task InitializeAsync() => Task.CompletedTask;
 
     public virtual async Task DisposeAsync()
     {
-        DataContext.ChangeTracker.Clear();
-        
-        ClearAuthentication();
+        await api.ResetDatabaseAsync();
 
         serviceScope.Dispose();
 
-        await api.ResetDatabaseAsync();
+        ClearAuthentication();
     }
 
-    protected T GetRequiredService<T>() where T : notnull => 
+    protected T GetRequiredService<T>() where T : notnull =>
         serviceScope.ServiceProvider.GetRequiredService<T>();
 
     protected async Task<string> CreateUserAsync(
@@ -69,7 +66,7 @@ public abstract class WebApplicationFixture(WebApplicationFactory api)
         {
             await AuthenticateAsync(user.Id);
         }
-        
+
         return user.Id;
     }
 
@@ -80,7 +77,7 @@ public abstract class WebApplicationFixture(WebApplicationFactory api)
             client.DefaultRequestHeaders.Authorization = null;
         }
     }
-    
+
     private async Task AuthenticateAsync(string userId)
     {
         var securityTokenProvider = GetRequiredService<ISecurityTokenProvider>();

@@ -11,13 +11,6 @@ internal static class MotorcycleValidations
             .WithMessage("Deve ter entre 2 e 30 caracteres.");
     }
     
-    public static IRuleBuilderOptions<T, decimal> MotorcycleDailyPrice<T>(this IRuleBuilder<T, decimal> rule)
-    {
-        return rule
-            .GreaterThanOrEqualTo(0m)
-            .WithMessage("Deve ser maior ou igual a 0,00");
-    }
-
     public static IRuleBuilderOptions<T, int> MotorcycleYear<T>(this IRuleBuilder<T, int> rule)
     {
         return rule

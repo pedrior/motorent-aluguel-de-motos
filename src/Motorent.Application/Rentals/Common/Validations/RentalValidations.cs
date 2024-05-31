@@ -8,6 +8,7 @@ internal static class RentalValidations
             .NotEmpty()
             .WithMessage("Não deve ser vazio.")
             .Must(v => Domain.Rentals.Enums.RentalPlan.IsDefined(v, ignoreCase: true))
-            .WithMessage($"Deve ser um dos seguintes: {string.Join(", ", Domain.Rentals.Enums.RentalPlan.List)}");
+            .WithMessage($"Deve ser um dos seguintes: " +
+                         $"{string.Join(", ", Domain.Rentals.Enums.RentalPlan.List.OrderBy(r => r.Days))}");
     }
 }

@@ -30,10 +30,10 @@ internal static class CommonValidations
         return builder
             .NotEmpty()
             .WithMessage("Não deve ser vazio.")
-            .Length(14)
-            .WithMessage("Deve ter 14 caracteres.")
-            .Matches(@"^\p{N}+")
-            .WithMessage("Deve conter apenas números.");
+            .Length(14, 18)
+            .WithMessage("Deve ter entre 14 e 18 caracteres.")
+            .Matches(@"^(?!.*[./-]{2})(\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}|\d{14})$")
+            .WithMessage("Deve ser um CNPJ válido");
     }
     
     public static IRuleBuilderOptions<T, string> DriverLicenseNumber<T>(this IRuleBuilder<T, string> builder)

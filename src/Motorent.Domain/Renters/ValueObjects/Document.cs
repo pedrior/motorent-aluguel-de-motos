@@ -13,16 +13,35 @@ public sealed class Document : ValueObject
 
     public string Value { get; private init; } = null!;
 
-    public static Result<Document> Create(string value) =>
-        Validate(value) ? new Document { Value = value } : Invalid;
+    public static Result<Document> Create(string value)
+    {
+        value = Sanitize(value);
+        return Validate(value) ? new Document { Value = value } : Invalid;
+    }
 
-    public override string ToString() => Value;
+    public override string ToString() => $"{Value[..2]}.{Value[2..5]}.{Value[5..8]}/{Value[8..12]}-{Value[12..]}";
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;
     }
 
+    private static string Sanitize(string value)
+    {
+        var index = 0;
+        Span<char> sanitized = stackalloc char[14];
+        foreach (var digit in value.Where(char.IsDigit))
+        {
+            sanitized[index++] = digit;
+            if (index is 14)
+            {
+                break;
+            }
+        }
+
+        return new string(sanitized);
+    }
+    
     private static bool Validate(string value)
     {
         if (value.Length is not 14)

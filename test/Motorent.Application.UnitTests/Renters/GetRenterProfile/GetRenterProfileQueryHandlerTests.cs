@@ -1,9 +1,11 @@
 using Motorent.Application.Common.Abstractions.Identity;
+using Motorent.Application.Common.Abstractions.Storage;
 using Motorent.Application.Renters.Common.Mappings;
 using Motorent.Application.Renters.GetRenterProfile;
 using Motorent.Contracts.Renters.Responses;
 using Motorent.Domain.Renters;
 using Motorent.Domain.Renters.Repository;
+using Motorent.TestUtils.Constants;
 using Motorent.TestUtils.Factories;
 
 namespace Motorent.Application.UnitTests.Renters.GetRenterProfile;
@@ -13,6 +15,7 @@ public sealed class GetRenterProfileQueryHandlerTests
 {
     private readonly IUserContext userContext = A.Fake<IUserContext>();
     private readonly IRenterRepository renterRepository = A.Fake<IRenterRepository>();
+    private readonly IStorageService storageService = A.Fake<IStorageService>();
 
     private readonly GetRenterProfileQueryHandler sut;
 
@@ -22,7 +25,10 @@ public sealed class GetRenterProfileQueryHandlerTests
     {
         TypeAdapterConfig.GlobalSettings.Apply(new RenterMappings());
 
-        sut = new GetRenterProfileQueryHandler(userContext, renterRepository);
+        sut = new GetRenterProfileQueryHandler(userContext, renterRepository, storageService);
+
+        A.CallTo(() => storageService.GenerateUrlAsync(A<Uri>._, A<int>._))
+            .Returns(Constants.Renter.DriverLicenseImage);
     }
 
     [Fact]

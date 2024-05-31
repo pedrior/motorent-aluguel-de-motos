@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Motorent.Domain.Common.Entities;
+using Motorent.Domain.Common;
 using Motorent.Infrastructure.Common.Outbox;
 
 namespace Motorent.Infrastructure.Common.Persistence.Interceptors;

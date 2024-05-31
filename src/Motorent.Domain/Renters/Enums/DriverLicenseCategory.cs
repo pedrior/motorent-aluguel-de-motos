@@ -1,5 +1,3 @@
-using Motorent.Domain.Common.Enums;
-
 namespace Motorent.Domain.Renters.Enums;
 
 public sealed class DriverLicenseCategory : Enum<DriverLicenseCategory>

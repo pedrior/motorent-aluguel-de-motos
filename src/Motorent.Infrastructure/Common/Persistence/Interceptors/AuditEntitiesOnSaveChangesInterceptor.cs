@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Motorent.Domain.Common.Entities;
+using Motorent.Domain.Common;
 
 namespace Motorent.Infrastructure.Common.Persistence.Interceptors;
 

@@ -1,4 +1,3 @@
-using Motorent.Domain.Common.ValueObjects;
 using Motorent.Domain.Renters.Enums;
 
 namespace Motorent.Domain.Renters.ValueObjects;

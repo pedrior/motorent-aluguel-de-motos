@@ -1,4 +1,3 @@
-using Motorent.Domain.Common.Repository;
 using Motorent.Domain.Renters.ValueObjects;
 
 namespace Motorent.Domain.Renters.Repository;

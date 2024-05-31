@@ -1,4 +1,3 @@
-using Motorent.Domain.Common.Entities;
 using Motorent.Domain.Renters.Enums;
 using Motorent.Domain.Renters.Errors;
 using Motorent.Domain.Renters.Events;

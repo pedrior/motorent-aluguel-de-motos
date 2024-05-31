@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Motorent.Domain.Common.Entities;
-using Motorent.Domain.Common.Repository;
+using Motorent.Domain.Common;
 
 namespace Motorent.Infrastructure.Common.Persistence;
 

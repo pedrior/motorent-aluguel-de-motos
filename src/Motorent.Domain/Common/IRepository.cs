@@ -1,6 +1,4 @@
-using Motorent.Domain.Common.Entities;
-
-namespace Motorent.Domain.Common.Repository;
+namespace Motorent.Domain.Common;
 
 public interface IRepository<TEntity, in TId> where TEntity : class, IEntity<TId> where TId : notnull
 {

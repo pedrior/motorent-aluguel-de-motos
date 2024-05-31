@@ -1,4 +1,3 @@
-using Motorent.Domain.Common.Repository;
 using Motorent.Domain.Motorcycles.ValueObjects;
 using Motorent.Domain.Rentals.ValueObjects;
 using Motorent.Domain.Renters.ValueObjects;

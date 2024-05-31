@@ -1,4 +1,4 @@
-namespace Motorent.Domain.Common.Entities;
+namespace Motorent.Domain.Common;
 
 public interface IAuditable
 {

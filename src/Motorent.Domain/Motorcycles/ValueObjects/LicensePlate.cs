@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using Motorent.Domain.Common.ValueObjects;
 
 namespace Motorent.Domain.Motorcycles.ValueObjects;
 

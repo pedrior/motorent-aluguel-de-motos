@@ -1,4 +1,3 @@
-using Motorent.Domain.Common.Entities;
 using Motorent.Domain.Motorcycles.Errors;
 using Motorent.Domain.Motorcycles.Events;
 using Motorent.Domain.Motorcycles.Services;

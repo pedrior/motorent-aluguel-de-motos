@@ -1,4 +1,4 @@
-namespace Motorent.Domain.Common.ValueObjects;
+namespace Motorent.Domain.Common;
 
 public abstract class ValueObject
 {

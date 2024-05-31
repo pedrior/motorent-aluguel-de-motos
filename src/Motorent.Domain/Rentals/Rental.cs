@@ -1,4 +1,3 @@
-using Motorent.Domain.Common.Entities;
 using Motorent.Domain.Motorcycles.ValueObjects;
 using Motorent.Domain.Rentals.Enums;
 using Motorent.Domain.Rentals.Services;

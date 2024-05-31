@@ -1,5 +1,3 @@
-using Motorent.Domain.Common.ValueObjects;
-
 namespace Motorent.Domain.Rentals.ValueObjects;
 
 public sealed class Money : ValueObject

@@ -1,6 +1,4 @@
-using Motorent.Domain.Common.Events;
-
-namespace Motorent.Domain.Common.Entities;
+namespace Motorent.Domain.Common;
 
 public abstract class Entity : IEntity
 {

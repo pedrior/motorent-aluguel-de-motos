@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Motorent.Domain.Common.Events;
+using Motorent.Domain.Common;
 using Motorent.Infrastructure.Common.Outbox;
 using Motorent.Infrastructure.Common.Persistence;
 using Newtonsoft.Json;

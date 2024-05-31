@@ -9,7 +9,7 @@ internal static class CommonValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .Length(2, 50)
             .WithMessage("Deve ter entre 2 e 50 caracteres.")
             .Matches(@"^(?!.*['.]$)[\p{L}'. }]+$")
@@ -20,7 +20,7 @@ internal static class CommonValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .LessThan(DateOnly.FromDateTime(DateTime.Today))
             .WithMessage("Deve estar no passado.");
     }
@@ -29,7 +29,7 @@ internal static class CommonValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .Length(14)
             .WithMessage("Deve ter 14 caracteres.")
             .Matches(@"^\p{N}+")
@@ -40,7 +40,7 @@ internal static class CommonValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .Length(11)
             .WithMessage("Deve ter 11 caracteres.")
             .Matches(@"^\p{N}+")
@@ -51,7 +51,7 @@ internal static class CommonValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .Must(v => Domain.Renters.Enums.DriverLicenseCategory.IsDefined(v, ignoreCase: true))
             .WithMessage($"Deve ser um dos seguintes: {string.Join(", ", Domain.Renters.Enums.DriverLicenseCategory.List)}");
     }
@@ -60,7 +60,7 @@ internal static class CommonValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .GreaterThan(DateOnly.FromDateTime(DateTime.UtcNow))
             .WithMessage("Deve estar no futuro.");
     }

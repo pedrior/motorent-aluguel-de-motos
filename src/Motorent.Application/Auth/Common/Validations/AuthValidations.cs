@@ -6,7 +6,7 @@ internal static class AuthValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .EmailAddress()
             .WithMessage("Deve ser um endereço de email válido");
     }
@@ -15,7 +15,7 @@ internal static class AuthValidations
     {
         return builder
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .MinimumLength(8)
             .WithMessage("Deve ter pelo menos 8 caracteres.")
             .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).*$")

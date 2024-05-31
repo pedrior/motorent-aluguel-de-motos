@@ -6,7 +6,7 @@ internal static class MotorcycleValidations
     {
         return rule
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .Length(2, 30)
             .WithMessage("Deve ter entre 2 e 30 caracteres.");
     }
@@ -29,7 +29,7 @@ internal static class MotorcycleValidations
     {
         return rule
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.")
+            .WithMessage("Não deve ser vazio.")
             .Length(7)
             .WithMessage("Deve ter 7 caracteres.");
     }

@@ -8,7 +8,7 @@ internal sealed class UpdateLicensePlateCommandValidator : AbstractValidator<Upd
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.");
+            .WithMessage("Não deve ser vazio.");
 
         RuleFor(x => x.LicensePlate)
             .MotorcycleLicensePlate();

@@ -6,6 +6,6 @@ internal sealed class GetMotorcycleQueryValidator : AbstractValidator<GetMotorcy
     {
         RuleFor(x => x.IdOrLicensePlate)
             .NotEmpty()
-            .WithMessage("Não deve estar vazio.");
+            .WithMessage("Não deve ser vazio.");
     }
 }

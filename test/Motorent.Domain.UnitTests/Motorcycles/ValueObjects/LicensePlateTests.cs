@@ -10,7 +10,9 @@ public sealed class LicensePlateTests
         new object[] { "KFE7A64" },
         new object[] { "mnc6B86" },
         new object[] { "LXP6A70" },
-        new object[] { "kil6A04" }
+        new object[] { "kil6A04" },
+        new object[] { "RIP-4P80" },
+        new object[] { "zkh-1K13" }
     };
     
     public static IEnumerable<object[]> InvalidLicensePlates => new List<object[]>
@@ -18,9 +20,7 @@ public sealed class LicensePlateTests
         new object[] { "KF7A64" },
         new object[] { "mn16B86" },
         new object[] { "LXP6A7" },
-        new object[] { "kil6204" },
-        new object[] { "RIP-4P80" },
-        new object[] { "zkh-1K13" },
+        new object[] { "kil6204" }
     };
     
     [Theory, MemberData(nameof(ValidLicensePlates))]

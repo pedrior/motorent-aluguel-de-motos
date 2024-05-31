@@ -3,7 +3,7 @@ using Motorent.Domain.Rentals.ValueObjects;
 
 namespace Motorent.Domain.Rentals.Enums;
 
-public sealed class RentalPlan : Enumeration<RentalPlan>
+public sealed class RentalPlan : Enum<RentalPlan>
 {
     public static readonly RentalPlan SevenDays = new("7-days", 1)
     {

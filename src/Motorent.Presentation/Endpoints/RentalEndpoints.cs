@@ -1,4 +1,5 @@
 using Motorent.Application.Rentals.GetRental;
+using Motorent.Application.Rentals.ListRentals;
 using Motorent.Application.Rentals.Rent;
 using Motorent.Application.Rentals.UpdateReturnDate;
 using Motorent.Contracts.Rentals.Requests;
@@ -24,6 +25,14 @@ internal sealed class RentalEndpoints : IEndpoint
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status422UnprocessableEntity);
+
+        group.MapGet("", ListRentals)
+            .WithName(nameof(ListRentals))
+            .WithSummary("Lista os alugueis")
+            .Produces<IEnumerable<RentalResponse>>()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
 
         group.MapGet("{id}", GetRental)
             .WithName("GetRental")
@@ -55,7 +64,16 @@ internal sealed class RentalEndpoints : IEndpoint
             }, cancellationToken)
             .ToResponseAsync(response => Results.Created(uri: null as Uri, value: response));
     }
-    
+
+    private static Task<IResult> ListRentals(
+        [AsParameters] ListRentalsRequest request,
+        ISender sender,
+        CancellationToken cancellationToken)
+    {
+        return sender.Send(request.Adapt<ListRentalsQuery>(), cancellationToken)
+            .ToResponseAsync(Results.Ok);
+    }
+
     private static Task<IResult> GetRental(Ulid id, ISender sender, CancellationToken cancellationToken)
     {
         return sender.Send(new GetRentalQuery { Id = id }, cancellationToken)

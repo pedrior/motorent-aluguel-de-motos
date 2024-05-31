@@ -16,6 +16,9 @@ internal static partial class Requests
         }
         
         public static HttpRequestMessage GetRental(Ulid rentalId) => Get($"v1/rentals/{rentalId}");
+        
+        public static HttpRequestMessage ListRentals(int page = 1, int limit = 10) =>
+            Get($"v1/rentals?page={page}&limit={limit}");
 
         public static HttpRequestMessage UpdateReturnDate(Ulid rentalId, DateOnly returnDate)
         {

@@ -19,5 +19,10 @@ internal sealed class RentalMappings : IRegister
             .Map(dst => dst.Start, src => src.Period.Start)
             .Map(dst => dst.End, src => src.Period.End)
             .Map(dst => dst.Return, src => src.ReturnDate);
+        
+        config.NewConfig<Rental, RentalSummaryResponse>()
+            .Map(dst => dst.Start, src => src.Period.Start)
+            .Map(dst => dst.End, src => src.Period.End)
+            .Map(dst => dst.Return, src => src.ReturnDate);
     }
 }

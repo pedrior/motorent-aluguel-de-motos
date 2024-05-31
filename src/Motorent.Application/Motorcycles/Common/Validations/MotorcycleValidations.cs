@@ -30,7 +30,7 @@ internal static class MotorcycleValidations
         return rule
             .NotEmpty()
             .WithMessage("Não deve ser vazio.")
-            .Length(7)
-            .WithMessage("Deve ter 7 caracteres.");
+            .MaximumLength(8)
+            .WithMessage("Deve ter no máximo 8 caracteres.");
     }
 }

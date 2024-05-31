@@ -5,7 +5,7 @@ namespace Motorent.Domain.Motorcycles.ValueObjects;
 public sealed partial class LicensePlate : ValueObject
 {
     internal static readonly Error Malformed = Error.Validation(
-        "A placa da moto deve estár no formato AAA1A11.");
+        "A placa da moto deve estár no formato AAA1A11 ou AAA-1A11.");
     
     private LicensePlate()
     {
@@ -30,6 +30,6 @@ public sealed partial class LicensePlate : ValueObject
         yield return Value;
     }
 
-    [GeneratedRegex("^[A-Z]{3}[0-9][A-Z][0-9]{2}$", RegexOptions.Compiled)]
+    [GeneratedRegex("[A-Z]{3}-?[0-9][A-Z][0-9]{2}$", RegexOptions.Compiled)]
     private static partial Regex LicensePlateRegex();
 }

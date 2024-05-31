@@ -11,16 +11,16 @@ using Motorent.Domain.Rentals.Services;
 using Motorent.Domain.Rentals.ValueObjects;
 using Motorent.Domain.Renters.Repository;
 
-namespace Motorent.Application.Rentals.Rent;
+namespace Motorent.Application.Rentals.CreateRental;
 
-internal sealed class RentCommandHandler(
+internal sealed class CreateRentalCommandHandler(
     IUserContext userContext,
     IRentalFactory rentalFactory,
     IRenterRepository renterRepository,
     IMotorcycleRepository motorcycleRepository,
-    IRentalRepository rentalRepository) : ICommandHandler<RentCommand, RentalResponse>
+    IRentalRepository rentalRepository) : ICommandHandler<CreateRentalCommand, RentalResponse>
 {
-    public async Task<Result<RentalResponse>> Handle(RentCommand command, CancellationToken cancellationToken)
+    public async Task<Result<RentalResponse>> Handle(CreateRentalCommand command, CancellationToken cancellationToken)
     {
         var renter = await renterRepository.FindByUserAsync(userContext.UserId, cancellationToken);
         if (renter is null)

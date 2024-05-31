@@ -7,7 +7,7 @@ using Motorent.Domain.Rentals.ValueObjects;
 namespace Motorent.Api.IntegrationTests.Endpoints.Rentals;
 
 [TestSubject(typeof(RentalEndpoints))]
-public sealed class RentTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
+public sealed class CreateRentalTests(IntegrationTestWebApplicationFactory api) : AbstractIntegrationTest(api)
 {
     private static readonly string Plan = RentalPlan.FifteenDays.Name;
     private static readonly string MotorcycleId = Ulid.NewUlid().ToString();
@@ -46,10 +46,10 @@ public sealed class RentTests(IntegrationTestWebApplicationFactory api) : Abstra
     }
 
     [Fact]
-    public async Task Rent_WhenRequestIsValid_ShouldCreateRental()
+    public async Task CreateRental_WhenRequestIsValid_ShouldCreateRental()
     {
         // Arrange
-        var request = Requests.Rental.Rent(Plan, MotorcycleId);
+        var request = Requests.Rental.CreateRental(Plan, MotorcycleId);
 
         // Act
         var response = await Client.SendAsync(request);
@@ -66,12 +66,12 @@ public sealed class RentTests(IntegrationTestWebApplicationFactory api) : Abstra
     }
 
     [Fact]
-    public async Task Rent_WhenUserIsNotAuthenticated_ShouldReturnUnauthorized()
+    public async Task CreateRental_WhenUserIsNotAuthenticated_ShouldReturnUnauthorized()
     {
         // Arrange
         ClearAuthentication();
 
-        var request = Requests.Rental.Rent(Plan, MotorcycleId);
+        var request = Requests.Rental.CreateRental(Plan, MotorcycleId);
 
         // Act
         var response = await Client.SendAsync(request);
@@ -81,7 +81,7 @@ public sealed class RentTests(IntegrationTestWebApplicationFactory api) : Abstra
     }
 
     [Fact]
-    public async Task Rent_WhenUserIsNotAuthorized_ShouldReturnForbidden()
+    public async Task CreateRental_WhenUserIsNotAuthorized_ShouldReturnForbidden()
     {
         // Arrange
         await CreateUserAsync(
@@ -89,7 +89,7 @@ public sealed class RentTests(IntegrationTestWebApplicationFactory api) : Abstra
             roles: [AdminUserRole],
             authenticate: true);
 
-        var request = Requests.Rental.Rent(Plan, MotorcycleId);
+        var request = Requests.Rental.CreateRental(Plan, MotorcycleId);
 
         // Act
         var response = await Client.SendAsync(request);
@@ -99,10 +99,10 @@ public sealed class RentTests(IntegrationTestWebApplicationFactory api) : Abstra
     }
 
     [Fact]
-    public async Task Rent_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
+    public async Task CreateRental_WhenMotorcycleDoesNotExist_ShouldReturnNotFound()
     {
         // Arrange
-        var request = Requests.Rental.Rent(Plan, Ulid.NewUlid().ToString());
+        var request = Requests.Rental.CreateRental(Plan, Ulid.NewUlid().ToString());
 
         // Act
         var response = await Client.SendAsync(request);

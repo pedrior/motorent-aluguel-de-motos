@@ -2,7 +2,7 @@ using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Common.Mappings;
 using Motorent.Application.Rentals.Common.Errors;
 using Motorent.Application.Rentals.Common.Mappings;
-using Motorent.Application.Rentals.Rent;
+using Motorent.Application.Rentals.CreateRental;
 using Motorent.Contracts.Rentals.Responses;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Repository;
@@ -17,14 +17,14 @@ using Motorent.TestUtils.Constants;
 using Motorent.TestUtils.Factories;
 using ResultExtensions;
 
-namespace Motorent.Application.UnitTests.Rentals.Rent;
+namespace Motorent.Application.UnitTests.Rentals.CreateRental;
 
-[TestSubject(typeof(RentCommandHandler))]
-public sealed class RentCommandHandlerTests : IAsyncLifetime
+[TestSubject(typeof(CreateRentalCommandHandler))]
+public sealed class CreateRentalCommandHandlerTests : IAsyncLifetime
 {
     private static readonly string UserId = Ulid.NewUlid().ToString();
 
-    private static readonly RentCommand Command = new()
+    private static readonly CreateRentalCommand Command = new()
     {
         Plan = Constants.Rental.Plan.Name,
         MotorcycleId = Constants.Motorcycle.Id.Value
@@ -36,20 +36,20 @@ public sealed class RentCommandHandlerTests : IAsyncLifetime
     private readonly IMotorcycleRepository motorcycleRepository = A.Fake<IMotorcycleRepository>();
     private readonly IRentalRepository rentalRepository = A.Fake<IRentalRepository>();
 
-    private readonly RentCommandHandler sut;
+    private readonly CreateRentalCommandHandler sut;
 
     private Renter renter = null!;
     private Motorcycle motorcycle = null!;
 
-    static RentCommandHandlerTests()
+    static CreateRentalCommandHandlerTests()
     {
         TypeAdapterConfig.GlobalSettings.Apply(new CommonMappings());
         TypeAdapterConfig.GlobalSettings.Apply(new RentalMappings());
     }
     
-    public RentCommandHandlerTests()
+    public CreateRentalCommandHandlerTests()
     {
-        sut = new RentCommandHandler(
+        sut = new CreateRentalCommandHandler(
             userContext,
             rentalFactory,
             renterRepository,

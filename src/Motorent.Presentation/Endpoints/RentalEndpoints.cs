@@ -1,6 +1,6 @@
+using Motorent.Application.Rentals.CreateRental;
 using Motorent.Application.Rentals.GetRental;
 using Motorent.Application.Rentals.ListRentals;
-using Motorent.Application.Rentals.Rent;
 using Motorent.Application.Rentals.UpdateReturnDate;
 using Motorent.Contracts.Rentals.Requests;
 using Motorent.Contracts.Rentals.Responses;
@@ -16,8 +16,8 @@ internal sealed class RentalEndpoints : IEndpoint
             .RequireAuthorization()
             .WithOpenApi();
 
-        group.MapPost("", Rent)
-            .WithName(nameof(Rent))
+        group.MapPost("", CreateRental)
+            .WithName(nameof(CreateRental))
             .WithSummary("Cria um aluguel")
             .Produces<RentalResponse>(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
@@ -55,9 +55,12 @@ internal sealed class RentalEndpoints : IEndpoint
             .Produces(StatusCodes.Status422UnprocessableEntity);
     }
 
-    private static Task<IResult> Rent(RentRequest request, ISender sender, CancellationToken cancellationToken)
+    private static Task<IResult> CreateRental(
+        CreateRentalRequest request,
+        ISender sender,
+        CancellationToken cancellationToken)
     {
-        return sender.Send(new RentCommand
+        return sender.Send(new CreateRentalCommand
             {
                 Plan = request.Plan.Trim(),
                 MotorcycleId = Ulid.TryParse(request.MotorcycleId, out var id) ? id : Ulid.Empty

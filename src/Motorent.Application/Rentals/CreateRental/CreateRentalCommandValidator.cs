@@ -1,10 +1,10 @@
 using Motorent.Application.Rentals.Common.Validations;
 
-namespace Motorent.Application.Rentals.Rent;
+namespace Motorent.Application.Rentals.CreateRental;
 
-internal sealed class RentCommandValidator : AbstractValidator<RentCommand>
+internal sealed class CreateRentalCommandValidator : AbstractValidator<CreateRentalCommand>
 {
-    public RentCommandValidator()
+    public CreateRentalCommandValidator()
     {
         RuleFor(x => x.Plan)
             .RentalPlan();

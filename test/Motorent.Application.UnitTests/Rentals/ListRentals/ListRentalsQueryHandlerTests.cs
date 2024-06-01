@@ -1,8 +1,6 @@
 using Motorent.Application.Common.Abstractions.Identity;
 using Motorent.Application.Rentals.Common.Mappings;
 using Motorent.Application.Rentals.ListRentals;
-using Motorent.Contracts.Common.Responses;
-using Motorent.Contracts.Rentals.Responses;
 using Motorent.Domain.Motorcycles;
 using Motorent.Domain.Motorcycles.Repository;
 using Motorent.Domain.Rentals;
@@ -23,11 +21,7 @@ public sealed class ListRentalsQueryHandlerTests : IAsyncLifetime
 
     private readonly ListRentalsQueryHandler sut;
 
-    private readonly ListRentalsQuery query = new()
-    {
-        Page = 1,
-        Limit = 10
-    };
+    private readonly ListRentalsQuery query = new();
 
     private readonly string userId = Ulid.NewUlid().ToString();
 
@@ -57,16 +51,12 @@ public sealed class ListRentalsQueryHandlerTests : IAsyncLifetime
 
         A.CallTo(() => userContext.UserId)
             .Returns(userId);
+        
+        A.CallTo(() => rentalRepository.FindAsync(rental.Id, A<CancellationToken>._))
+            .Returns(rental);
 
         A.CallTo(() => renterRepository.FindByUserAsync(userContext.UserId, A<CancellationToken>._))
             .Returns(renter);
-
-        A.CallTo(() => rentalRepository.CountRentalsByRenterAsync(renter.Id, A<CancellationToken>._))
-            .Returns(1);
-
-        A.CallTo(() => rentalRepository.ListRentalsByRenterAsync(
-                renter.Id, A<int>._, A<int>._, A<CancellationToken>._))
-            .Returns([rental]);
 
         A.CallTo(() => motorcycleRepository.FindAsync(rental.MotorcycleId, A<CancellationToken>._))
             .Returns(motorcycle);
@@ -75,38 +65,7 @@ public sealed class ListRentalsQueryHandlerTests : IAsyncLifetime
     public Task DisposeAsync() => Task.CompletedTask;
 
     [Fact]
-    public async Task Handle_WhenCalled_ShouldRentalSummaryPageResponse()
-    {
-        // Arrange
-        // Act
-        var result = await sut.Handle(query, CancellationToken.None);
-
-        // Assert
-        result.Should().BeSuccess();
-        result.Value.Should().BeEquivalentTo(new
-        {
-            query.Page,
-            query.Limit,
-            TotalItems = 1,
-            TotalPages = 1,
-            Items = new[]
-            {
-                rental.Adapt<RentalSummaryResponse>() with
-                {
-                    Motorcycle = new RentalMotorcycleResponse
-                    {
-                        Id = motorcycle.Id.ToString(),
-                        Model = motorcycle.Model,
-                        Year = motorcycle.Year.Value,
-                        LicensePlate = motorcycle.LicensePlate.Value
-                    } 
-                }
-            }
-        });
-    }
-
-    [Fact]
-    public async Task Handle_WhenRenterNotFound_ShouldThrowApplicationException()
+    public async Task Handle_WhenRenterIsNotFound_ShouldThrowApplicationException()
     {
         // Arrange
         A.CallTo(() => renterRepository.FindByUserAsync(userContext.UserId, A<CancellationToken>._))
@@ -118,41 +77,64 @@ public sealed class ListRentalsQueryHandlerTests : IAsyncLifetime
         // Assert
         await act.Should().ThrowExactlyAsync<ApplicationException>()
             .WithMessage($"Renter not found for user {userId}.");
-
-        A.CallTo(rentalRepository)
-            .MustNotHaveHappened();
     }
-
+    
     [Fact]
-    public async Task Handle_WhenNoRentalsFound_ShouldReturnEmptyPageResponse()
+    public async Task Handle_WhenRenterHasNoRentals_ShouldReturnEmptyList()
     {
         // Arrange
-        A.CallTo(() => rentalRepository.CountRentalsByRenterAsync(renter.Id, A<CancellationToken>._))
-            .Returns(0);
+        // Act
+        var result = await sut.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Should().BeSuccess();
+        result.Value.Should().BeEmpty();
+        
+        A.CallTo(rentalRepository).MustNotHaveHappened();
+        A.CallTo(motorcycleRepository).MustNotHaveHappened();
+    }
+    
+    [Fact]
+    public async Task Handle_WhenRenterHasRentals_ShouldReturnListOfRentalSummaryResponses()
+    {
+        // Arrange
+        renter.AddRental(rental);
 
         // Act
         var result = await sut.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Should().BeSuccess()
-            .Which.Value.Should().BeEquivalentTo(new PageResponse<RentalSummaryResponse>
-            {
-                Page = query.Page,
-                Limit = query.Limit,
-                TotalItems = 0,
-                TotalPages = 0,
-                Items = []
-            });
-
-        A.CallTo(() => rentalRepository.ListRentalsByRenterAsync(
-                renter.Id, A<int>._, A<int>._, A<CancellationToken>._))
-            .MustNotHaveHappened();
+        result.Should().BeSuccess();
+        result.Value.Should().HaveCount(1);
+        result.Value.First().Motorcycle.Id.Should().Be(motorcycle.Id.ToString());
+        result.Value.First().Motorcycle.Model.Should().Be(motorcycle.Model);
+        result.Value.First().Motorcycle.Year.Should().Be(motorcycle.Year.Value);
+        result.Value.First().Motorcycle.LicensePlate.Should().Be(motorcycle.LicensePlate.Value);
     }
     
     [Fact]
-    public async Task Handle_WhenMotorcycleNotFound_ShouldThrowApplicationException()
+    public async Task Handle_WhenRentaIsNotFound_ShouldThrowApplicationException()
     {
         // Arrange
+        renter.AddRental(rental);
+        
+        A.CallTo(() => rentalRepository.FindAsync(rental.Id, A<CancellationToken>._))
+            .Returns(null as Rental);
+
+        // Act
+        var act = () => sut.Handle(query, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowExactlyAsync<ApplicationException>()
+            .WithMessage($"Rental with ID '{rental.Id}' not found.");
+    }
+    
+    [Fact]
+    public async Task Handle_WhenMotorcycleIsNotFound_ShouldThrowApplicationException()
+    {
+        // Arrange
+        renter.AddRental(rental);
+        
         A.CallTo(() => motorcycleRepository.FindAsync(rental.MotorcycleId, A<CancellationToken>._))
             .Returns(null as Motorcycle);
 
@@ -161,6 +143,6 @@ public sealed class ListRentalsQueryHandlerTests : IAsyncLifetime
 
         // Assert
         await act.Should().ThrowExactlyAsync<ApplicationException>()
-            .WithMessage($"Motorcycle with id {rental.MotorcycleId} not found.");
+            .WithMessage($"Motorcycle with ID '{rental.MotorcycleId}' not found.");
     }
 }

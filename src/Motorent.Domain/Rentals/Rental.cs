@@ -1,5 +1,6 @@
 using Motorent.Domain.Motorcycles.ValueObjects;
 using Motorent.Domain.Rentals.Enums;
+using Motorent.Domain.Rentals.Events;
 using Motorent.Domain.Rentals.Services;
 using Motorent.Domain.Rentals.ValueObjects;
 using Motorent.Domain.Renters.Errors;
@@ -42,7 +43,7 @@ public sealed class Rental : Entity<RentalId>, IAggregateRoot, IAuditable
         RentalPlan plan)
     {
         var period = GetPeriodForPlan(plan);
-        return new Rental(id)
+        var rental = new Rental(id)
         {
             RenterId = renterId,
             MotorcycleId = motorcycleId,
@@ -51,6 +52,10 @@ public sealed class Rental : Entity<RentalId>, IAggregateRoot, IAuditable
             ReturnDate = period.End,
             Penalty = Money.Zero
         };
+        
+        rental.RaiseEvent(new RentalCreated(id));
+        
+        return rental;
     }
 
     public Result<Success> ChangeReturnDate(DateOnly newReturnDate,

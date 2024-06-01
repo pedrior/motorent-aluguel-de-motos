@@ -1,3 +1,5 @@
+using Motorent.Domain.Rentals;
+using Motorent.Domain.Rentals.ValueObjects;
 using Motorent.Domain.Renters.Enums;
 using Motorent.Domain.Renters.Errors;
 using Motorent.Domain.Renters.Events;
@@ -8,6 +10,8 @@ namespace Motorent.Domain.Renters;
 
 public sealed class Renter : Entity<RenterId>, IAggregateRoot
 {
+    private readonly List<RentalId> rentalIds = [];
+    
     private Renter(RenterId id) : base(id)
     {
     }
@@ -27,6 +31,10 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
     public DriverLicenseStatus DriverLicenseStatus { get; private set; } = null!;
 
     public Uri? DriverLicenseImageUrl { get; private set; }
+    
+    public IReadOnlyList<RentalId> RentalIds => rentalIds.AsReadOnly();
+    
+    public bool HasAnyRental => rentalIds.Count is not 0;
 
     public static async Task<Result<Renter>> CreateAsync(
         RenterId id,
@@ -125,6 +133,22 @@ public sealed class Renter : Entity<RenterId>, IAggregateRoot
         DriverLicenseStatus = DriverLicenseStatus.Rejected;
         DriverLicenseImageUrl = null;
 
+        return Success.Value;
+    }
+
+    public Result<Success> AddRental(Rental rental)
+    {
+        if (rental.RenterId != Id)
+        {
+            return RenterErrors.RentalNotBelongsToRenter;
+        }
+
+        if (rentalIds.Contains(rental.Id))
+        {
+            return Success.Value;
+        }
+        
+        rentalIds.Add(rental.Id);
         return Success.Value;
     }
 

@@ -79,6 +79,27 @@ internal sealed class RenterConfiguration : IEntityTypeConfiguration<Renter>
         builder.Property(r => r.DriverLicenseImageUrl)
             .HasMaxLength(2048)
             .HasColumnName("dl_image");
+        
+        builder.OwnsMany(r => r.RentalIds, b =>
+        {
+            b.HasKey("Id");
+            
+            b.Property(v => v.Value)
+                .HasColumnName("rental_id")
+                .HasColumnType("char(26)")
+                .HasConversion(
+                    v => v.ToString(),
+                    v => Ulid.Parse(v))
+                .ValueGeneratedNever();
+            
+            b.WithOwner()
+                .HasForeignKey("renter_id");
+            
+            b.ToTable("renter_rentals");
+        });
+
+        builder.Metadata.FindNavigation(nameof(Renter.RentalIds))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
 
         builder.ToTable("renters");
     }

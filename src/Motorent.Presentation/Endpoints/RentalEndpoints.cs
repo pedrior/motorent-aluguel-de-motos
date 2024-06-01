@@ -68,12 +68,9 @@ internal sealed class RentalEndpoints : IEndpoint
             .ToResponseAsync(response => Results.Created(uri: null as Uri, value: response));
     }
 
-    private static Task<IResult> ListRentals(
-        [AsParameters] ListRentalsRequest request,
-        ISender sender,
-        CancellationToken cancellationToken)
+    private static Task<IResult> ListRentals(ISender sender, CancellationToken cancellationToken)
     {
-        return sender.Send(request.Adapt<ListRentalsQuery>(), cancellationToken)
+        return sender.Send(new ListRentalsQuery(), cancellationToken)
             .ToResponseAsync(Results.Ok);
     }
 

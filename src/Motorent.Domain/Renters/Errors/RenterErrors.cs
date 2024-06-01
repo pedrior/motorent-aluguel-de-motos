@@ -20,6 +20,10 @@ internal static class RenterErrors
         "A CNH não está esperando aprovação.", 
         code: "renter.driver_license_not_waiting_approval");
     
+    public static readonly Error RentalNotBelongsToRenter = Error.Failure(
+        "O aluguel não pertence ao locatário.", 
+        code: "renter.rental_not_belongs_to_renter");
+    
     public static Error DocumentNotUnique(Document document) => Error.Conflict(
         "Já existe locatário com o mesmo documento CNPJ no sistema",
         code: "renter.document_not_unique",
